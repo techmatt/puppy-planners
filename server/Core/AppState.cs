@@ -27,6 +27,11 @@ namespace server
             eventLog.log(EventType.General, message);
         }
 
+        public void error(string message)
+        {
+            eventLog.log(EventType.Error, message);
+        }
+
         public EventLog eventLog = new EventLog();
         public Server server = new Server();
         public SessionManager sessionManager = new SessionManager();

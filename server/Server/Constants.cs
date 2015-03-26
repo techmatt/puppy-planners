@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace server
 {
-    class ServerConstants
+    class Constants
     {
+        public static int mapSize = 20;
     }
 }

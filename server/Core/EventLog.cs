@@ -9,6 +9,7 @@ namespace server
     public enum EventType
     {
         General,
+        Error,
         Server,
         StateRequest,
         UserAction,

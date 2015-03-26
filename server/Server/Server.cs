@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
+using System.Web;
 using System.Threading;
 
 namespace server
@@ -31,6 +32,8 @@ namespace server
             listener = new HttpListener();
 
             listener.Prefixes.Add(@"http://brethil.stanford.edu:8080/puppies/");
+            listener.Prefixes.Add(@"http://localhost:8080/puppies/");
+            listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
 
             listener.Start();
 
@@ -57,8 +60,15 @@ namespace server
                 // /puppies/p?command?param1=val1&param2=val2&...
                 // 
 
-                var parts = request.RawUrl.Split('?');
+                //
+                // We may need to clean the URL to parse non-ASCII stuff
+                //
+                //var cleanedUrl = HttpUtility.UrlDecode(request.RawUrl);
+                var cleanedUrl = request.RawUrl;
+                var parts = cleanedUrl.Split('?');
                 app.log(EventType.Server, "Request: " + request.RawUrl);
+
+                string responseString;
 
                 if(parts[0] == "/puppies/p")
                 {
@@ -72,32 +82,33 @@ namespace server
                         var v = parts[partIndex].Split('=');
                         parameters[v[0]] = v[1];
                     }
-                    app.sessionManager.dispatchCommand(command, parameters);
+                    responseString = app.sessionManager.dispatchCommand(command, parameters);
                 }
                 else
                 {
                     //
                     // file request (not currently handled)
                     //
+                    responseString = "<file request not supported>";
                 }
 
-                //
-                // Construct a response
-                //
-                string responseString = "<HTML><BODY>Hello world!</BODY></HTML>";
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+                response.StatusCode = 200;
+                response.StatusDescription = "OK";
 
-                //
-                // Get a response stream and write the response to it.
-                //
-                response.ContentLength64 = buffer.Length;
-                System.IO.Stream output = response.OutputStream;
-                output.Write(buffer, 0, buffer.Length);
+                if(responseString.Length > 0)
+                {
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
 
-                //
-                // You must close the output stream.
-                //
-                output.Close();
+                    //
+                    // Get a response stream and write the response to it.
+                    //
+                    response.ContentLength64 = buffer.Length;
+
+                    System.IO.Stream output = response.OutputStream;
+                    output.Write(buffer, 0, buffer.Length);
+                    output.Close();
+                }
+                
             }
             //listener.Stop();
         }

@@ -7,6 +7,16 @@ using System.Net;
 
 namespace server
 {
+    public struct Coord
+    {
+        public Coord(int _x, int _y)
+        {
+            x = _x;
+            y = _y;
+        }
+        public int x, y;
+    }
+
     static class Util
     {
         public static string GetPostData(this HttpListenerRequest request)

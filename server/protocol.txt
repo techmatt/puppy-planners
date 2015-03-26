@@ -41,4 +41,8 @@ Generally, commands return a blank string or the requested data. If something go
  
  All game commands have a common parameter: session=sessionID
 
- ** getBuildings() -> returns a JSON list of buildings: (x : int, y : int, name : string, health : int)
+ <QUERY> -> most queries start with "get", but this isn't important
+ ** getMap() -> returns a JSON list of terrain elements: (x : int, y : int, type : string, modifiers : (string list), building : (building data))
+
+ <ACTION> -> actions may return a failure string (for example, can happen if two players try to use resources at about the same time)
+ ** buildBuilding(x,y,name)
