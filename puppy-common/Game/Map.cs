@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
-namespace server
+namespace game
 {
-    struct MapCell
+    public struct MapCell
     {
         public Coord coord;
         public string type;
@@ -16,7 +16,7 @@ namespace server
         public Building building;
     }
 
-    class Map
+    public class Map
     {
         public Map()
         {
@@ -33,9 +33,9 @@ namespace server
         //
         // in theory, JSON for large state objects could be cached, but I'll only do that if it matters.
         //
-        public string toJSON(AppState app)
+        public string toJSON(JavaScriptSerializer serializer)
         {
-            return app.serializer.Serialize(mapAsList);
+            return serializer.Serialize(mapAsList);
         }
 
         public MapCell[,] data = new MapCell[Constants.mapSize, Constants.mapSize];

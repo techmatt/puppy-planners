@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace server
+namespace game
 {
-    class GameState
+    public class GameState
     {
         public Map map = new Map();
     }

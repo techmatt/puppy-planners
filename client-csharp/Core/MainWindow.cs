@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
 using System.Web.Script.Serialization;
+using game;
 
 namespace client_csharp
 {
@@ -37,18 +38,28 @@ namespace client_csharp
         public MainWindow()
         {
             InitializeComponent();
+            updateSessionButtonState();
         }
 
         void updateSessionButtonState()
         {
-            buttonJoinSession.Enabled = (textBoxPlayerName.TextLength >= 3);
+            buttonJoinSession.Enabled = (textBoxPlayerName.TextLength >= 3 && listBoxSessions.SelectedItem != null);
             buttonNewSession.Enabled = (textBoxSessionName.TextLength >= 3);
         }
 
         void updateSessionList()
         {
             string sessionListJSON = request("sessionList");
+            if (sessionListJSON == "error") return;
             var sessionList = app.serializer.Deserialize<List<GameSessionData>>(sessionListJSON);
+
+            listBoxSessions.Items.Clear();
+            
+            foreach(var session in sessionList)
+            {
+                listBoxSessions.Items.Add(session.ToString());
+            }
+            updateSessionButtonState();
         }
 
         private void textBoxPlayerName_TextChanged(object sender, EventArgs e)
@@ -79,9 +90,9 @@ namespace client_csharp
 
         private void buttonJoinSession_Click(object sender, EventArgs e)
         {
-            //string sessionID = ;
-            //request("joinSession&sessionID=" + sessionID + "&playerName=" + textBoxSessionName.Text);
-            //updateSessionList();
+            string sessionID = listBoxSessions.SelectedItem.ToString().SplitOnString(" ID=").Last();
+            request("joinSession&session=" + sessionID + "&playerName=" + textBoxPlayerName.Text + "&role=" + comboBoxRole.SelectedItem.ToString());
+            updateSessionList();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)

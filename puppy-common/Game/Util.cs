@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace server
+namespace game
 {
     public struct Coord
     {
@@ -17,8 +17,13 @@ namespace server
         public int x, y;
     }
 
-    static class Util
+    public static class Util
     {
+        public static string[] SplitOnString(this string s, string separator)
+        {
+            return s.Split(new string[] { separator }, StringSplitOptions.None);
+        }
+
         public static string GetPostData(this HttpListenerRequest request)
         {
             if (!request.HasEntityBody)

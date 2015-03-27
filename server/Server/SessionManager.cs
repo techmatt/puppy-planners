@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using game;
 
 namespace server
 {
@@ -66,7 +67,7 @@ namespace server
                 }
 
                 GameSession session = sessions[sessionID];
-                session.dispatchCommand(command, parameters);
+                return session.dispatchCommand(command, parameters);
             }
 
             app.error("unrecognized command: " + command + ", " + parameters.ToString());

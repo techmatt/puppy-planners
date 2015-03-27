@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server", "server\server.csproj", "{E1ABCC07-5858-4BBA-BEBE-3BCFA9DBD393}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "puppy-common", "puppy-common\puppy-common.csproj", "{8F1FAD56-0AD8-45C7-86BC-F91199F9AFA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E1ABCC07-5858-4BBA-BEBE-3BCFA9DBD393}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1ABCC07-5858-4BBA-BEBE-3BCFA9DBD393}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1ABCC07-5858-4BBA-BEBE-3BCFA9DBD393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F1FAD56-0AD8-45C7-86BC-F91199F9AFA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F1FAD56-0AD8-45C7-86BC-F91199F9AFA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F1FAD56-0AD8-45C7-86BC-F91199F9AFA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F1FAD56-0AD8-45C7-86BC-F91199F9AFA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

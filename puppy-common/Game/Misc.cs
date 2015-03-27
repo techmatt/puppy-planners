@@ -4,18 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace server
+namespace game
 {
-    struct PlayerData
+    public struct PlayerData
     {
         public string name;
         public Role role;
+
+        public override string ToString()
+        {
+            return name + "=" + role.ToString();
+        }
     }
 
-    class GameSessionData
+    public class GameSessionData
     {
         public string sessionName, sessionID;
         public List<PlayerData> players = new List<PlayerData>();
+
+        public override string ToString()
+        {
+            string playerList = "";
+            foreach(PlayerData p in players)
+            {
+                playerList += p.ToString() + ", ";
+            }
+            if(playerList.Length <= 2)
+            {
+                playerList = "no players";
+            }
+            else
+            {
+                playerList.Substring(0, playerList.Length - 2);
+            }
+            return sessionName + ": " + playerList + " ID=" + sessionID;
+        }
     }
 
     public enum Role
@@ -26,7 +49,7 @@ namespace server
         Military
     }
 
-    class Misc
+    public class Misc
     {
         
     }

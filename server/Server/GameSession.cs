@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Web.Script.Serialization;
+using game;
 
 namespace server
 {
@@ -17,7 +18,7 @@ namespace server
         //
         // This contains data that is separated out for serialization to the client
         //
-        public GameSessionData data;
+        public GameSessionData data = new GameSessionData();
         
         public GameSession(AppState _app, string sessionName)
         {
@@ -36,7 +37,7 @@ namespace server
         public string addPlayer(Dictionary<string, string> parameters)
         {
             string playerName = parameters["playerName"];
-            string roleName = parameters["roleName"];
+            string roleName = parameters["role"];
             PlayerData playerData = new PlayerData();
             playerData.name = playerName;
             if (Enum.TryParse(roleName, out playerData.role))
@@ -62,7 +63,7 @@ namespace server
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
         {
             if (command == "joinSession") return addPlayer(parameters);
-            if (command == "getMap") return state.map.toJSON(app);
+            if (command == "getMap") return state.map.toJSON(app.serializer);
 
             app.error("unrecognized command: " + command + ", " + parameters.ToString());
             return "unknown command";
