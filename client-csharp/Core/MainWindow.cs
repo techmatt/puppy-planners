@@ -47,8 +47,8 @@ namespace client_csharp
 
         void updateSessionList()
         {
-            var o = app.JSONToDictionary(request("sessionList"));
-            int a = 5;
+            string sessionListJSON = request("sessionList");
+            var sessionList = app.serializer.Deserialize<List<GameSessionData>>(sessionListJSON);
         }
 
         private void textBoxPlayerName_TextChanged(object sender, EventArgs e)

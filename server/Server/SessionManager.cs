@@ -18,7 +18,7 @@ namespace server
             app.log(EventType.Server, "creating new session: " + sessionName);
 
             foreach(var s in sessions)
-                if(s.Value.name == sessionName)
+                if(s.Value.data.sessionName == sessionName)
                 {
                     app.error("session already exists");
                     return "error: session already exists";
@@ -26,7 +26,7 @@ namespace server
 
             GameSession newSession = new GameSession(app, sessionName);
 
-            if(sessions.ContainsKey(newSession.id))
+            if(sessions.ContainsKey(newSession.data.sessionID))
             {
                 //
                 // This should never happen; if it does, increase the length of the session ID.
@@ -35,24 +35,20 @@ namespace server
                 return "error: session ID already exists";
             }
 
-            sessions.Add(newSession.id, newSession);
+            sessions.Add(newSession.data.sessionID, newSession);
 
-            return newSession.id;
+            return newSession.data.sessionID;
         }
 
         string sessionList(Dictionary<string, string> parameters)
         {
-            var sessionsSerialize = new List<GameSessionSerialize>();
-            foreach(var sIn in sessions.Values)
+            var sessionData = new List<GameSessionData>();
+            foreach(var s in sessions.Values)
             {
-                var sOut = new GameSessionSerialize();
-                sOut.sessionName = sIn.name;
-                sOut.sessionID = sIn.id;
-                sOut.playerNames = sIn.players;
-                sessionsSerialize.Add(sOut);
+                sessionData.Add(s.data);
             }
-            
-            return app.serializer.Serialize(sessionsSerialize);
+
+            return app.serializer.Serialize(sessionData);
         }
 
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
