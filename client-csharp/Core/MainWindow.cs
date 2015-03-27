@@ -8,14 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
+using System.Web.Script.Serialization;
 
 namespace client_csharp
 {
     public partial class MainWindow : Form
     {
+        AppState app = new AppState();
         HttpClient client = new HttpClient();
         const string serverUrl = "http://localhost:8080/puppies/";
-        const string serverQueryUrl = "http://localhost:8080/puppies/p?";
+        const string serverQueryUrl = "http://localhost:8080/puppies/p&";
 
 
         public string request(string query)
@@ -37,10 +39,16 @@ namespace client_csharp
             InitializeComponent();
         }
 
-        public void updateSessionButtonState()
+        void updateSessionButtonState()
         {
             buttonJoinSession.Enabled = (textBoxPlayerName.TextLength >= 3);
             buttonNewSession.Enabled = (textBoxSessionName.TextLength >= 3);
+        }
+
+        void updateSessionList()
+        {
+            var o = app.JSONToDictionary(request("sessionList"));
+            int a = 5;
         }
 
         private void textBoxPlayerName_TextChanged(object sender, EventArgs e)
@@ -53,10 +61,32 @@ namespace client_csharp
             updateSessionButtonState();
         }
 
+        private void listBoxSessions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateSessionButtonState();
+        }
+
         private void buttonUpdateSessionList_Click(object sender, EventArgs e)
         {
-            string list = request("sessionList");
-            int a = 5;
+            updateSessionList();
+        }
+
+        private void buttonNewSession_Click(object sender, EventArgs e)
+        {
+            request("newSession&sessionName=" + textBoxSessionName.Text);
+            updateSessionList();
+        }
+
+        private void buttonJoinSession_Click(object sender, EventArgs e)
+        {
+            //string sessionID = ;
+            //request("joinSession&sessionID=" + sessionID + "&playerName=" + textBoxSessionName.Text);
+            //updateSessionList();
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            comboBoxRole.SelectedIndex = 0;
         }
     }
 }

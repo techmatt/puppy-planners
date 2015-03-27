@@ -36,15 +36,18 @@
             this.buttonUpdateSessionList = new System.Windows.Forms.Button();
             this.buttonNewSession = new System.Windows.Forms.Button();
             this.buttonJoinSession = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBoxRole = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // listBoxSessions
             // 
             this.listBoxSessions.FormattingEnabled = true;
-            this.listBoxSessions.Location = new System.Drawing.Point(12, 87);
+            this.listBoxSessions.Location = new System.Drawing.Point(12, 117);
             this.listBoxSessions.Name = "listBoxSessions";
             this.listBoxSessions.Size = new System.Drawing.Size(288, 173);
             this.listBoxSessions.TabIndex = 0;
+            this.listBoxSessions.SelectedIndexChanged += new System.EventHandler(this.listBoxSessions_SelectedIndexChanged);
             // 
             // textBoxSessionName
             // 
@@ -52,6 +55,7 @@
             this.textBoxSessionName.Name = "textBoxSessionName";
             this.textBoxSessionName.Size = new System.Drawing.Size(179, 20);
             this.textBoxSessionName.TabIndex = 1;
+            this.textBoxSessionName.Text = "Eden";
             this.textBoxSessionName.TextChanged += new System.EventHandler(this.textBoxSessionName_TextChanged);
             // 
             // label1
@@ -78,11 +82,12 @@
             this.textBoxPlayerName.Name = "textBoxPlayerName";
             this.textBoxPlayerName.Size = new System.Drawing.Size(179, 20);
             this.textBoxPlayerName.TabIndex = 1;
+            this.textBoxPlayerName.Text = "Matt";
             this.textBoxPlayerName.TextChanged += new System.EventHandler(this.textBoxPlayerName_TextChanged);
             // 
             // buttonUpdateSessionList
             // 
-            this.buttonUpdateSessionList.Location = new System.Drawing.Point(12, 54);
+            this.buttonUpdateSessionList.Location = new System.Drawing.Point(12, 84);
             this.buttonUpdateSessionList.Name = "buttonUpdateSessionList";
             this.buttonUpdateSessionList.Size = new System.Drawing.Size(103, 27);
             this.buttonUpdateSessionList.TabIndex = 3;
@@ -92,39 +97,65 @@
             // 
             // buttonNewSession
             // 
-            this.buttonNewSession.Enabled = false;
-            this.buttonNewSession.Location = new System.Drawing.Point(121, 54);
+            this.buttonNewSession.Location = new System.Drawing.Point(121, 84);
             this.buttonNewSession.Name = "buttonNewSession";
             this.buttonNewSession.Size = new System.Drawing.Size(86, 27);
             this.buttonNewSession.TabIndex = 3;
             this.buttonNewSession.Text = "New Session";
             this.buttonNewSession.UseVisualStyleBackColor = true;
+            this.buttonNewSession.Click += new System.EventHandler(this.buttonNewSession_Click);
             // 
             // buttonJoinSession
             // 
-            this.buttonJoinSession.Enabled = false;
-            this.buttonJoinSession.Location = new System.Drawing.Point(213, 54);
+            this.buttonJoinSession.Location = new System.Drawing.Point(213, 84);
             this.buttonJoinSession.Name = "buttonJoinSession";
             this.buttonJoinSession.Size = new System.Drawing.Size(86, 27);
             this.buttonJoinSession.TabIndex = 3;
             this.buttonJoinSession.Text = "Join Session";
             this.buttonJoinSession.UseVisualStyleBackColor = true;
+            this.buttonJoinSession.Click += new System.EventHandler(this.buttonJoinSession_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(56, 60);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Player role:";
+            // 
+            // comboBoxRole
+            // 
+            this.comboBoxRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRole.FormattingEnabled = true;
+            this.comboBoxRole.Items.AddRange(new object[] {
+            "Builder",
+            "Culture",
+            "Intrigue",
+            "Military"});
+            this.comboBoxRole.Location = new System.Drawing.Point(121, 57);
+            this.comboBoxRole.Name = "comboBoxRole";
+            this.comboBoxRole.Size = new System.Drawing.Size(178, 21);
+            this.comboBoxRole.TabIndex = 4;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(639, 695);
+            this.Controls.Add(this.comboBoxRole);
             this.Controls.Add(this.buttonJoinSession);
             this.Controls.Add(this.buttonNewSession);
             this.Controls.Add(this.buttonUpdateSessionList);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxPlayerName);
             this.Controls.Add(this.textBoxSessionName);
             this.Controls.Add(this.listBoxSessions);
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "Puppies Client";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,6 +171,8 @@
         private System.Windows.Forms.Button buttonUpdateSessionList;
         private System.Windows.Forms.Button buttonNewSession;
         private System.Windows.Forms.Button buttonJoinSession;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBoxRole;
     }
 }
 

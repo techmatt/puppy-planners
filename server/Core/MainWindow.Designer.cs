@@ -48,7 +48,7 @@
             this.ClientSize = new System.Drawing.Size(741, 666);
             this.Controls.Add(this.buttonLaunch);
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "Puppies Server";
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.ResumeLayout(false);
 

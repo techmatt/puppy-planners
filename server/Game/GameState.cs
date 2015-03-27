@@ -8,6 +8,6 @@ namespace server
 {
     class GameState
     {
-        public Map map;
+        public Map map = new Map();
     }
 }

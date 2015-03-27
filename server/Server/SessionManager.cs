@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace server
 {
@@ -20,7 +21,7 @@ namespace server
                 if(s.Value.name == sessionName)
                 {
                     app.error("session already exists");
-                    return "session already exists";
+                    return "error: session already exists";
                 }
 
             GameSession newSession = new GameSession(app, sessionName);
@@ -31,30 +32,34 @@ namespace server
                 // This should never happen; if it does, increase the length of the session ID.
                 //
                 app.error("session ID already exists");
-                return "session ID already exists";
+                return "error: session ID already exists";
             }
 
             sessions.Add(newSession.id, newSession);
 
-            return "";
+            return newSession.id;
         }
 
         string sessionList(Dictionary<string, string> parameters)
         {
-            return "";
-        }
-
-        string joinSession(Dictionary<string, string> parameters)
-        {
-            return "";
+            var sessionsSerialize = new List<GameSessionSerialize>();
+            foreach(var sIn in sessions.Values)
+            {
+                var sOut = new GameSessionSerialize();
+                sOut.sessionName = sIn.name;
+                sOut.sessionID = sIn.id;
+                sOut.playerNames = sIn.players;
+                sessionsSerialize.Add(sOut);
+            }
+            
+            return app.serializer.Serialize(sessionsSerialize);
         }
 
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
         {
             if (command == "newSession") return newSession(parameters);
             if (command == "sessionList") return sessionList(parameters);
-            if (command == "newSession") return joinSession(parameters);
-
+            
             if(parameters.ContainsKey("session"))
             {
                 string sessionID = parameters["session"];

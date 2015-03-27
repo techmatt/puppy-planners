@@ -31,7 +31,7 @@ namespace server
 
             listener = new HttpListener();
 
-            listener.Prefixes.Add(@"http://brethil.stanford.edu:8080/puppies/");
+            //listener.Prefixes.Add(@"http://brethil.stanford.edu:8080/puppies/");
             listener.Prefixes.Add(@"http://localhost:8080/puppies/");
             listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
 
@@ -57,7 +57,7 @@ namespace server
 
                 //
                 // See protocol.txt for the specification of how server requests should be formatted
-                // /puppies/p?command?param1=val1&param2=val2&...
+                // /puppies/p&command&param1=val1&param2=val2&...
                 // 
 
                 //
@@ -65,7 +65,7 @@ namespace server
                 //
                 //var cleanedUrl = HttpUtility.UrlDecode(request.RawUrl);
                 var cleanedUrl = request.RawUrl;
-                var parts = cleanedUrl.Split('?');
+                var parts = cleanedUrl.Split('&');
                 app.log(EventType.Server, "Request: " + request.RawUrl);
 
                 string responseString;

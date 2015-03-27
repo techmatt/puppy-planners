@@ -30,3 +30,9 @@
 /server/obj/Debug/server.csprojResolveAssemblyReference.cache
 /server/obj/Debug/server.exe
 /server/obj/Debug/server.pdb
+/client-csharp/bin/Debug/client-csharp.vshost.exe
+/client-csharp/bin/Debug/client-csharp.vshost.exe.config
+/client.v12.suo
+/server.v12.suo
+/server/bin/Debug/server.vshost.exe.manifest
+/server/obj/Debug/DesignTimeResolveAssemblyReferences.cache

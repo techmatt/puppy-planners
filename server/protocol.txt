@@ -21,19 +21,21 @@ the order of the parameters is irrelevant.
 object to string: JSON.stringify(javascriptObjectHere)
 string to object: JSON.parse(JSONStringHere)
 
+Generally speaking, the server is not concerned with player identity; that's up to the client.
+
 Possible commands:
 
 Generally, commands return a blank string or the requested data. If something goes wrong, they will return a string starting with "error:". Example: trying to join a game that already has 4 players.
 
  <-- SERVER COMMANDS -->
 
- ** newSession(sessionName) : sessionID -> creates a new game session, returning sessionID
+ ** newSession(sessionName) -> creates a new game session, returning sessionID
    -- sessionName is pretty-print for the name
 
- ** sessionList() : void -> returns a JSON list of sessions: ( sessionID : string, sessionName : string, sessionPlayers : string-list )
+ ** sessionList() -> returns a JSON list of sessions: ( sessionID : string, sessionName : string, sessionPlayers : string-list )
   -- sessionName is pretty-print for the name, sessionID is a unique ID used to refer to each session.
 
- ** joinSession(sessionID,playerName) : string -> adds playerName to sessionID
+ ** joinSession(session,playerName,playerRole) -> adds playerName to sessionID
   -- playerName is pretty-print for the player name
 
 
