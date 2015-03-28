@@ -1,0 +1,46 @@
+name,pop,resource A,resource B,resource C
+hovel,2,none,none,none
+farm,0,food=0.1,none,none
+statue,0,culture=0.1,none,none
+shrine,0,faith=0.1,none,none
+lumber mill,0,wood=0.1,none,none
+greenhouse,0,food=0.5,electricity=-0.1,none
+coal plant,0,electricity=0.2,coal=-0.1,none
+house,4,electricity=-0.1,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
+none,0,none,none,none
