@@ -53,3 +53,17 @@
 /puppy-common/obj/Debug/puppy-common.csprojResolveAssemblyReference.cache
 /client-csharp/obj/Debug/build.force
 /server/obj/Debug/build.force
+
+*.mdb
+
+client-csharp/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+
+client-csharp/obj/Debug/client-csharp.csproj.FilesWrittenAbsolute.txt
+
+puppy-common/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+
+puppy-common/obj/Debug/puppy-common.csproj.FilesWrittenAbsolute.txt
+
+server/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+
+server/obj/Debug/server.csproj.FilesWrittenAbsolute.txt

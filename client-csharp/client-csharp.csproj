@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -84,12 +84,6 @@
   <ItemGroup>
     <Folder Include="Game\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\puppy-common\puppy-common.csproj">
-      <Project>{34ded9af-8d75-4272-97ae-3caf42f1cd47}</Project>
-      <Name>puppy-common</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -98,4 +92,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\puppy-common\puppy-common.csproj">
+      <Project>{34DED9AF-8D75-4272-97AE-3CAF42F1CD47}</Project>
+      <Name>puppy-common</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
