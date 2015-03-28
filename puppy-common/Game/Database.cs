@@ -7,9 +7,21 @@ using System.Threading.Tasks;
 
 namespace game
 {
-    public class BuildingResourceInfo
+    public class BuildingResourceCost
     {
-        public BuildingResourceInfo(string resourceDesc)
+        public BuildingResourceCost(string resourceDesc)
+        {
+            var parts = resourceDesc.Split('=');
+            resourceName = parts[0];
+            cost = Convert.ToInt32(parts[1]);
+        }
+        public string resourceName;
+        public int cost;
+    }
+
+    public class BuildingResourceProduction
+    {
+        public BuildingResourceProduction(string resourceDesc)
         {
             var parts = resourceDesc.Split('=');
             resourceName = parts[0];
@@ -23,7 +35,8 @@ namespace game
     {
         public string name;
         public int population;
-        public List<BuildingResourceInfo> resources = new List<BuildingResourceInfo>();
+        public List<BuildingResourceCost> cost = new List<BuildingResourceCost>();
+        public List<BuildingResourceProduction> production = new List<BuildingResourceProduction>();
     }
 
     public class Database
@@ -43,16 +56,26 @@ namespace game
                 info.name = line["name"];
                 info.population = Convert.ToInt32(line["pop"]);
 
+                var costHeaders = new string[] { "cost A", "cost B", "cost C" };
+                foreach (string header in costHeaders)
+                {
+                    string resourceDesc = line[header];
+                    if (resourceDesc != "none")
+                    {
+                        info.cost.Add(new BuildingResourceCost(resourceDesc));
+                    }
+                }
+
                 var resourceHeaders = new string[] { "resource A", "resource B", "resource C" };
                 foreach(string header in resourceHeaders)
                 {
                     string resourceDesc = line[header];
                     if(resourceDesc != "none")
                     {
-                        info.resources.Add(new BuildingResourceInfo(resourceDesc));
+                        info.production.Add(new BuildingResourceProduction(resourceDesc));
                     }
                 }
-                buildings[info.name] = info;
+                if(info.name != "none") buildings[info.name] = info;
             }
         }
 
