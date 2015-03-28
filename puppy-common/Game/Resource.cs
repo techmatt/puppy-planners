@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace game
 {
-    public class Constants
+    public class Resource
     {
-        public static int mapSize = 20;
-        public static int mapCellSize = 30;
+        public string name;
+        public int value;
+        public int storage;
+        public double rate;
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listBoxSessions = new System.Windows.Forms.ListBox();
             this.textBoxSessionName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,6 +39,11 @@
             this.buttonJoinSession = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxRole = new System.Windows.Forms.ComboBox();
+            this.labelPaused = new System.Windows.Forms.Label();
+            this.timerGameUpdate = new System.Windows.Forms.Timer(this.components);
+            this.buttonPause = new System.Windows.Forms.Button();
+            this.pictureBoxMap = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
             // listBoxSessions
@@ -138,11 +144,47 @@
             this.comboBoxRole.Size = new System.Drawing.Size(178, 21);
             this.comboBoxRole.TabIndex = 4;
             // 
+            // labelPaused
+            // 
+            this.labelPaused.AutoSize = true;
+            this.labelPaused.Location = new System.Drawing.Point(411, 13);
+            this.labelPaused.Name = "labelPaused";
+            this.labelPaused.Size = new System.Drawing.Size(73, 13);
+            this.labelPaused.TabIndex = 5;
+            this.labelPaused.Text = "Game paused";
+            // 
+            // timerGameUpdate
+            // 
+            this.timerGameUpdate.Enabled = true;
+            this.timerGameUpdate.Interval = 1000;
+            this.timerGameUpdate.Tick += new System.EventHandler(this.timerGameUpdate_Tick);
+            // 
+            // buttonPause
+            // 
+            this.buttonPause.Location = new System.Drawing.Point(321, 6);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(84, 27);
+            this.buttonPause.TabIndex = 6;
+            this.buttonPause.Text = "Toggle Pause";
+            this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
+            // 
+            // pictureBoxMap
+            // 
+            this.pictureBoxMap.Location = new System.Drawing.Point(321, 57);
+            this.pictureBoxMap.Name = "pictureBoxMap";
+            this.pictureBoxMap.Size = new System.Drawing.Size(570, 679);
+            this.pictureBoxMap.TabIndex = 7;
+            this.pictureBoxMap.TabStop = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(639, 695);
+            this.ClientSize = new System.Drawing.Size(941, 819);
+            this.Controls.Add(this.pictureBoxMap);
+            this.Controls.Add(this.buttonPause);
+            this.Controls.Add(this.labelPaused);
             this.Controls.Add(this.comboBoxRole);
             this.Controls.Add(this.buttonJoinSession);
             this.Controls.Add(this.buttonNewSession);
@@ -156,6 +198,7 @@
             this.Name = "MainWindow";
             this.Text = "Puppies Client";
             this.Load += new System.EventHandler(this.MainWindow_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,6 +216,10 @@
         private System.Windows.Forms.Button buttonJoinSession;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxRole;
+        private System.Windows.Forms.Label labelPaused;
+        private System.Windows.Forms.Timer timerGameUpdate;
+        private System.Windows.Forms.Button buttonPause;
+        private System.Windows.Forms.PictureBox pictureBoxMap;
     }
 }
 

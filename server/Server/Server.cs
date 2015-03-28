@@ -95,6 +95,7 @@ namespace server
                 response.StatusCode = 200;
                 response.StatusDescription = "OK";
 
+                System.IO.Stream output = response.OutputStream;
                 if(responseString.Length > 0)
                 {
                     byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
@@ -103,11 +104,13 @@ namespace server
                     // Get a response stream and write the response to it.
                     //
                     response.ContentLength64 = buffer.Length;
-
-                    System.IO.Stream output = response.OutputStream;
                     output.Write(buffer, 0, buffer.Length);
-                    output.Close();
                 }
+                else
+                {
+                    response.ContentLength64 = 0;
+                }
+                output.Close();
                 
             }
             //listener.Stop();

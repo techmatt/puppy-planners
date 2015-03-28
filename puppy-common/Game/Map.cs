@@ -8,11 +8,16 @@ using System.Web.Script.Serialization;
 
 namespace game
 {
-    public struct MapCell
+    public class MapCellResource
+    {
+        public string name;
+    }
+
+    public class MapCell
     {
         public Coord coord;
         public string type;
-        public HashSet<string> resources;
+        public List<MapCellResource> resources;
         public Building building;
     }
 
@@ -20,13 +25,24 @@ namespace game
     {
         public Map()
         {
+            Random random = new Random();
+
             for(int x = 0; x < data.GetUpperBound(0); x++)
                 for(int y = 0; y < data.GetUpperBound(1); y++)
                 {
-                    MapCell c = data[x, y];
+                    MapCell c = new MapCell();
+                    data[x, y] = c;
                     mapAsList.Add(c);
                     c.coord = new Coord(x, y);
-                    c.type = "water";
+
+                    //
+                    // TODO: do actual terrain somehow
+                    //
+                    int terrainType = random.Next(2);
+                    if (terrainType == 0)
+                        c.type = "water";
+                    else
+                        c.type = "dirt";
                 }
         }
 

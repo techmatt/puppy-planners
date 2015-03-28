@@ -16,25 +16,7 @@ namespace client_csharp
     public partial class MainWindow : Form
     {
         AppState app = new AppState();
-        HttpClient client = new HttpClient();
-        const string serverUrl = "http://localhost:8080/puppies/";
-        const string serverQueryUrl = "http://localhost:8080/puppies/p&";
-
-
-        public string request(string query)
-        {
-            var responseString = client.GetStringAsync(serverQueryUrl + query);
-            
-            bool success = responseString.Wait(1000);
-            if(!success)
-            {
-                Console.WriteLine("request timeout: ", query);
-                return "error";
-            }
-
-            return responseString.Result;
-        }
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -49,7 +31,7 @@ namespace client_csharp
 
         void updateSessionList()
         {
-            string sessionListJSON = request("sessionList");
+            string sessionListJSON = app.request("sessionList");
             if (sessionListJSON == "error") return;
             var sessionList = app.serializer.Deserialize<List<GameSessionData>>(sessionListJSON);
 
@@ -84,20 +66,58 @@ namespace client_csharp
 
         private void buttonNewSession_Click(object sender, EventArgs e)
         {
-            request("newSession&sessionName=" + textBoxSessionName.Text);
+            app.request("newSession&sessionName=" + textBoxSessionName.Text);
             updateSessionList();
         }
 
         private void buttonJoinSession_Click(object sender, EventArgs e)
         {
             string sessionID = listBoxSessions.SelectedItem.ToString().SplitOnString(" ID=").Last();
-            request("joinSession&session=" + sessionID + "&playerName=" + textBoxPlayerName.Text + "&role=" + comboBoxRole.SelectedItem.ToString());
+            string result = app.request("joinSession&session=" + sessionID + "&playerName=" + textBoxPlayerName.Text + "&role=" + comboBoxRole.SelectedItem.ToString());
+            if(result == "")
+            {
+                app.sessionID = sessionID;
+            }
             updateSessionList();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
             comboBoxRole.SelectedIndex = 0;
+        }
+
+        private void updateGameUI()
+        {
+            labelPaused.Text = app.gameData.paused ? "Game paused" : "Game running";
+
+            app.updateMapBmp();
+            pictureBoxMap.Image = app.mapBmp;
+        }
+
+        private void timerGameUpdate_Tick(object sender, EventArgs e)
+        {
+            if (app.sessionID == null)
+                return;
+
+            string gameDataJSON = app.sessionRequest("getData");
+            string gameMapJSON = app.sessionRequest("getMap");
+            if (gameDataJSON == "" || gameMapJSON == "")
+            {
+                Console.Write("no response received");
+                return;
+            }
+
+            app.gameData = app.serializer.Deserialize<GameStateData>(gameDataJSON);
+            app.gameMap = app.serializer.Deserialize< List<MapCell> >(gameMapJSON);
+
+            updateGameUI();
+        }
+
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            if (app.gameData == null) return;
+
+            app.sessionRequest("setPaused", "paused=" + (!app.gameData.paused).ToString());
         }
     }
 }

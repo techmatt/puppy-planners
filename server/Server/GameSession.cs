@@ -50,6 +50,7 @@ namespace server
                         return "error: name or role already exists in session";
                     }
                 }
+                app.log(EventType.Server, "adding " + playerData.name + " as " + playerData.role.ToString());
                 data.players.Add(playerData);
                 return "";
             }
@@ -63,10 +64,24 @@ namespace server
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
         {
             if (command == "joinSession") return addPlayer(parameters);
+
+            //
+            // Query
+            //
+            if (command == "getData") return app.serializer.Serialize(state.data);
             if (command == "getMap") return state.map.toJSON(app.serializer);
 
+            //
+            // Action
+            //
+            if (command == "setPaused")
+            {
+                state.data.paused = Convert.ToBoolean(parameters["paused"]);
+                return "";
+            }
+
             app.error("unrecognized command: " + command + ", " + parameters.ToString());
-            return "unknown command";
+            return "error: unknown command";
         }
     }
 }
