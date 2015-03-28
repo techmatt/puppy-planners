@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace game
 {
+    public class Resource
+    {
+        public Resource(string resourceName)
+        {
+            name = resourceName;
+        }
+        public string name;
+        public double value;
+        public double storage;
+        public double productionPerSecond;
+    }
+
     public struct PlayerData
     {
         public string name;

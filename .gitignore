@@ -52,3 +52,4 @@
 /client-csharp/bin/Debug/client-csharp.vshost.exe.manifest
 /puppy-common/obj/Debug/puppy-common.csprojResolveAssemblyReference.cache
 /client-csharp/obj/Debug/build.force
+/server/obj/Debug/build.force

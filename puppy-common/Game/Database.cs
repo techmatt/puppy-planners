@@ -25,10 +25,22 @@ namespace game
         {
             var parts = resourceDesc.Split('=');
             resourceName = parts[0];
-            rate = Convert.ToDouble(parts[1]);
+            productionPerSecond = Convert.ToDouble(parts[1]);
         }
         public string resourceName;
-        public double rate;
+        public double productionPerSecond;
+    }
+
+    public class BuildingResourceStorage
+    {
+        public BuildingResourceStorage(string resourceDesc)
+        {
+            var parts = resourceDesc.Split('=');
+            resourceName = parts[0];
+            storage = Convert.ToDouble(parts[1]);
+        }
+        public string resourceName;
+        public double storage;
     }
 
     public class BuildingInfo
@@ -37,6 +49,7 @@ namespace game
         public int population;
         public List<BuildingResourceCost> cost = new List<BuildingResourceCost>();
         public List<BuildingResourceProduction> production = new List<BuildingResourceProduction>();
+        public List<BuildingResourceStorage> storage = new List<BuildingResourceStorage>();
     }
 
     public class Database
@@ -61,9 +74,7 @@ namespace game
                 {
                     string resourceDesc = line[header];
                     if (resourceDesc != "none")
-                    {
                         info.cost.Add(new BuildingResourceCost(resourceDesc));
-                    }
                 }
 
                 var resourceHeaders = new string[] { "resource A", "resource B", "resource C" };
@@ -71,10 +82,17 @@ namespace game
                 {
                     string resourceDesc = line[header];
                     if(resourceDesc != "none")
-                    {
                         info.production.Add(new BuildingResourceProduction(resourceDesc));
-                    }
                 }
+
+                var storageHeaders = new string[] { "storage A", "storage B", "storage C" };
+                foreach (string header in storageHeaders)
+                {
+                    string resourceDesc = line[header];
+                    if (resourceDesc != "none")
+                        info.storage.Add(new BuildingResourceStorage(resourceDesc));
+                }
+
                 if(info.name != "none") buildings[info.name] = info;
             }
         }

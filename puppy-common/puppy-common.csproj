@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8F1FAD56-0AD8-45C7-86BC-F91199F9AFA9}</ProjectGuid>
+    <ProjectGuid>{34DED9AF-8D75-4272-97AE-3CAF42F1CD47}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>puppy_common</RootNamespace>
@@ -47,7 +47,6 @@
     <Compile Include="Game\GameState.cs" />
     <Compile Include="Game\Map.cs" />
     <Compile Include="Game\Misc.cs" />
-    <Compile Include="Game\Resource.cs" />
     <Compile Include="Game\Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

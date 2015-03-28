@@ -19,6 +19,13 @@ namespace game
 
     public static class Util
     {
+        public static double bound(double value, double low, double high)
+        {
+            if (value < low) return low;
+            if (value > high) return high;
+            return value;
+        }
+
         public static string[] SplitOnString(this string s, string separator)
         {
             return s.Split(new string[] { separator }, StringSplitOptions.None);

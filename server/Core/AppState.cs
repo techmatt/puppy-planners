@@ -34,7 +34,6 @@ namespace server
             eventLog.log(EventType.Error, message);
         }
 
-        public Database database = new Database();
         public EventLog eventLog = new EventLog();
         public Server server = new Server();
         public SessionManager sessionManager = new SessionManager();

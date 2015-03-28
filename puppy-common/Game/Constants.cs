@@ -11,5 +11,6 @@ namespace game
         public static string dataDir = "../../../data/";
         public static int mapSize = 20;
         public static int mapCellSize = 30;
+        public static double ticksPerSecond = 3.0;
     }
 }
