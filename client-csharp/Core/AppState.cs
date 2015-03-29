@@ -23,6 +23,7 @@ namespace client_csharp
         public Bitmap mapBmp = new Bitmap(Constants.mapCellSize * Constants.mapSize, Constants.mapCellSize * Constants.mapSize);
         public Graphics g;
         public Dictionary<string, Brush> terrainBrushes = new Dictionary<string, Brush>();
+        public AssetManager assets = new AssetManager();
         
         public AppState()
         {

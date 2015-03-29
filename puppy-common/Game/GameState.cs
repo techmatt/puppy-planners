@@ -54,11 +54,23 @@ namespace game
             }
         }
 
+        void processResourceDeficit(Resource r, double deficit)
+        {
+
+        }
+
+        void processResourceSurplus(Resource r, double surplus)
+        {
+
+        }
+
         void processProduction()
         {
             foreach (Resource r in data.resources)
             {
                 r.value += r.productionPerSecond / Constants.ticksPerSecond;
+                if (r.value < 0.0) processResourceDeficit(r, -r.value);
+                if (r.value > r.storage) processResourceSurplus(r, r.value - r.storage);
                 r.value = Util.bound(r.value, 0.0, r.storage);
             }
         }

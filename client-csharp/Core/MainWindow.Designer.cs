@@ -173,7 +173,7 @@
             // 
             this.pictureBoxMap.Location = new System.Drawing.Point(321, 57);
             this.pictureBoxMap.Name = "pictureBoxMap";
-            this.pictureBoxMap.Size = new System.Drawing.Size(570, 679);
+            this.pictureBoxMap.Size = new System.Drawing.Size(683, 760);
             this.pictureBoxMap.TabIndex = 7;
             this.pictureBoxMap.TabStop = false;
             // 
@@ -181,7 +181,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(941, 819);
+            this.ClientSize = new System.Drawing.Size(1075, 829);
             this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.buttonPause);
             this.Controls.Add(this.labelPaused);

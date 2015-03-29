@@ -44,6 +44,10 @@ namespace game
                     else
                         c.type = "dirt";
                 }
+            data[10, 10].building = new Building("farm");
+            data[11, 10].building = new Building("hovel");
+            data[10, 11].building = new Building("hovel");
+            data[11, 11].building = new Building("farm");
         }
 
         //
