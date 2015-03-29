@@ -59,30 +59,33 @@ namespace game
 
             g.DrawImage(fullBmpAlpha, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
-            Bitmap testBmpColor = new Bitmap(bmp);
-            Bitmap testBmpAlpha = new Bitmap(bmp);
-            Bitmap testComposite = new Bitmap(bmp);
+            if (Constants.dumpImages)
+            {
+                Bitmap testBmpColor = new Bitmap(bmp);
+                Bitmap testBmpAlpha = new Bitmap(bmp);
+                Bitmap testComposite = new Bitmap(bmp);
 
-            Color compositeColor = Color.FromArgb(255, 100, 200, 100);
+                Color compositeColor = Color.FromArgb(255, 100, 200, 100);
 
-            for (int y = 0; y < testBmpColor.Height; y++)
-                for (int x = 0; x < testBmpColor.Width; x++)
-                {
-                    Color c = bmp.GetPixel(x, y);
+                for (int y = 0; y < testBmpColor.Height; y++)
+                    for (int x = 0; x < testBmpColor.Width; x++)
+                    {
+                        Color c = bmp.GetPixel(x, y);
 
-                    double alpha = c.A / 255.0;
-                    int nr = (int)(c.R * alpha + compositeColor.R * (1.0 - alpha));
-                    int ng = (int)(c.G * alpha + compositeColor.G * (1.0 - alpha));
-                    int nb = (int)(c.B * alpha + compositeColor.B * (1.0 - alpha));
+                        double alpha = c.A / 255.0;
+                        int nr = (int)(c.R * alpha + compositeColor.R * (1.0 - alpha));
+                        int ng = (int)(c.G * alpha + compositeColor.G * (1.0 - alpha));
+                        int nb = (int)(c.B * alpha + compositeColor.B * (1.0 - alpha));
 
-                    testBmpColor.SetPixel(x, y, Color.FromArgb(255, c.R, c.G, c.B));
-                    testBmpAlpha.SetPixel(x, y, Color.FromArgb(255, c.A, c.A, c.A));
-                    testComposite.SetPixel(x, y, Color.FromArgb(255, nr, ng, nb));
-                }
+                        testBmpColor.SetPixel(x, y, Color.FromArgb(255, c.R, c.G, c.B));
+                        testBmpAlpha.SetPixel(x, y, Color.FromArgb(255, c.A, c.A, c.A));
+                        testComposite.SetPixel(x, y, Color.FromArgb(255, nr, ng, nb));
+                    }
 
-            testBmpColor.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_color.png");
-            testBmpAlpha.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_alpha.png");
-            testComposite.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_composite.png");
+                testBmpColor.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_color.png");
+                testBmpAlpha.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_alpha.png");
+                testComposite.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_composite.png");
+            }
         }
 
         public string imageName;
@@ -104,6 +107,6 @@ namespace game
             }
         }
 
-        Dictionary<string, ImageAsset> images = new Dictionary<string, ImageAsset>();
+        public Dictionary<string, ImageAsset> images = new Dictionary<string, ImageAsset>();
     }
 }

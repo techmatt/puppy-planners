@@ -45,7 +45,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(741, 666);
+            this.ClientSize = new System.Drawing.Size(264, 144);
             this.Controls.Add(this.buttonLaunch);
             this.Name = "MainWindow";
             this.Text = "Puppies Server";

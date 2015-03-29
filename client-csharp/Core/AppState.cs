@@ -63,6 +63,12 @@ namespace client_csharp
             {
                 Point s = new Point(c.coord.x * Constants.mapCellSize, c.coord.y * Constants.mapCellSize);
                 g.FillRectangle(terrainBrushes[c.type], new Rectangle(s.X, s.Y, s.X + Constants.mapCellSize, s.Y + Constants.mapCellSize));
+
+                if(c.building != null)
+                {
+                    var image = assets.images[c.building.name];
+                    g.DrawImage(image.bmp, s);
+                }
             }
         }
 

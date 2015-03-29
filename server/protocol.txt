@@ -29,6 +29,8 @@ Generally, commands return a blank string or the requested data. If something go
 
  <-- SERVER COMMANDS -->
 
+ ** reset() -> clears all active sessions.
+
  ** newSession(sessionName) -> creates a new game session, returning sessionID
    -- sessionName is pretty-print for the name
 

@@ -66,6 +66,11 @@ namespace client_csharp
 
         private void buttonNewSession_Click(object sender, EventArgs e)
         {
+            //
+            // this reset is just for making it easier to debug without constantly resetting the server.
+            //
+            app.request("reset");
+
             app.request("newSession&sessionName=" + textBoxSessionName.Text);
             updateSessionList();
         }

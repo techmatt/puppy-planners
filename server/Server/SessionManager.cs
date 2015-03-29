@@ -54,6 +54,7 @@ namespace server
 
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
         {
+            if (command == "reset") sessions.Clear();
             if (command == "newSession") return newSession(parameters);
             if (command == "sessionList") return sessionList(parameters);
             

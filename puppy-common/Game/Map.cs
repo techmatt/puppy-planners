@@ -44,10 +44,11 @@ namespace game
                     else
                         c.type = "dirt";
                 }
-            data[10, 10].building = new Building("farm");
-            data[11, 10].building = new Building("hovel");
-            data[10, 11].building = new Building("hovel");
-            data[11, 11].building = new Building("farm");
+            int d = Constants.mapSize / 2 - 1;
+            data[d + 0, d + 0].building = new Building("field");
+            data[d + 0, d + 1].building = new Building("hovel");
+            data[d + 1, d + 0].building = new Building("hovel");
+            data[d + 1, d + 1].building = new Building("field");
         }
 
         //
