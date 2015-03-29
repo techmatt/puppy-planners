@@ -12,6 +12,11 @@ namespace game
         {
             name = resourceName;
         }
+        public override string ToString()
+        {
+            string sign = productionPerSecond > 0 ? "+" : "-";
+            return name + ": " + value + " / " + storage + " (" + sign + productionPerSecond + "/sec)";
+        }
         public string name;
         public double value;
         public double storage;

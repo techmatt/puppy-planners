@@ -26,7 +26,7 @@ namespace game
 
             //Color backgroundColor = Color.FromArgb(0, 255, 255, 255);
             Color backgroundColor = fullBmp.GetPixel(0, 0);
-            const double whitenessThreshold = 0.2;
+            const double whitenessThreshold = 0.3;
 
             for (int y = 0; y < fullBmp.Height; y++)
                 for(int x = 0; x < fullBmp.Width; x++)

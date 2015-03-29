@@ -20,7 +20,7 @@ namespace game
         }
 
         public bool paused = true;
-        public List<Resource> resources;
+        public List<Resource> resources = new List<Resource>();
     }
 
     public class GameState
@@ -36,7 +36,6 @@ namespace game
                 r.productionPerSecond = 0.0;
                 r.storage = 0.0;
             }
-
 
             foreach(MapCell c in map.mapAsList)
             {

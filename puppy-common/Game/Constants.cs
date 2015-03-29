@@ -14,6 +14,7 @@ namespace game
         public static string dataDir = "../../../data/";
         public static string imageDir = dataDir + "images/";
         public static string imageOutDir = dataDir + "imagesOut/";
+        public static string fileHostDir = "../../../client-javascript/";
 
         //
         // Map
@@ -27,8 +28,15 @@ namespace game
         public static double ticksPerSecond = 3.0;
 
         //
+        // Base storage values
+        //
+        public static double baseFoodStorage = 20.0;
+        public static double baseWoodStorage = 10.0;
+
+        //
         // Debug
         //
         public static bool dumpImages = false;
+        public static bool autoJoinSession = true;
     }
 }

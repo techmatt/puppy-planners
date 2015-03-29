@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,6 +11,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Web;
 using System.Threading;
+using game;
 
 namespace server
 {
@@ -68,7 +70,7 @@ namespace server
                 var parts = cleanedUrl.Split('&');
                 app.log(EventType.Server, "Request: " + request.RawUrl);
 
-                string responseString;
+                string responseString = "error";
 
                 if(parts[0] == "/puppies/p")
                 {
@@ -89,7 +91,14 @@ namespace server
                     //
                     // file request (not currently handled)
                     //
-                    responseString = "<file request not supported>";
+                    try
+                    {
+                        responseString = File.ReadAllText(Constants.fileHostDir + parts[0].Replace("/puppies/", ""));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write("Failed to read file: " + cleanedUrl + " -> " + ex.ToString());
+                    }
                 }
 
                 response.StatusCode = 200;

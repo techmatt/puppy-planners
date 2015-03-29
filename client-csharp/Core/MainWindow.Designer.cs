@@ -43,6 +43,8 @@
             this.timerGameUpdate = new System.Windows.Forms.Timer(this.components);
             this.buttonPause = new System.Windows.Forms.Button();
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBoxResources = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,7 +53,7 @@
             this.listBoxSessions.FormattingEnabled = true;
             this.listBoxSessions.Location = new System.Drawing.Point(12, 117);
             this.listBoxSessions.Name = "listBoxSessions";
-            this.listBoxSessions.Size = new System.Drawing.Size(288, 173);
+            this.listBoxSessions.Size = new System.Drawing.Size(288, 69);
             this.listBoxSessions.TabIndex = 0;
             this.listBoxSessions.SelectedIndexChanged += new System.EventHandler(this.listBoxSessions_SelectedIndexChanged);
             // 
@@ -177,11 +179,34 @@
             this.pictureBoxMap.TabIndex = 7;
             this.pictureBoxMap.TabStop = false;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(9, 200);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(87, 16);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Resources:";
+            // 
+            // textBoxResources
+            // 
+            this.textBoxResources.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxResources.Enabled = false;
+            this.textBoxResources.Location = new System.Drawing.Point(12, 219);
+            this.textBoxResources.Multiline = true;
+            this.textBoxResources.Name = "textBoxResources";
+            this.textBoxResources.Size = new System.Drawing.Size(287, 587);
+            this.textBoxResources.TabIndex = 9;
+            this.textBoxResources.Text = "Line 1\r\nLine 2\r\n";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1075, 829);
+            this.Controls.Add(this.textBoxResources);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.buttonPause);
             this.Controls.Add(this.labelPaused);
@@ -220,6 +245,8 @@
         private System.Windows.Forms.Timer timerGameUpdate;
         private System.Windows.Forms.Button buttonPause;
         private System.Windows.Forms.PictureBox pictureBoxMap;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBoxResources;
     }
 }
 

@@ -66,20 +66,31 @@ namespace client_csharp
 
         private void buttonNewSession_Click(object sender, EventArgs e)
         {
-            //
-            // this reset is just for making it easier to debug without constantly resetting the server.
-            //
-            app.request("reset");
+            if(Constants.autoJoinSession)
+                app.request("reset");
 
             app.request("newSession&sessionName=" + textBoxSessionName.Text);
+
             updateSessionList();
+
+            if (Constants.autoJoinSession)
+            {
+                listBoxSessions.SelectedIndex = 0;
+                joinSelectedSession();
+            }
         }
 
         private void buttonJoinSession_Click(object sender, EventArgs e)
         {
+            joinSelectedSession();
+            
+        }
+
+        private void joinSelectedSession()
+        {
             string sessionID = listBoxSessions.SelectedItem.ToString().SplitOnString(" ID=").Last();
             string result = app.request("joinSession&session=" + sessionID + "&playerName=" + textBoxPlayerName.Text + "&role=" + comboBoxRole.SelectedItem.ToString());
-            if(result == "")
+            if (result == "")
             {
                 app.sessionID = sessionID;
             }
@@ -97,6 +108,14 @@ namespace client_csharp
 
             app.updateMapBmp();
             pictureBoxMap.Image = app.mapBmp;
+
+            StringBuilder resourceDesc = new StringBuilder();
+            foreach(Resource r in app.gameData.resources)
+            {
+                resourceDesc.AppendLine(r.ToString());
+            }
+
+            textBoxResources.Text = resourceDesc.ToString();
         }
 
         private void timerGameUpdate_Tick(object sender, EventArgs e)

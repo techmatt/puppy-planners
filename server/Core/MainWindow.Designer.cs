@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.buttonLaunch = new System.Windows.Forms.Button();
+            this.timerGameTick = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // buttonLaunch
@@ -40,6 +42,11 @@
             this.buttonLaunch.Text = "Launch Server!";
             this.buttonLaunch.UseVisualStyleBackColor = true;
             this.buttonLaunch.Click += new System.EventHandler(this.buttonLaunch_Click);
+            // 
+            // timerGameTick
+            // 
+            this.timerGameTick.Enabled = true;
+            this.timerGameTick.Interval = 1000;
             // 
             // MainWindow
             // 
@@ -57,6 +64,7 @@
         #endregion
 
         private System.Windows.Forms.Button buttonLaunch;
+        private System.Windows.Forms.Timer timerGameTick;
     }
 }
 
