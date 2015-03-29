@@ -37,7 +37,7 @@ namespace game
                 r.storage = 0.0;
             }
 
-            foreach(MapCell c in map.mapAsList)
+            foreach(MapCell c in map.mapAsList.Where(c => c.building != null))
             {
                 BuildingInfo info = database.buildings[c.building.name];
                 foreach(BuildingResourceProduction production in info.production)
@@ -74,7 +74,7 @@ namespace game
             }
         }
 
-        void tick()
+        public void tick()
         {
             updateResourceRates();
             processProduction();

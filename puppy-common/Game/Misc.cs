@@ -8,14 +8,22 @@ namespace game
 {
     public class Resource
     {
+        public Resource()
+        {
+
+        }
         public Resource(string resourceName)
         {
             name = resourceName;
         }
         public override string ToString()
         {
-            string sign = productionPerSecond > 0 ? "+" : "-";
-            return name + ": " + value + " / " + storage + " (" + sign + productionPerSecond + "/sec)";
+            string sign = productionPerSecond >= 0 ? "+" : "-";
+
+            string valueString = value.ToString("#.##");
+            if (valueString.Length == 0 || valueString[0] == '.') valueString = "0" + valueString;
+
+            return name + ": " + valueString + " / " + ((int)storage).ToString() + " (" + sign + productionPerSecond.ToString("#.##") + "/sec)";
         }
         public string name;
         public double value;

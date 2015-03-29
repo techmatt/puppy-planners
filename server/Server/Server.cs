@@ -68,7 +68,9 @@ namespace server
                 //var cleanedUrl = HttpUtility.UrlDecode(request.RawUrl);
                 var cleanedUrl = request.RawUrl;
                 var parts = cleanedUrl.Split('&');
-                app.log(EventType.Server, "Request: " + request.RawUrl);
+
+                if (Constants.echoServerRequests)
+                    app.log(EventType.Server, "Request: " + request.RawUrl);
 
                 string responseString = "error";
 

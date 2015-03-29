@@ -52,6 +52,19 @@ namespace server
             return app.serializer.Serialize(sessionData);
         }
 
+        public string dispatchCommand(string commandLine)
+        {
+            var parts = commandLine.Split('&');
+            string command = parts[0];
+            Dictionary<string,string> parameters = new Dictionary<string,string>();
+            for(int partIndex = 1; partIndex < parts.Length; partIndex++)
+            {
+                var v = parts[partIndex].Split('=');
+                parameters[v[0]] = v[1];
+            }
+            return dispatchCommand(command, parameters);
+        }
+
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
         {
             if (command == "reset") sessions.Clear();

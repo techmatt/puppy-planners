@@ -38,5 +38,7 @@ namespace game
         //
         public static bool dumpImages = false;
         public static bool autoJoinSession = true;
+        public static bool createDebugSession = true;
+        public static bool echoServerRequests = false;
     }
 }

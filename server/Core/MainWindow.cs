@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using game;
 
 namespace server
 {
@@ -20,10 +20,23 @@ namespace server
             InitializeComponent();
         }
 
-        private void buttonLaunch_Click(object sender, EventArgs e)
+        private void launchServer()
         {
+            timerGameTick.Interval = (int)(1000 / Constants.ticksPerSecond);
+
             app.server.launch();
             buttonLaunch.Enabled = false;
+
+            if (Constants.createDebugSession)
+            {
+                string sessionID = app.sessionManager.dispatchCommand("newSession&sessionName=DebugSession");
+                app.sessionManager.dispatchCommand("joinSession&session=" + sessionID + "&playerName=DebugPlayer&role=Builder");
+            }
+        }
+
+        private void buttonLaunch_Click(object sender, EventArgs e)
+        {
+            launchServer();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -37,8 +50,15 @@ namespace server
             //
             // automatically launch the server
             //
-            app.server.launch();
-            buttonLaunch.Enabled = false;
+            launchServer();
+        }
+
+        private void timerGameTick_Tick(object sender, EventArgs e)
+        {
+            foreach(var s in app.sessionManager.sessions)
+            {
+                s.Value.state.tick();
+            }
         }
     }
 }

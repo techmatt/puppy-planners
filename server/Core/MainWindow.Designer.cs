@@ -47,6 +47,7 @@
             // 
             this.timerGameTick.Enabled = true;
             this.timerGameTick.Interval = 1000;
+            this.timerGameTick.Tick += new System.EventHandler(this.timerGameTick_Tick);
             // 
             // MainWindow
             // 
