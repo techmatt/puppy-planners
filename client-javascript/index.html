@@ -1,8 +1,32 @@
+<!DOCTYPE html>
 <html>
-<head></head>
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Hello Dojo!</title>
+    <!-- load Dojo -->
+    <script src="dojo.js"></script>
+    <script src="game.js"></script>
+
+</head>
 <body>
+    <h1 id="greeting">Hello</h1>
 
-    This is where the javascript web front-end would go. it doesn't do much game logic, just sends game-state requests to the server, displays it to the user, and responds with actions taken.
+
+    Game name: <input type="text" id="textName">
+    <p>
+    Role: <input type="text" id="textRole">
+    <p>
+    Player Name: <input type="text" id="textPlayer">
+    <p>
+    <button onclick="createSession()">Create new game</button>
+    <p>
+    <button onclick="joinSession()">Join game with role</button>
+    <p>
+    <button onclick="listSessions()">List games</button>
+    <p>
+
+    <p id="sessionListDisplay">Session list not loaded</p>
+
+
 </body>
-
 </html>
