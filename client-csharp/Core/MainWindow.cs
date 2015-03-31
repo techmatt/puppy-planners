@@ -69,7 +69,7 @@ namespace client_csharp
             if(Constants.autoJoinSession)
                 app.request("reset");
 
-            app.request("newSession&sessionName=" + textBoxSessionName.Text);
+            app.request("newSession&r=" + textBoxSessionName.Text);
 
             updateSessionList();
 
