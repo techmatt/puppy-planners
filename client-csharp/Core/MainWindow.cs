@@ -69,7 +69,7 @@ namespace client_csharp
             if(Constants.autoJoinSession)
                 app.request("reset");
 
-            app.request("newSession&r=" + textBoxSessionName.Text);
+            app.request("newSession&sessionName=" + textBoxSessionName.Text);
 
             updateSessionList();
 
@@ -148,6 +148,7 @@ namespace client_csharp
             string gameDataJSON = app.sessionRequest("getData");
             string gameMapJSON = app.sessionRequest("getMap");
             string puppiesJSON = app.sessionRequest("getPuppies");
+            string allStateJSON = app.sessionRequest("getAllState");
             if (gameDataJSON == "" || gameMapJSON == "")
             {
                 Console.Write("no response received");
