@@ -1,6 +1,7 @@
 var URL = "http://localhost:8080/puppies/";
 var sessionID;
 var sessionList = [];
+var gameState = null;
 
 
 function init() {}
@@ -106,6 +107,7 @@ function getEverything() {
     console.log(requestText);
     request.get(requestText, {handleAs: "json"}).then(
       function(text) {
+        gameState=text;
         console.log("Returned text: ", text);
       },
       function(error) {
@@ -113,4 +115,35 @@ function getEverything() {
       }
     );
   });
+}
+
+function drawMap(){
+  drawTerrain();
+
+}
+
+
+
+var mapPixels=520; //ideally a multiple of mapSquares
+var mapSquares=13;
+unexploredColor = "#000000";
+terrainColors = {"dirt":"#996915", "grass":"#99CF84"};
+function drawTerrain(){
+  if (!gameState) {console.error("can not draw map: no game loaded");return;}
+  var map = document.getElementById("canvasMap").getContext("2d");
+
+  var mapAsList = gameState.map.mapAsList;
+  var squarePixels = mapPixels/mapSquares;
+  for (var i in gameState.map.mapAsList) {
+    var square = mapAsList[i];
+    var x = square.coord.x;
+    var y = square.coord.y;
+    if (square.explored) {
+      map.fillStyle = terrainColors[square.type];
+    } else {
+      map.fillStyle = unexploredColor;
+    }
+
+    map.fillRect(x*squarePixels,y*squarePixels,(x+1)*squarePixels,(y+1)*squarePixels);
+  }
 }

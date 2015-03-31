@@ -2,21 +2,18 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Tutorial: Hello Dojo!</title>
+    <title>Puppies Paradise</title>
     <!-- load Dojo -->
     <script src="dojo.js"></script>
     <script src="game.js"></script>
 
 </head>
 <body>
-    <h1 id="greeting">Hello</h1>
-
-
-    Game name: <input type="text" id="textName">
+    Game name: <input type="text" id="textName" value = "DebugSession">
     <p>
-    Role: <input type="text" id="textRole">
+    Role: <input type="text" id="textRole" value = "Builder">
     <p>
-    Player Name: <input type="text" id="textPlayer">
+    Player Name: <input type="text" id="textPlayer" value="DebugPlayer">
     <p>
     <button onclick="createSession()">Create new game</button>
     <p>
@@ -29,6 +26,10 @@
 
     <button onclick="getEverything()">Get everything</button>
     <p>
+
+    <canvas id="canvasMap" width="520" height="520" style="border:5px solid #000000;">
+    This element has not loaded because your browser does not support the HTML5 canvas tag.
+    </canvas>
 
 </body>
 </html>
