@@ -14,9 +14,18 @@ namespace game
             x = _x;
             y = _y;
         }
+        public bool isValid()
+        {
+            return (x != -1 && y != -1);
+        }
+        public bool Compare(Coord c)
+        {
+            return (x == c.x) && (y == c.y);
+        }
+
         public int x, y;
     }
-
+    
     public static class Util
     {
         public static double bound(double value, double low, double high)
@@ -44,6 +53,16 @@ namespace game
                     return reader.ReadToEnd();
                 }
             }
+        }
+
+        public static double NextDouble(this Random random, double minValue, double maxValue)
+        {
+            return random.NextDouble() * (maxValue - minValue) + minValue;
+        }
+
+        public static List<T> Shuffle<T>(this List<T> list)  
+        {
+            return new List<T>(list.OrderBy(x => Guid.NewGuid()));
         }
     }
 }

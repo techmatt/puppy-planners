@@ -19,6 +19,8 @@ namespace game
         public string type;
         public List<MapCellResource> resources;
         public Building building;
+        public double scoutCost;
+        public bool explored;
     }
 
     public class Map
@@ -40,7 +42,7 @@ namespace game
                     //
                     int terrainType = random.Next(2);
                     if (terrainType == 0)
-                        c.type = "water";
+                        c.type = "grass";
                     else
                         c.type = "dirt";
                 }
@@ -49,6 +51,20 @@ namespace game
             data[d + 0, d + 1].building = new Building("hovel");
             data[d + 1, d + 0].building = new Building("hovel");
             data[d + 1, d + 1].building = new Building("field");
+            scoutCell(new Coord(d + 0, d + 0), 1);
+            scoutCell(new Coord(d + 0, d + 1), 1);
+            scoutCell(new Coord(d + 1, d + 0), 1);
+            scoutCell(new Coord(d + 1, d + 1), 1);
+        }
+
+        public void scoutCell(Coord c, int scoutRadius)
+        {
+            for(int xOffset = -scoutRadius; xOffset <= scoutRadius; xOffset++)
+                for(int yOffset = -scoutRadius; yOffset <= scoutRadius; yOffset++)
+                {
+                    MapCell cell = data[c.x + xOffset, c.y + yOffset];
+                    cell.explored = true;
+                }
         }
 
         //
@@ -65,5 +81,10 @@ namespace game
         // This is just a linear array of all elements in data; it is easier to serialize this.
         //
         public List<MapCell> mapAsList = new List<MapCell>();
+
+        public MapCell getCell(Coord coord)
+        {
+            return data[coord.x, coord.y];
+        }
     }
 }

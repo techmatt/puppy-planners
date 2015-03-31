@@ -45,6 +45,10 @@
             this.pictureBoxMap = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxResources = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.listBoxPuppies = new System.Windows.Forms.ListBox();
+            this.textBoxPuppyData = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -200,12 +204,55 @@
             this.textBoxResources.TabIndex = 9;
             this.textBoxResources.Text = "Line 1\r\nLine 2\r\n";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(1010, 17);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 16);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Puppies:";
+            // 
+            // listBoxPuppies
+            // 
+            this.listBoxPuppies.FormattingEnabled = true;
+            this.listBoxPuppies.Location = new System.Drawing.Point(1011, 44);
+            this.listBoxPuppies.Name = "listBoxPuppies";
+            this.listBoxPuppies.Size = new System.Drawing.Size(300, 303);
+            this.listBoxPuppies.TabIndex = 10;
+            // 
+            // textBoxPuppyData
+            // 
+            this.textBoxPuppyData.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxPuppyData.Enabled = false;
+            this.textBoxPuppyData.Location = new System.Drawing.Point(1317, 44);
+            this.textBoxPuppyData.Multiline = true;
+            this.textBoxPuppyData.Name = "textBoxPuppyData";
+            this.textBoxPuppyData.Size = new System.Drawing.Size(287, 303);
+            this.textBoxPuppyData.TabIndex = 9;
+            this.textBoxPuppyData.Text = "Line 1\r\nLine 2\r\n";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(1314, 17);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(91, 16);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Puppy data:";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1075, 829);
+            this.ClientSize = new System.Drawing.Size(1739, 878);
+            this.Controls.Add(this.listBoxPuppies);
+            this.Controls.Add(this.textBoxPuppyData);
             this.Controls.Add(this.textBoxResources);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.pictureBoxMap);
             this.Controls.Add(this.buttonPause);
@@ -247,6 +294,10 @@
         private System.Windows.Forms.PictureBox pictureBoxMap;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxResources;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ListBox listBoxPuppies;
+        private System.Windows.Forms.TextBox textBoxPuppyData;
+        private System.Windows.Forms.Label label6;
     }
 }
 

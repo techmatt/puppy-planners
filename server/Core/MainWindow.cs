@@ -45,7 +45,7 @@ namespace server
             // this is for my dual-monitor setup so it always shows up on the second monitor.
             // it will probably make the window invisible on other setups.
             //
-            // this.Left = 2700;
+            this.Left = 2700;
 
             //
             // automatically launch the server

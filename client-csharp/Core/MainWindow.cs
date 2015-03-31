@@ -77,13 +77,13 @@ namespace client_csharp
             {
                 listBoxSessions.SelectedIndex = 0;
                 joinSelectedSession();
+                app.sessionRequest("setPaused", "paused=false");
             }
         }
 
         private void buttonJoinSession_Click(object sender, EventArgs e)
         {
             joinSelectedSession();
-            
         }
 
         private void joinSelectedSession()
@@ -116,6 +116,28 @@ namespace client_csharp
             }
 
             textBoxResources.Text = resourceDesc.ToString();
+
+            bool puppyListDirty = (listBoxPuppies.Items.Count != app.puppies.Count);
+            if(!puppyListDirty)
+            {
+                int puppyIndex = 0;
+                foreach(string initials in app.puppies.Keys)
+                {
+                    string listItem = listBoxPuppies.Items[puppyIndex++].ToString();
+                    if(!listItem.StartsWith(initials))
+                        puppyListDirty = true;
+                }
+            }
+
+            if(puppyListDirty)
+            {
+                listBoxPuppies.Items.Clear();
+                foreach(Puppy p in app.puppies.Values)
+                {
+                    string desc = p.initials + " (" + p.assignedPlayer + "): " + p.task;
+                    listBoxPuppies.Items.Add(desc);
+                }
+            }
         }
 
         private void timerGameUpdate_Tick(object sender, EventArgs e)
@@ -125,6 +147,7 @@ namespace client_csharp
 
             string gameDataJSON = app.sessionRequest("getData");
             string gameMapJSON = app.sessionRequest("getMap");
+            string puppiesJSON = app.sessionRequest("getPuppies");
             if (gameDataJSON == "" || gameMapJSON == "")
             {
                 Console.Write("no response received");
@@ -133,6 +156,7 @@ namespace client_csharp
 
             app.gameData = app.serializer.Deserialize<GameStateData>(gameDataJSON);
             app.gameMap = app.serializer.Deserialize< List<MapCell> >(gameMapJSON);
+            app.puppies = app.serializer.Deserialize<Dictionary<string, Puppy>>(puppiesJSON);
 
             updateGameUI();
         }

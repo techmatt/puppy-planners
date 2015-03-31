@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,25 +68,34 @@ namespace server
 
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
         {
-            if (command == "reset") sessions.Clear();
-            if (command == "newSession") return newSession(parameters);
-            if (command == "sessionList") return sessionList(parameters);
-            
-            if(parameters.ContainsKey("session"))
+            try
             {
-                string sessionID = parameters["session"];
-                if(!sessions.ContainsKey(sessionID))
+                if (command == "reset") { sessions.Clear(); return ""; }
+                if (command == "newSession") return newSession(parameters);
+                if (command == "sessionList") return sessionList(parameters);
+
+                if (parameters.ContainsKey("session"))
                 {
-                    app.error("session ID not found");
-                    return "session ID not found";
+                    string sessionID = parameters["session"];
+                    if (!sessions.ContainsKey(sessionID))
+                    {
+                        app.error("session ID not found");
+                        return "session ID not found";
+                    }
+
+                    GameSession session = sessions[sessionID];
+                    return session.dispatchCommand(command, parameters);
                 }
 
-                GameSession session = sessions[sessionID];
-                return session.dispatchCommand(command, parameters);
+                app.error("unrecognized command: " + command + ", " + parameters.ToString());
+                return "unknown command";
             }
-
-            app.error("unrecognized command: " + command + ", " + parameters.ToString());
-            return "unknown command";
+            catch(Exception ex)
+            {
+                Console.Write("exception: " + ex.ToString());
+                Debugger.Break();
+                return "error: " + ex.ToString();
+            }
         }
     }
 }

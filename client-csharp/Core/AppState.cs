@@ -20,6 +20,7 @@ namespace client_csharp
         public JavaScriptSerializer serializer = new JavaScriptSerializer();
         public GameStateData gameData;
         public List<MapCell> gameMap;
+        public Dictionary<string, Puppy> puppies;
         public Bitmap mapBmp = new Bitmap(Constants.mapCellSize * Constants.mapSize, Constants.mapCellSize * Constants.mapSize);
         public Graphics g;
         public Dictionary<string, Brush> terrainBrushes = new Dictionary<string, Brush>();
@@ -28,6 +29,7 @@ namespace client_csharp
         public AppState()
         {
             terrainBrushes.Add("water", new System.Drawing.SolidBrush(System.Drawing.Color.Blue));
+            terrainBrushes.Add("grass", new System.Drawing.SolidBrush(System.Drawing.Color.LawnGreen));
             terrainBrushes.Add("dirt", new System.Drawing.SolidBrush(System.Drawing.Color.SandyBrown));
         }
 

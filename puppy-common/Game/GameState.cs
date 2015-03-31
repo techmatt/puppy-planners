@@ -23,11 +23,71 @@ namespace game
         public List<Resource> resources = new List<Resource>();
     }
 
+    public class GameStateSerializer
+    {
+        public GameStateSerializer(GameState state)
+        {
+            map = state.map;
+            data = state.data;
+            puppies = state.puppies;
+        }
+        public Map map;
+        public Dictionary<string, Puppy> puppies;
+        public GameStateData data;
+    }
+
     public class GameState
     {
+        public Random random = new Random();
         public Map map = new Map();
         public Database database = new Database();
         public GameStateData data = new GameStateData();
+
+        // puppies are indexed by initials
+        public Dictionary<string, Puppy> puppies = new Dictionary<string, Puppy>();
+        
+        public GameState()
+        {
+            for (int i = 0; i < 4; i++)
+                addNewPuppy();
+        }
+
+        void addNewPuppy()
+        {
+            Puppy p = new Puppy(this);
+            puppies[p.initials] = p;
+        }
+
+        void updatePuppyHomes()
+        {
+            var homelessPuppies = new List<Puppy>();
+
+            foreach(MapCell c in map.mapAsList.Where(c => c.building != null))
+            {
+                var info = database.buildings[c.building.name];
+                if(info.population > 0)
+                {
+                    foreach(Puppy p in puppies.Values.Where(p => p.homeLocation.Compare(c.coord)))
+                    {
+
+                    }
+                }
+            }
+
+            //
+            // check for homeless puppies
+            //
+            foreach(Puppy p in puppies.Values)
+            {
+                Building home = map.getCell(p.homeLocation).building;
+                /*if(home == null || )
+                    p.homeLocation.x = -1;
+                if (!p.homeLocation.isValid())
+                    homeless.Add(p);*/
+            }
+
+
+        }
 
         void updateResourceRates()
         {
@@ -76,6 +136,9 @@ namespace game
 
         public void tick()
         {
+            if (data.paused)
+                return;
+
             updateResourceRates();
             processProduction();
         }

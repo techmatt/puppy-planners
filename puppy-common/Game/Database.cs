@@ -7,6 +7,38 @@ using System.Threading.Tasks;
 
 namespace game
 {
+    public class SkillInfo
+    {
+        public string name;
+        public string description;
+        public double frequency;
+        public double rangeMin;
+        public double rangeMax;
+
+        public double sampleLearningRate(Random random)
+        {
+            if (random.NextDouble() > frequency)
+                return 0.0;
+            return random.NextDouble(rangeMin, rangeMax);
+        }
+    }
+
+    public class PuppyName
+    {
+        public PuppyName(string line)
+        {
+            var parts = line.Split(' ');
+            firstName = parts[0];
+            lastName = parts[1];
+            fullName = firstName + " " + lastName;
+            initials = firstName[0].ToString() + lastName[0].ToString();
+        }
+        public string firstName;
+        public string lastName;
+        public string fullName;
+        public string initials;
+    }
+
     public class BuildingResourceCost
     {
         public BuildingResourceCost(string resourceDesc)
@@ -55,10 +87,52 @@ namespace game
     public class Database
     {
         public Dictionary<string, BuildingInfo> buildings = new Dictionary<string, BuildingInfo>();
+        public List<PuppyName> puppyNames = new List<PuppyName>();
+        public Dictionary<string, SkillInfo> puppySkills = new Dictionary<string, SkillInfo>();
         
         public Database()
         {
             loadBuildings();
+            loadNames();
+            loadSkills();
+        }
+
+        public PuppyName randomPuppyName(GameState state)
+        {
+            while(true)
+            {
+                PuppyName randomName = puppyNames[state.random.Next(puppyNames.Count)];
+                if(!state.puppies.ContainsKey(randomName.initials))
+                {
+                    return randomName;
+                }
+            }
+        }
+
+        void loadNames()
+        {
+            foreach (string s in File.ReadAllLines(Constants.dataDir + "puppyNames.txt"))
+            {
+                if (s.Length >= 5)
+                {
+                    puppyNames.Add(new PuppyName(s));
+                }
+            }
+        }
+
+        void loadSkills()
+        {
+            foreach (var line in parseCSVFile(Constants.dataDir + "skills.csv"))
+            {
+                SkillInfo skill = new SkillInfo();
+                skill.name = line["name"];
+                skill.frequency = Convert.ToDouble(line["frequency"]);
+                skill.rangeMin = Convert.ToDouble(line["range min"]);
+                skill.rangeMax = Convert.ToDouble(line["range max"]);
+                skill.description = line["description"];
+
+                if (skill.name != "none") puppySkills[skill.name] = skill;
+            }
         }
 
         void loadBuildings()

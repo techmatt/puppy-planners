@@ -70,6 +70,8 @@ namespace server
             //
             if (command == "getData") return app.serializer.Serialize(state.data);
             if (command == "getMap") return state.map.toJSON(app.serializer);
+            if (command == "getPuppies") return app.serializer.Serialize(state.puppies);
+            if (command == "getAllState") return app.serializer.Serialize(new GameStateSerializer(state));
 
             //
             // Action
