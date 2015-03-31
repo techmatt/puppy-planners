@@ -83,3 +83,34 @@ function listSessions() {
     );
   });
 }
+
+
+function getEverything() {
+  require(["dojo/request"], function(request) {
+    var textName = document.getElementById('textName').value;
+
+    tempSessionID = null;
+    for (var i in sessionList) {
+      if (sessionList[i].sessionName == textName) {
+        tempSessionID = sessionList[i].sessionID;
+        break;
+      }
+    }
+    if (!tempSessionID) {
+      console.error("Failed to find session " + textName + ". Try reloading sessions.");
+      return;
+    }
+    sessionID = tempSessionID;
+
+    var requestText = URL + "p&getAllState&session=" + sessionID;
+    console.log(requestText);
+    request.get(requestText, {handleAs: "json"}).then(
+      function(text) {
+        console.log("Returned text: ", text);
+      },
+      function(error) {
+        console.log("An error occurred: " + error);
+      }
+    );
+  });
+}
