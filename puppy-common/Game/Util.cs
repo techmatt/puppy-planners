@@ -14,6 +14,10 @@ namespace game
             x = _x;
             y = _y;
         }
+        public override string ToString()
+        {
+            return "(" + x.ToString() + ", " + y.ToString() + ")";
+        }
         public bool isValid()
         {
             return (x != -1 && y != -1);

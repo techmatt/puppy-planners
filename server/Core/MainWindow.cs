@@ -26,12 +26,6 @@ namespace server
 
             app.server.launch();
             buttonLaunch.Enabled = false;
-
-            if (Constants.createDebugSession)
-            {
-                string sessionID = app.sessionManager.dispatchCommand("newSession&sessionName=DebugSession");
-                app.sessionManager.dispatchCommand("joinSession&session=" + sessionID + "&playerName=DebugPlayer&role=Builder");
-            }
         }
 
         private void buttonLaunch_Click(object sender, EventArgs e)
@@ -55,6 +49,12 @@ namespace server
 
         private void timerGameTick_Tick(object sender, EventArgs e)
         {
+            if (app.sessionManager.sessions.Count == 0 && Constants.createDebugSession)
+            {
+                string sessionID = app.sessionManager.dispatchCommand("newSession&sessionName=DebugSession");
+                app.sessionManager.dispatchCommand("joinSession&session=" + sessionID + "&playerName=DebugPlayer&role=Builder");
+            }
+
             foreach(var s in app.sessionManager.sessions)
             {
                 s.Value.state.tick();

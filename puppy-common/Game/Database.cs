@@ -78,7 +78,11 @@ namespace game
     public class BuildingInfo
     {
         public string name;
-        public int population;
+        public string type;
+        public int workCap;
+        public int residentCap;
+        public int cultureCap;
+        public int religionCap;
         public List<BuildingResourceCost> cost = new List<BuildingResourceCost>();
         public List<BuildingResourceProduction> production = new List<BuildingResourceProduction>();
         public List<BuildingResourceStorage> storage = new List<BuildingResourceStorage>();
@@ -141,7 +145,11 @@ namespace game
             {
                 BuildingInfo info = new BuildingInfo();
                 info.name = line["name"];
-                info.population = Convert.ToInt32(line["pop"]);
+                info.type = line["type"];
+                info.workCap = Convert.ToInt32(line["work cap"]);
+                info.residentCap = Convert.ToInt32(line["resident cap"]);
+                info.cultureCap = Convert.ToInt32(line["culture cap"]);
+                info.religionCap = Convert.ToInt32(line["religion cap"]);
 
                 var costHeaders = new string[] { "cost A", "cost B", "cost C" };
                 foreach (string header in costHeaders)

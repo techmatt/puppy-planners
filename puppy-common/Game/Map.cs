@@ -75,6 +75,11 @@ namespace game
             return serializer.Serialize(mapAsList);
         }
 
+        public IEnumerable<MapCell> cellsWithBuildings()
+        {
+            return mapAsList.Where(m => m.building != null);
+        }
+
         public MapCell[,] data = new MapCell[Constants.mapSize, Constants.mapSize];
 
         //

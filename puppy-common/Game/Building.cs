@@ -23,5 +23,11 @@ namespace game
 
         public string name;
         public double health;
+
+        // all puppies are indexed by initials
+        public List<string> workPuppies = new List<string>();
+        public List<string> residentPuppies = new List<string>();
+        public List<string> culturePuppies = new List<string>();
+        public List<string> religionPuppies = new List<string>();
     }
 }

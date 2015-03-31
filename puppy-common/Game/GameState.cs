@@ -19,7 +19,8 @@ namespace game
             return resources.Last();
         }
 
-        public bool paused = true;
+        public bool paused = false;
+        public int tickCount = 0;
         public List<Resource> resources = new List<Resource>();
     }
 
@@ -42,6 +43,7 @@ namespace game
         public Map map = new Map();
         public Database database = new Database();
         public GameStateData data = new GameStateData();
+        public GameLog log = new GameLog();
 
         // puppies are indexed by initials
         public Dictionary<string, Puppy> puppies = new Dictionary<string, Puppy>();
@@ -58,35 +60,122 @@ namespace game
             puppies[p.initials] = p;
         }
 
-        void updatePuppyHomes()
+        void assignPuppyResidence(Puppy p, MapCell c)
         {
-            var homelessPuppies = new List<Puppy>();
+            // remove puppy from existing residence, if any
+            foreach (MapCell m in map.cellsWithBuildings())
+                if (m.building.residentPuppies.Contains(p.initials))
+                    m.building.residentPuppies.Remove(p.initials);
 
-            foreach(MapCell c in map.mapAsList.Where(c => c.building != null))
+            if (c.building == null || c.building.residentPuppies.Count > database.buildings[c.building.name].residentCap)
+            {
+                log.error(data.tickCount, "assign to invalid building");
+                return;
+            }
+
+            p.homeLocation = c.coord;
+            c.building.residentPuppies.Add(p.initials);
+        }
+
+        void assignPuppyChurch(Puppy p, MapCell c)
+        {
+            // remove puppy from existing church, if any
+            foreach (MapCell m in map.cellsWithBuildings())
+                if (m.building.religionPuppies.Contains(p.initials))
+                    m.building.religionPuppies.Remove(p.initials);
+
+            if (c.building == null || c.building.religionPuppies.Count > database.buildings[c.building.name].religionCap)
+            {
+                log.error(data.tickCount, "assign to invalid building");
+                return;
+            }
+
+            p.religionLocation = c.coord;
+            c.building.religionPuppies.Add(p.initials);
+        }
+
+        void assignPuppyCulture(Puppy p, MapCell c)
+        {
+            // remove puppy from existing residence, if any
+            foreach (MapCell m in map.cellsWithBuildings())
+                if (m.building.culturePuppies.Contains(p.initials))
+                    m.building.culturePuppies.Remove(p.initials);
+
+            if (c.building == null || c.building.culturePuppies.Count > database.buildings[c.building.name].cultureCap)
+            {
+                log.error(data.tickCount, "assign to invalid building");
+                return;
+            }
+
+            p.cultureLocation = c.coord;
+            c.building.culturePuppies.Add(p.initials);
+        }
+
+        void assignPuppyWork(Puppy p, MapCell c)
+        {
+            // remove puppy from existing residence, if any
+            foreach (MapCell m in map.cellsWithBuildings())
+                if (m.building.workPuppies.Contains(p.initials))
+                    m.building.workPuppies.Remove(p.initials);
+
+            if (c.building == null || c.building.workPuppies.Count > database.buildings[c.building.name].workCap)
+            {
+                log.error(data.tickCount, "assign to invalid building");
+                return;
+            }
+
+            p.workLocation = c.coord;
+            c.building.workPuppies.Add(p.initials);
+        }
+
+        void updatePuppyBuildingBindings()
+        {
+            List<MapCell> openResidences = new List<MapCell>();
+            List<MapCell> openCultures = new List<MapCell>();
+            List<MapCell> openReligions = new List<MapCell>();
+
+            //
+            // check for under-populated buildings
+            //
+            foreach (MapCell c in map.cellsWithBuildings())
             {
                 var info = database.buildings[c.building.name];
-                if(info.population > 0)
-                {
-                    foreach(Puppy p in puppies.Values.Where(p => p.homeLocation.Compare(c.coord)))
-                    {
+                
+                int residenceVacancies = info.residentCap - c.building.residentPuppies.Count;
+                for (int i = 0; i < residenceVacancies; i++)
+                    openResidences.Add(c);
 
-                    }
-                }
+                int cultureVacancies = info.cultureCap - c.building.culturePuppies.Count;
+                for (int i = 0; i < cultureVacancies; i++)
+                    openCultures.Add(c);
+
+                int religionVacancies = info.religionCap - c.building.religionPuppies.Count;
+                for (int i = 0; i < religionVacancies; i++)
+                    openReligions.Add(c);
             }
 
             //
-            // check for homeless puppies
+            // assign unbound puppies to random (TODO: make random) sites
             //
             foreach(Puppy p in puppies.Values)
             {
-                Building home = map.getCell(p.homeLocation).building;
-                /*if(home == null || )
-                    p.homeLocation.x = -1;
-                if (!p.homeLocation.isValid())
-                    homeless.Add(p);*/
+                if(openResidences.Count > 0 && !p.homeLocation.isValid())
+                {
+                    assignPuppyResidence(p, openResidences[0]);
+                    openResidences.RemoveRange(0, 1);
+                }
+                if (openCultures.Count > 0 && !p.cultureLocation.isValid())
+                {
+                    assignPuppyCulture(p, openCultures[0]);
+                    openCultures.RemoveRange(0, 1);
+                }
+                if (openReligions.Count > 0 && !p.religionLocation.isValid())
+                {
+                    assignPuppyChurch(p, openReligions[0]);
+                    openReligions.RemoveRange(0, 1);
+                }
+                p.updateHappiness();
             }
-
-
         }
 
         void updateResourceRates()
@@ -141,6 +230,10 @@ namespace game
 
             updateResourceRates();
             processProduction();
+
+            updatePuppyBuildingBindings();
+
+            data.tickCount++;
         }
     }
 }

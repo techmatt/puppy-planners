@@ -27,8 +27,24 @@ namespace game
 
     public class HappinessModifier
     {
-        public string type;
-        public double fadeTimeTotal; // fadeTimeTotal = 0 means the effect is permanent
+        public HappinessModifier()
+        {
+
+        }
+        public HappinessModifier(string _id, string _description, double _strength)
+        {
+            id = _id;
+            description = _description;
+            fullStrength = _strength;
+        }
+        public bool isPermanent()
+        {
+            return (fadeTimeTotal > 0.0);
+        }
+
+        public string id;
+        public string description;
+        public double fadeTimeTotal;
         public double fadeTimeLeft;
         public double fullStrength;
     }
@@ -44,11 +60,17 @@ namespace game
         // the name of the skill being learned (only relevant of the puppy is at a school-equivalent building)
         public string learningSkill = "none";
 
-        // workLocation = (-1, -1) if the puppy is not assigned a task
-        public Coord workLocation = new Coord(-1, -1);
+        // workLocation = Constants.invalidCoord if the puppy is not assigned a task
+        public Coord workLocation = Constants.invalidCoord;
 
-        // homeLocation = (-1, -1) if the puppy is homeless
-        public Coord homeLocation = new Coord(-1, -1);
+        // homeLocation = Constants.invalidCoord if the puppy is homeless
+        public Coord homeLocation = Constants.invalidCoord;
+
+        // cultureLocation = park, statue, or other recreational site
+        public Coord cultureLocation = Constants.invalidCoord;
+
+        // religionLocation = location of the church they attend
+        public Coord religionLocation = Constants.invalidCoord;
 
         // the name of the role owned by this puppy (designated by Culture)
         public string assignedPlayer = "none";
@@ -58,7 +80,39 @@ namespace game
 
         public Dictionary<string, PuppySkill> skills = new Dictionary<string, PuppySkill>();
         public List<string> attributes = new List<string>();
-        public List<HappinessModifier> modifiers = new List<HappinessModifier>();
+        public Dictionary<string, HappinessModifier> happinessMods = new Dictionary<string, HappinessModifier>();
+
+        public string describe()
+        {
+            var s = new StringBuilder();
+            s.AppendLine("Initials = " + initials);
+            s.AppendLine("Full name = " + name);
+            s.AppendLine("Assigned to " + assignedPlayer);
+            s.AppendLine("Task = " + task);
+            s.AppendLine("Skill being learned = " + learningSkill);
+            s.AppendLine("Work location = " + workLocation.ToString());
+            s.AppendLine("Home location = " + homeLocation.ToString());
+            s.AppendLine("Culture location = " + cultureLocation.ToString());
+            s.AppendLine("Church location = " + religionLocation.ToString());
+            s.AppendLine("Health = " + health.ToString());
+
+            s.AppendLine();
+            s.AppendLine("Happiness:");
+            foreach(HappinessModifier m in happinessMods.Values)
+                s.AppendLine("  " + m.description + " (+" + m.fullStrength.ToString("#.##") + ")");
+
+            s.AppendLine();
+            s.AppendLine("Skills:");
+            foreach (PuppySkill m in skills.Values)
+                s.AppendLine("  " + m.name + " (time=" + m.totalTraining + ", rate=" + m.learningRate + ")");
+
+            s.AppendLine();
+            s.AppendLine("Attributes:");
+            foreach (PuppySkill m in skills.Values)
+                s.AppendLine("  " + m);
+            
+            return s.ToString();
+        }
 
         public Puppy()
         {
@@ -79,6 +133,34 @@ namespace game
             //
             // TODO: add random puppy attributes
             //
+        }
+
+        void recordHappiness(string id, string description, double strength)
+        {
+            happinessMods[id] = new HappinessModifier(id, description, strength);
+        }
+        
+        public void updateHappiness()
+        {
+            if (homeLocation.isValid())
+                recordHappiness("home", "Has a home", 0.5);
+            else
+                recordHappiness("home", "Homeless!", 0.0);
+
+            if (religionLocation.isValid())
+                recordHappiness("church", "Attends a church", 0.1);
+            else
+                recordHappiness("church", "No church available", 0.0);
+
+            if (cultureLocation.isValid())
+                recordHappiness("church", "Has a <cultural site name>", 0.2);
+            else
+                recordHappiness("church", "No <cultural site name> available", 0.0);
+
+            if (workLocation.isValid())
+                recordHappiness("work", "Has a job", 0.0);
+            else
+                recordHappiness("work", "On vacation!", 0.2);
         }
     }
 }

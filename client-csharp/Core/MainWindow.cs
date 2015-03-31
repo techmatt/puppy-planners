@@ -168,5 +168,21 @@ namespace client_csharp
 
             app.sessionRequest("setPaused", "paused=" + (!app.gameData.paused).ToString());
         }
+
+        private void listBoxPuppies_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(listBoxPuppies.SelectedItem != null)
+            {
+                string item = listBoxPuppies.SelectedItem.ToString();
+                if (item.Length >= 2)
+                {
+                    string initials = item[0].ToString() + item[1].ToString();
+                    if(app.puppies.ContainsKey(initials))
+                    {
+                        textBoxPuppyData.Text = app.puppies[initials].describe();
+                    }
+                }
+            }
+        }
     }
 }

@@ -221,6 +221,7 @@
             this.listBoxPuppies.Name = "listBoxPuppies";
             this.listBoxPuppies.Size = new System.Drawing.Size(300, 303);
             this.listBoxPuppies.TabIndex = 10;
+            this.listBoxPuppies.SelectedIndexChanged += new System.EventHandler(this.listBoxPuppies_SelectedIndexChanged);
             // 
             // textBoxPuppyData
             // 

@@ -21,6 +21,7 @@ namespace game
         //
         public static int mapSize = 14;
         public static int mapCellSize = 48;
+        public static Coord invalidCoord = new Coord(-1, -1);
 
         //
         // Game speed

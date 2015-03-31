@@ -68,7 +68,7 @@ namespace server
 
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
         {
-            try
+            //try
             {
                 if (command == "reset") { sessions.Clear(); return ""; }
                 if (command == "newSession") return newSession(parameters);
@@ -90,12 +90,12 @@ namespace server
                 app.error("unrecognized command: " + command + ", " + parameters.ToString());
                 return "unknown command";
             }
-            catch(Exception ex)
+            /*catch(Exception ex)
             {
                 Console.Write("exception: " + ex.ToString());
                 Debugger.Break();
                 return "error: " + ex.ToString();
-            }
+            }*/
         }
     }
 }
