@@ -104,6 +104,8 @@ namespace client_csharp
 
         private void updateGameUI()
         {
+            app.suppressRequests = true;
+
             labelPaused.Text = app.gameData.paused ? "Game paused" : "Game running";
 
             app.updateMapBmp();
@@ -121,10 +123,11 @@ namespace client_csharp
             if(!puppyListDirty)
             {
                 int puppyIndex = 0;
-                foreach(string initials in app.puppies.Keys)
+                foreach(Puppy p in app.puppies.Values)
                 {
                     string listItem = listBoxPuppies.Items[puppyIndex++].ToString();
-                    if(!listItem.StartsWith(initials))
+                    string desc = p.initials + " (" + p.assignedPlayer + "): " + p.task;
+                    if (listItem != desc)
                         puppyListDirty = true;
                 }
             }
@@ -138,6 +141,8 @@ namespace client_csharp
                     listBoxPuppies.Items.Add(desc);
                 }
             }
+
+            app.suppressRequests = false;
         }
 
         private void timerGameUpdate_Tick(object sender, EventArgs e)
@@ -169,20 +174,79 @@ namespace client_csharp
             app.sessionRequest("setPaused", "paused=" + (!app.gameData.paused).ToString());
         }
 
+        private string getSelectedPuppyInitials()
+        {
+            if (listBoxPuppies.SelectedItem == null)
+                return "";
+            
+            string item = listBoxPuppies.SelectedItem.ToString();
+            if (item.Length >= 2)
+            {
+                string initials = item[0].ToString() + item[1].ToString();
+                if (app.puppies.ContainsKey(initials))
+                    return initials;
+            }
+            return "";
+        }
+
         private void listBoxPuppies_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(listBoxPuppies.SelectedItem != null)
+            if (getSelectedPuppyInitials().Length > 0)
             {
-                string item = listBoxPuppies.SelectedItem.ToString();
-                if (item.Length >= 2)
+                Puppy p = app.puppies[getSelectedPuppyInitials()];
+                textBoxPuppyData.Text = p.describe();
+
+                app.suppressRequests = true;
+                for (int i = 0; i < comboBoxPuppyAssignment.Items.Count; i++ )
+                    if (comboBoxPuppyAssignment.Items[i].ToString() == p.assignedPlayer)
+                        comboBoxPuppyAssignment.SelectedIndex = i;
+                app.suppressRequests = false;
+            }
+        }
+
+        private void comboBoxPuppyAssignment_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(getSelectedPuppyInitials().Length > 0)
+                app.sessionRequest("assignPuppyToRole", "puppy=" + getSelectedPuppyInitials() + "&role=" + comboBoxPuppyAssignment.SelectedItem.ToString());
+        }
+
+        private void pictureBoxMap_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                foreach (var v in app.puppyMapLocations)
                 {
-                    string initials = item[0].ToString() + item[1].ToString();
-                    if(app.puppies.ContainsKey(initials))
+                    if (v.Value.Contains(e.X, e.Y))
                     {
-                        textBoxPuppyData.Text = app.puppies[initials].describe();
+                        int selectedIndex = 0;
+                        foreach (var i in listBoxPuppies.Items)
+                        {
+                            if (i.ToString().StartsWith(v.Key.initials))
+                            {
+                                listBoxPuppies.SelectedIndex = selectedIndex;
+                                break;
+                            }
+                            selectedIndex++;
+                        }
                     }
                 }
             }
+            if(e.Button == MouseButtons.Right)
+            {
+                foreach(var v in app.cellMapLocations)
+                {
+                    if(v.Value.Contains(e.X, e.Y))
+                    {
+                        app.sessionRequest("assignPuppyToRole", "puppy=" + getSelectedPuppyInitials() + "&role=" + comboBoxPuppyAssignment.SelectedItem.ToString());
+                    }
+                }
+            }
+            
+        }
+
+        private void pictureBoxMap_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

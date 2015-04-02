@@ -60,77 +60,70 @@ namespace game
             puppies[p.initials] = p;
         }
 
-        void assignPuppyResidence(Puppy p, MapCell c)
+        public void assignPuppyTask(Puppy p, MapCell c, string task)
         {
-            // remove puppy from existing residence, if any
-            foreach (MapCell m in map.cellsWithBuildings())
-                if (m.building.residentPuppies.Contains(p.initials))
-                    m.building.residentPuppies.Remove(p.initials);
 
-            if (c.building == null || c.building.residentPuppies.Count > database.buildings[c.building.name].residentCap)
+        }
+
+        void assignPuppyHome(Puppy p, MapCell c)
+        {
+            map.removePuppyFromList(p, x => x.homePuppies);
+            
+            if (c.building == null || c.homePuppies.Count > database.buildings[c.building.name].residentCap)
             {
                 log.error(data.tickCount, "assign to invalid building");
                 return;
             }
 
             p.homeLocation = c.coord;
-            c.building.residentPuppies.Add(p.initials);
+            c.homePuppies.Add(p.initials);
         }
 
         void assignPuppyChurch(Puppy p, MapCell c)
         {
-            // remove puppy from existing church, if any
-            foreach (MapCell m in map.cellsWithBuildings())
-                if (m.building.religionPuppies.Contains(p.initials))
-                    m.building.religionPuppies.Remove(p.initials);
+            map.removePuppyFromList(p, x => x.churchPuppies);
 
-            if (c.building == null || c.building.religionPuppies.Count > database.buildings[c.building.name].religionCap)
+            if (c.building == null || c.churchPuppies.Count > database.buildings[c.building.name].religionCap)
             {
                 log.error(data.tickCount, "assign to invalid building");
                 return;
             }
 
-            p.religionLocation = c.coord;
-            c.building.religionPuppies.Add(p.initials);
+            p.churchLocation = c.coord;
+            c.churchPuppies.Add(p.initials);
         }
 
         void assignPuppyCulture(Puppy p, MapCell c)
         {
-            // remove puppy from existing residence, if any
-            foreach (MapCell m in map.cellsWithBuildings())
-                if (m.building.culturePuppies.Contains(p.initials))
-                    m.building.culturePuppies.Remove(p.initials);
+            map.removePuppyFromList(p, x => x.culturePuppies);
 
-            if (c.building == null || c.building.culturePuppies.Count > database.buildings[c.building.name].cultureCap)
+            if (c.building == null || c.culturePuppies.Count > database.buildings[c.building.name].cultureCap)
             {
                 log.error(data.tickCount, "assign to invalid building");
                 return;
             }
 
             p.cultureLocation = c.coord;
-            c.building.culturePuppies.Add(p.initials);
+            c.culturePuppies.Add(p.initials);
         }
 
         void assignPuppyWork(Puppy p, MapCell c)
         {
-            // remove puppy from existing residence, if any
-            foreach (MapCell m in map.cellsWithBuildings())
-                if (m.building.workPuppies.Contains(p.initials))
-                    m.building.workPuppies.Remove(p.initials);
+            map.removePuppyFromList(p, x => x.workPuppies);
 
-            if (c.building == null || c.building.workPuppies.Count > database.buildings[c.building.name].workCap)
+            if (c.building == null || c.workPuppies.Count > database.buildings[c.building.name].workCap)
             {
                 log.error(data.tickCount, "assign to invalid building");
                 return;
             }
 
             p.workLocation = c.coord;
-            c.building.workPuppies.Add(p.initials);
+            c.workPuppies.Add(p.initials);
         }
 
         void updatePuppyBuildingBindings()
         {
-            List<MapCell> openResidences = new List<MapCell>();
+            List<MapCell> openHomes = new List<MapCell>();
             List<MapCell> openCultures = new List<MapCell>();
             List<MapCell> openReligions = new List<MapCell>();
 
@@ -141,15 +134,15 @@ namespace game
             {
                 var info = database.buildings[c.building.name];
                 
-                int residenceVacancies = info.residentCap - c.building.residentPuppies.Count;
+                int residenceVacancies = info.residentCap - c.homePuppies.Count;
                 for (int i = 0; i < residenceVacancies; i++)
-                    openResidences.Add(c);
+                    openHomes.Add(c);
 
-                int cultureVacancies = info.cultureCap - c.building.culturePuppies.Count;
+                int cultureVacancies = info.cultureCap - c.culturePuppies.Count;
                 for (int i = 0; i < cultureVacancies; i++)
                     openCultures.Add(c);
 
-                int religionVacancies = info.religionCap - c.building.religionPuppies.Count;
+                int religionVacancies = info.religionCap - c.churchPuppies.Count;
                 for (int i = 0; i < religionVacancies; i++)
                     openReligions.Add(c);
             }
@@ -159,18 +152,21 @@ namespace game
             //
             foreach(Puppy p in puppies.Values)
             {
-                if(openResidences.Count > 0 && !p.homeLocation.isValid())
+                if(openHomes.Count > 0 && !p.homeLocation.isValid())
                 {
-                    assignPuppyResidence(p, openResidences[0]);
-                    openResidences.RemoveRange(0, 1);
+                    openHomes = openHomes.Shuffle();
+                    assignPuppyHome(p, openHomes[0]);
+                    openHomes.RemoveRange(0, 1);
                 }
                 if (openCultures.Count > 0 && !p.cultureLocation.isValid())
                 {
+                    openCultures = openCultures.Shuffle();
                     assignPuppyCulture(p, openCultures[0]);
                     openCultures.RemoveRange(0, 1);
                 }
-                if (openReligions.Count > 0 && !p.religionLocation.isValid())
+                if (openReligions.Count > 0 && !p.churchLocation.isValid())
                 {
+                    openReligions = openReligions.Shuffle();
                     assignPuppyChurch(p, openReligions[0]);
                     openReligions.RemoveRange(0, 1);
                 }

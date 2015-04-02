@@ -81,8 +81,17 @@ namespace server
                 state.data.paused = Convert.ToBoolean(parameters["paused"]);
                 return "";
             }
+            if(command == "assignPuppyToRole")
+            {
+                state.puppies[parameters["puppy"]].assignedPlayer = parameters["role"];
+                return "";
+            }
+            if (command == "assignPuppyTask")
+            {
+                state.assignPuppyTask(state.puppies[parameters["puppy"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])], parameters["task"]);
+            }
 
-            app.error("unrecognized command: " + command + ", " + parameters.ToString());
+            app.error("unrecognized command: " + command);
             return "error: unknown command";
         }
     }

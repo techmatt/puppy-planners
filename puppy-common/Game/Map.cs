@@ -18,6 +18,20 @@ namespace game
         public Coord coord;
         public string type;
         public List<MapCellResource> resources;
+
+        //
+        // This is a list of all the things puppies might be doing at this cell.
+        // Many only make sense in the context of buildings, but for parallel
+        // structure, it is cleanest if everything lives in MapCell.
+        //
+        public List<string> scoutPuppies = new List<string>();
+        public List<string> militaryPuppies = new List<string>();
+        public List<string> constructionPuppies = new List<string>();
+        public List<string> workPuppies = new List<string>();
+        public List<string> homePuppies = new List<string>();
+        public List<string> culturePuppies = new List<string>();
+        public List<string> churchPuppies = new List<string>();
+
         public Building building;
         public double scoutCost;
         public bool explored;
@@ -55,6 +69,16 @@ namespace game
             scoutCell(new Coord(d + 0, d + 1), 1);
             scoutCell(new Coord(d + 1, d + 0), 1);
             scoutCell(new Coord(d + 1, d + 1), 1);
+        }
+
+        public void removePuppyFromList(Puppy p, Func<MapCell, List<string>> listType)
+        {
+            foreach (MapCell m in mapAsList)
+            {
+                List<string> l = listType(m);
+                if (l.Contains(p.initials))
+                    l.Remove(p.initials);
+            }
         }
 
         public void scoutCell(Coord c, int scoutRadius)

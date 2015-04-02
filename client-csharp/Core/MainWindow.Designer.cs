@@ -49,6 +49,8 @@
             this.listBoxPuppies = new System.Windows.Forms.ListBox();
             this.textBoxPuppyData = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxPuppyAssignment = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -177,11 +179,13 @@
             // 
             // pictureBoxMap
             // 
-            this.pictureBoxMap.Location = new System.Drawing.Point(321, 57);
+            this.pictureBoxMap.Location = new System.Drawing.Point(321, 44);
             this.pictureBoxMap.Name = "pictureBoxMap";
-            this.pictureBoxMap.Size = new System.Drawing.Size(683, 760);
+            this.pictureBoxMap.Size = new System.Drawing.Size(733, 833);
             this.pictureBoxMap.TabIndex = 7;
             this.pictureBoxMap.TabStop = false;
+            this.pictureBoxMap.Click += new System.EventHandler(this.pictureBoxMap_Click);
+            this.pictureBoxMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMap_MouseClick);
             // 
             // label4
             // 
@@ -208,7 +212,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1010, 17);
+            this.label5.Location = new System.Drawing.Point(1057, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(69, 16);
             this.label5.TabIndex = 8;
@@ -217,7 +221,7 @@
             // listBoxPuppies
             // 
             this.listBoxPuppies.FormattingEnabled = true;
-            this.listBoxPuppies.Location = new System.Drawing.Point(1011, 44);
+            this.listBoxPuppies.Location = new System.Drawing.Point(1060, 44);
             this.listBoxPuppies.Name = "listBoxPuppies";
             this.listBoxPuppies.Size = new System.Drawing.Size(300, 303);
             this.listBoxPuppies.TabIndex = 10;
@@ -227,7 +231,7 @@
             // 
             this.textBoxPuppyData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxPuppyData.Enabled = false;
-            this.textBoxPuppyData.Location = new System.Drawing.Point(1317, 44);
+            this.textBoxPuppyData.Location = new System.Drawing.Point(1366, 44);
             this.textBoxPuppyData.Multiline = true;
             this.textBoxPuppyData.Name = "textBoxPuppyData";
             this.textBoxPuppyData.Size = new System.Drawing.Size(287, 303);
@@ -238,17 +242,44 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(1314, 17);
+            this.label6.Location = new System.Drawing.Point(1363, 17);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(91, 16);
             this.label6.TabIndex = 8;
             this.label6.Text = "Puppy data:";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(1057, 358);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(97, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Puppy assigned to:";
+            // 
+            // comboBoxPuppyAssignment
+            // 
+            this.comboBoxPuppyAssignment.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPuppyAssignment.FormattingEnabled = true;
+            this.comboBoxPuppyAssignment.Items.AddRange(new object[] {
+            "Unassigned",
+            "Builder",
+            "Culture",
+            "Intrigue",
+            "Military"});
+            this.comboBoxPuppyAssignment.Location = new System.Drawing.Point(1160, 355);
+            this.comboBoxPuppyAssignment.Name = "comboBoxPuppyAssignment";
+            this.comboBoxPuppyAssignment.Size = new System.Drawing.Size(117, 21);
+            this.comboBoxPuppyAssignment.TabIndex = 12;
+            this.comboBoxPuppyAssignment.SelectedIndexChanged += new System.EventHandler(this.comboBoxPuppyAssignment_SelectedIndexChanged);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1739, 878);
+            this.ClientSize = new System.Drawing.Size(1739, 918);
+            this.Controls.Add(this.comboBoxPuppyAssignment);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.listBoxPuppies);
             this.Controls.Add(this.textBoxPuppyData);
             this.Controls.Add(this.textBoxResources);
@@ -299,6 +330,8 @@
         private System.Windows.Forms.ListBox listBoxPuppies;
         private System.Windows.Forms.TextBox textBoxPuppyData;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboBoxPuppyAssignment;
     }
 }
 

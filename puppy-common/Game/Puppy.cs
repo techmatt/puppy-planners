@@ -55,12 +55,14 @@ namespace game
         public string initials;
 
         // task is the name of the skill being used
+        // possible tasks:
+        // scout, military, work, construction
         public string task = "none";
 
         // the name of the skill being learned (only relevant of the puppy is at a school-equivalent building)
         public string learningSkill = "none";
 
-        // workLocation = Constants.invalidCoord if the puppy is not assigned a task
+        // workLocation = Constants.invalidCoord if the puppy is not assigned a job. workLocation includes military duty.
         public Coord workLocation = Constants.invalidCoord;
 
         // homeLocation = Constants.invalidCoord if the puppy is homeless
@@ -70,10 +72,10 @@ namespace game
         public Coord cultureLocation = Constants.invalidCoord;
 
         // religionLocation = location of the church they attend
-        public Coord religionLocation = Constants.invalidCoord;
+        public Coord churchLocation = Constants.invalidCoord;
 
         // the name of the role owned by this puppy (designated by Culture)
-        public string assignedPlayer = "none";
+        public string assignedPlayer = "Unassigned";
 
         public double health = 1.0;
         public double corruption = 0.0;
@@ -93,7 +95,7 @@ namespace game
             s.AppendLine("Work location = " + workLocation.ToString());
             s.AppendLine("Home location = " + homeLocation.ToString());
             s.AppendLine("Culture location = " + cultureLocation.ToString());
-            s.AppendLine("Church location = " + religionLocation.ToString());
+            s.AppendLine("Church location = " + churchLocation.ToString());
             s.AppendLine("Health = " + health.ToString());
 
             s.AppendLine();
@@ -147,7 +149,7 @@ namespace game
             else
                 recordHappiness("home", "Homeless!", 0.0);
 
-            if (religionLocation.isValid())
+            if (churchLocation.isValid())
                 recordHappiness("church", "Attends a church", 0.1);
             else
                 recordHappiness("church", "No church available", 0.0);
