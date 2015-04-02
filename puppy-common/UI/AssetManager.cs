@@ -59,6 +59,7 @@ namespace game
 
             g.DrawImage(fullBmpAlpha, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
+#pragma warning disable
             if (Constants.dumpImages)
             {
                 Bitmap testBmpColor = new Bitmap(bmp);
@@ -86,6 +87,7 @@ namespace game
                 testBmpAlpha.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_alpha.png");
                 testComposite.Save(Constants.imageOutDir + Path.GetFileNameWithoutExtension(filename) + "_composite.png");
             }
+#pragma warning restore
         }
 
         public string imageName;

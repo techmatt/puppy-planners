@@ -69,8 +69,10 @@ namespace server
                 var cleanedUrl = request.RawUrl;
                 var parts = cleanedUrl.Split('&');
 
+#pragma warning disable
                 if (Constants.echoServerRequests)
                     app.log(EventType.Server, "Request: " + request.RawUrl);
+#pragma warning restore
 
                 string responseString = "error";
 

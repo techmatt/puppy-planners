@@ -43,8 +43,11 @@ namespace client_csharp
             //
             // Puppy brushes
             //
-            brushes.Add("work", new SolidBrush(Color.FromArgb(160, Color.LightSkyBlue)));
+            brushes.Add("production", new SolidBrush(Color.FromArgb(160, Color.LightSkyBlue)));
             brushes.Add("home", new SolidBrush(Color.FromArgb(160, Color.LightPink)));
+            brushes.Add("military", new SolidBrush(Color.FromArgb(160, Color.DarkGray)));
+            brushes.Add("scout", new SolidBrush(Color.FromArgb(160, Color.LightGray)));
+            brushes.Add("construction", new SolidBrush(Color.FromArgb(160, Color.PaleVioletRed)));
 
             //
             // Default pens and brushes
@@ -95,7 +98,7 @@ namespace client_csharp
             foreach(MapCell c in gameMap)
             {
                 Point cellPoint = new Point(c.coord.x * Constants.mapCellSize, c.coord.y * Constants.mapCellSize);
-                Rectangle mapRectangle = new Rectangle(cellPoint.X, cellPoint.Y, cellPoint.X + Constants.mapCellSize, cellPoint.Y + Constants.mapCellSize);
+                Rectangle mapRectangle = new Rectangle(cellPoint.X, cellPoint.Y, Constants.mapCellSize, Constants.mapCellSize);
                 cellMapLocations[c] = mapRectangle;
                 g.FillRectangle(brushes[c.type], mapRectangle);
 
@@ -103,55 +106,64 @@ namespace client_csharp
                 {
                     var image = assets.images[c.building.name];
                     g.DrawImage(image.bmp, cellPoint);
+                }
 
-                    var puppyList = new List<Tuple<Puppy, Brush>>();
+                var puppyList = new List<Tuple<Puppy, Brush>>();
 
-                    foreach(string initials in c.homePuppies)
-                        puppyList.Add( Tuple.Create(puppies[initials], brushes["home"]));
+                foreach(string initials in c.homePuppies.Where(x => !puppies[x].workLocation.isValid()))
+                    puppyList.Add( Tuple.Create(puppies[initials], brushes["home"]));
 
-                    foreach(string initials in c.workPuppies)
-                        puppyList.Add( Tuple.Create(puppies[initials], brushes["work"]));
+                foreach(string initials in c.productionPuppies)
+                    puppyList.Add( Tuple.Create(puppies[initials], brushes["production"]));
 
-                    const int puppyAStart = 3;
-                    const int puppySize = 20;
-                    const int puppyBStart = Constants.mapCellSize - puppyAStart - puppySize;
-                    const int puppyMStart = Constants.mapCellSize / 2 - puppySize / 2;
-                    Size puppyFontOffset = new Size(0, 3);
+                foreach (string initials in c.scoutPuppies)
+                    puppyList.Add(Tuple.Create(puppies[initials], brushes["scout"]));
 
-                    var puppyOffsets = new List<Size>();
-                    if(puppyList.Count == 4)
-                    {
-                        puppyOffsets.Add(new Size(puppyAStart, puppyAStart));
-                        puppyOffsets.Add(new Size(puppyAStart, puppyBStart));
-                        puppyOffsets.Add(new Size(puppyBStart, puppyAStart));
-                        puppyOffsets.Add(new Size(puppyBStart, puppyBStart));
-                    }
-                    if (puppyList.Count == 3)
-                    {
-                        puppyOffsets.Add(new Size(puppyMStart, puppyAStart));
-                        puppyOffsets.Add(new Size(puppyBStart, puppyAStart));
-                        puppyOffsets.Add(new Size(puppyBStart, puppyBStart));
-                    }
-                    if (puppyList.Count == 2)
-                    {
-                        puppyOffsets.Add(new Size(puppyAStart, puppyMStart));
-                        puppyOffsets.Add(new Size(puppyBStart, puppyMStart));
-                    }
-                    if (puppyList.Count == 1)
-                    {
-                        puppyOffsets.Add(new Size(puppyMStart, puppyMStart));
-                    }
+                foreach (string initials in c.militaryPuppies)
+                    puppyList.Add(Tuple.Create(puppies[initials], brushes["military"]));
 
-                    for (int i = 0; i < puppyOffsets.Count; i++)
-                    {
-                        Puppy p = puppyList[i].Item1;
-                        Point o = cellPoint + puppyOffsets[i];
-                        Rectangle r = new Rectangle(o.X, o.Y, puppySize, puppySize);
-                        g.FillRectangle(puppyList[i].Item2, r);
-                        g.DrawRectangle(pens["black"], r);
-                        g.DrawString(p.initials, fonts["puppy"], brushes["black"], o + puppyFontOffset);
-                        puppyMapLocations[p] = r;
-                    }
+                foreach (string initials in c.constructionPuppies)
+                    puppyList.Add(Tuple.Create(puppies[initials], brushes["construction"]));
+
+                const int puppyAStart = 3;
+                const int puppySize = 20;
+                const int puppyBStart = Constants.mapCellSize - puppyAStart - puppySize;
+                const int puppyMStart = Constants.mapCellSize / 2 - puppySize / 2;
+                Size puppyFontOffset = new Size(0, 3);
+
+                var puppyOffsets = new List<Size>();
+                if(puppyList.Count == 4)
+                {
+                    puppyOffsets.Add(new Size(puppyAStart, puppyAStart));
+                    puppyOffsets.Add(new Size(puppyAStart, puppyBStart));
+                    puppyOffsets.Add(new Size(puppyBStart, puppyAStart));
+                    puppyOffsets.Add(new Size(puppyBStart, puppyBStart));
+                }
+                if (puppyList.Count == 3)
+                {
+                    puppyOffsets.Add(new Size(puppyMStart, puppyAStart));
+                    puppyOffsets.Add(new Size(puppyBStart, puppyAStart));
+                    puppyOffsets.Add(new Size(puppyBStart, puppyBStart));
+                }
+                if (puppyList.Count == 2)
+                {
+                    puppyOffsets.Add(new Size(puppyAStart, puppyMStart));
+                    puppyOffsets.Add(new Size(puppyBStart, puppyMStart));
+                }
+                if (puppyList.Count == 1)
+                {
+                    puppyOffsets.Add(new Size(puppyMStart, puppyMStart));
+                }
+
+                for (int i = 0; i < puppyOffsets.Count; i++)
+                {
+                    Puppy p = puppyList[i].Item1;
+                    Point o = cellPoint + puppyOffsets[i];
+                    Rectangle r = new Rectangle(o.X, o.Y, puppySize, puppySize);
+                    g.FillRectangle(puppyList[i].Item2, r);
+                    g.DrawRectangle(pens["black"], r);
+                    g.DrawString(p.initials, fonts["puppy"], brushes["black"], o + puppyFontOffset);
+                    puppyMapLocations[p] = r;
                 }
             }
             

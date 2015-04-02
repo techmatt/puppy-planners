@@ -89,6 +89,7 @@ namespace server
             if (command == "assignPuppyTask")
             {
                 state.assignPuppyTask(state.puppies[parameters["puppy"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])], parameters["task"]);
+                return "";
             }
 
             app.error("unrecognized command: " + command);

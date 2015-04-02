@@ -55,5 +55,5 @@ Generally, commands return a blank string or the requested data. If something go
  <ACTION> -> actions may return a failure string (for example, can happen if two players try to use resources at about the same time)
  ** setPaused(pause)
  ** assignPuppyToRole(puppy, role)
- ** assignPuppyTask(puppy, x, y, task) -> task = work, religion, culture, home, scout, military, construction
+ ** assignPuppyTask(puppy, x, y, task) -> task = production, church, culture, home, scout, military, construction
  ** buildBuilding(x, y, name)

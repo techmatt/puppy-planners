@@ -27,7 +27,7 @@ namespace game
         public List<string> scoutPuppies = new List<string>();
         public List<string> militaryPuppies = new List<string>();
         public List<string> constructionPuppies = new List<string>();
-        public List<string> workPuppies = new List<string>();
+        public List<string> productionPuppies = new List<string>();
         public List<string> homePuppies = new List<string>();
         public List<string> culturePuppies = new List<string>();
         public List<string> churchPuppies = new List<string>();
@@ -69,6 +69,14 @@ namespace game
             scoutCell(new Coord(d + 0, d + 1), 1);
             scoutCell(new Coord(d + 1, d + 0), 1);
             scoutCell(new Coord(d + 1, d + 1), 1);
+        }
+
+        public void removePuppyFromAllWorkLists(Puppy p)
+        {
+            removePuppyFromList(p, x => x.scoutPuppies);
+            removePuppyFromList(p, x => x.constructionPuppies);
+            removePuppyFromList(p, x => x.militaryPuppies);
+            removePuppyFromList(p, x => x.productionPuppies);
         }
 
         public void removePuppyFromList(Puppy p, Func<MapCell, List<string>> listType)

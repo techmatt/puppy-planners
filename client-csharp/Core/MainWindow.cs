@@ -210,6 +210,15 @@ namespace client_csharp
                 app.sessionRequest("assignPuppyToRole", "puppy=" + getSelectedPuppyInitials() + "&role=" + comboBoxPuppyAssignment.SelectedItem.ToString());
         }
 
+        private string getActiveRole()
+        {
+            if (radioButtonBuilder.Checked) return "Builder";
+            if (radioButtonCulture.Checked) return "Culture";
+            if (radioButtonMilitary.Checked) return "Military";
+            if (radioButtonIntrigue.Checked) return "Intrigue";
+            return "none";
+        }
+
         private void pictureBoxMap_MouseClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)
@@ -237,7 +246,20 @@ namespace client_csharp
                 {
                     if(v.Value.Contains(e.X, e.Y))
                     {
-                        app.sessionRequest("assignPuppyToRole", "puppy=" + getSelectedPuppyInitials() + "&role=" + comboBoxPuppyAssignment.SelectedItem.ToString());
+                        //assignPuppyTask(puppy, x, y, task) -> task = production, church, culture, home, scout, military, construction
+                        string task = "production";
+                        if(v.Key.building == null)
+                        {
+                            task = "none";
+                            //
+                            // When there is no building present, the command being issued is player-specific
+                            //
+                            if (getActiveRole() == "Builder") task = "scout";
+                            if (getActiveRole() == "Military") task = "military";
+                        }
+
+                        if(task != "none")
+                            app.sessionRequest("assignPuppyTask", "puppy=" + getSelectedPuppyInitials() + "&x=" + v.Key.coord.x + "&y=" + v.Key.coord.y + "&task=" + task);
                     }
                 }
             }

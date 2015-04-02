@@ -21,12 +21,12 @@ namespace game
     {
         public void log(int gameTick, string message)
         {
-            Console.Write("game log: " + message);
+            Console.WriteLine("log: " + message);
             entries.Add(new GameLogEntry(gameTick, message));
         }
         public void error(int gameTick, string message)
         {
-            Console.Write("game error: " + message);
+            Console.WriteLine("error: " + message);
             entries.Add(new GameLogEntry(gameTick, message));
         }
 

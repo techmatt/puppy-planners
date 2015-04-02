@@ -62,14 +62,88 @@ namespace game
 
         public void assignPuppyTask(Puppy p, MapCell c, string task)
         {
+            //
+            // task = production, church, culture, home, scout, military, construction
+            //
+            if (task == "production") assignPuppyProduction(p, c);
+            else if (task == "church") assignPuppyChurch(p, c);
+            else if (task == "culture") assignPuppyCulture(p, c);
+            else if (task == "home") assignPuppyHome(p, c);
+            else if (task == "scout") assignPuppyScout(p, c);
+            else if (task == "military") assignPuppyMilitary(p, c);
+            else if (task == "construction") assignPuppyConstruction(p, c);
+        }
 
+        void assignPuppyProduction(Puppy p, MapCell c)
+        {
+            map.removePuppyFromAllWorkLists(p);
+            p.workLocation = Constants.invalidCoord;
+
+            if (c.building == null)
+                log.error(data.tickCount, "assign production with no building");
+            else if (c.productionPuppies.Count >= database.buildings[c.building.name].workCap)
+                log.error(data.tickCount, "assign production to over-capacity building: " + c.building.name);
+            else
+            {
+                p.task = "production";
+                p.workLocation = c.coord;
+                c.productionPuppies.Add(p.initials);
+            }
+        }
+
+        void assignPuppyScout(Puppy p, MapCell c)
+        {
+            map.removePuppyFromAllWorkLists(p);
+            p.workLocation = Constants.invalidCoord;
+
+            if (c.scoutPuppies.Count >= 1)
+                log.error(data.tickCount, "multiple scouts assigned to same cell");
+            else
+            {
+                p.task = "scout";
+                p.workLocation = c.coord;
+                c.scoutPuppies.Add(p.initials);
+            }
+        }
+
+        void assignPuppyMilitary(Puppy p, MapCell c)
+        {
+            map.removePuppyFromAllWorkLists(p);
+            p.workLocation = Constants.invalidCoord;
+
+            if (c.militaryPuppies.Count >= 1)
+            {
+                log.error(data.tickCount, "assign to occupied military location");
+                return;
+            }
+
+            p.task = "military";
+            p.workLocation = c.coord;
+            c.militaryPuppies.Add(p.initials);
+        }
+
+        void assignPuppyConstruction(Puppy p, MapCell c)
+        {
+            map.removePuppyFromAllWorkLists(p);
+            p.workLocation = Constants.invalidCoord;
+
+            if (c.building == null || c.constructionPuppies.Count >= 1)
+            {
+                log.error(data.tickCount, "assign to invalid building");
+                return;
+            }
+
+            p.task = "construction";
+            p.workLocation = c.coord;
+            c.constructionPuppies.Add(p.initials);
         }
 
         void assignPuppyHome(Puppy p, MapCell c)
         {
             map.removePuppyFromList(p, x => x.homePuppies);
+            p.homeLocation = Constants.invalidCoord;
             
-            if (c.building == null || c.homePuppies.Count > database.buildings[c.building.name].residentCap)
+            if (c.building == null || c.homePuppies.Count >= database.buildings[c.building.name].residentCap)
             {
                 log.error(data.tickCount, "assign to invalid building");
                 return;
@@ -82,8 +156,9 @@ namespace game
         void assignPuppyChurch(Puppy p, MapCell c)
         {
             map.removePuppyFromList(p, x => x.churchPuppies);
+            p.churchLocation = Constants.invalidCoord;
 
-            if (c.building == null || c.churchPuppies.Count > database.buildings[c.building.name].religionCap)
+            if (c.building == null || c.churchPuppies.Count >= database.buildings[c.building.name].religionCap)
             {
                 log.error(data.tickCount, "assign to invalid building");
                 return;
@@ -96,8 +171,9 @@ namespace game
         void assignPuppyCulture(Puppy p, MapCell c)
         {
             map.removePuppyFromList(p, x => x.culturePuppies);
+            p.cultureLocation = Constants.invalidCoord;
 
-            if (c.building == null || c.culturePuppies.Count > database.buildings[c.building.name].cultureCap)
+            if (c.building == null || c.culturePuppies.Count >= database.buildings[c.building.name].cultureCap)
             {
                 log.error(data.tickCount, "assign to invalid building");
                 return;
@@ -105,20 +181,6 @@ namespace game
 
             p.cultureLocation = c.coord;
             c.culturePuppies.Add(p.initials);
-        }
-
-        void assignPuppyWork(Puppy p, MapCell c)
-        {
-            map.removePuppyFromList(p, x => x.workPuppies);
-
-            if (c.building == null || c.workPuppies.Count > database.buildings[c.building.name].workCap)
-            {
-                log.error(data.tickCount, "assign to invalid building");
-                return;
-            }
-
-            p.workLocation = c.coord;
-            c.workPuppies.Add(p.initials);
         }
 
         void updatePuppyBuildingBindings()
