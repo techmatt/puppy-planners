@@ -1,6 +1,7 @@
 var URL = "http://localhost:8080/puppies/";
 var sessionID;
 var sessionList = [];
+var gameState = null;
 
 
 function init() {}
@@ -106,6 +107,7 @@ function getEverything() {
     console.log(requestText);
     request.get(requestText, {handleAs: "json"}).then(
       function(text) {
+        gameState=text;
         console.log("Returned text: ", text);
       },
       function(error) {
