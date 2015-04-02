@@ -6,7 +6,7 @@
     <!-- load Dojo -->
     <script src="dojo.js"></script>
     <script src="game.js"></script>
-
+    <script src="map.js"></script>
 </head>
 <body>
     Game name: <input type="text" id="textName" value = "DebugSession">
@@ -27,6 +27,8 @@
     <button onclick="getEverything()">Get everything</button>
     <p>
 
+    <button onclick="drawMap()">Draw Map</button>
+    <p>
     <canvas id="canvasMap" width="520" height="520" style="border:5px solid #000000;">
     This element has not loaded because your browser does not support the HTML5 canvas tag.
     </canvas>
