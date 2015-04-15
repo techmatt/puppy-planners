@@ -281,11 +281,35 @@ namespace game
             }
         }
 
+
+
+		void movePuppies()
+		{
+			foreach(Puppy p in puppies.Values)
+			{
+				p.updateDestination();
+				double distance = Math.Sqrt(
+					(p.destination.x - p.currentLocation.x) * (p.destination.x - p.currentLocation.x)
+					+ (p.destination.y - p.currentLocation.y) * (p.destination.y - p.currentLocation.y));
+				if (distance < p.movementRate) {
+					//Arrives as destination or is already there
+					p.currentLocation = p.destination;
+					p.currentlyMoving = false;
+				} else {
+					// move a little bit closer.
+					p.currentLocation.x+=p.movementRate*(p.destination.x - p.currentLocation.x)/distance;
+					p.currentLocation.y+=p.movementRate*(p.destination.y - p.currentLocation.y)/distance;
+					p.currentlyMoving = true;
+				}
+			}
+		}
+
         public void tick()
         {
             if (data.paused)
                 return;
 
+			movePuppies();
             updateResourceRates();
             processProduction();
 

@@ -22,6 +22,7 @@ namespace game
         public const int mapSize = 14;
         public const int mapCellSize = 52;
         public static Coord invalidCoord = new Coord(-1, -1);
+		public static DoubleCoord invalidDoubleCoord = new DoubleCoord(-1.0, -1.0);
 
         //
         // Game speed

@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>Puppies Paradise</title>
-    <!-- load Dojo -->
+    <!-- load scripts -->
+    <script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script>
     <script src="dojo.js"></script>
     <script src="game.js"></script>
     <script src="map.js"></script>
@@ -11,7 +12,14 @@
 <body>
     Game name: <input type="text" id="textName" value = "DebugSession">
     <p>
-    Role: <input type="text" id="textRole" value = "Builder">
+    Role:
+    <select id="textRole">
+      <option value="Builder">Builder</option>
+      <option value="Culture">Culture</option>
+      <option value="Intrigue">Intrigue</option>
+      <option value="Military">Military</option>
+    </select>
+
     <p>
     Player Name: <input type="text" id="textPlayer" value="DebugPlayer">
     <p>
@@ -22,16 +30,33 @@
     <button onclick="listSessions()">List games</button>
     <p>
 
-    <p id="sessionListDisplay">Session list not loaded</p>
+    <!-- <p id="sessionListDisplay">Session list not loaded</p> -->
+    <select id="sessionSelect"  size=10 onchange = "sessionListChange()">
+      <option value="false">List not yet loaded</option>
+    </select>
 
+    <p>
     <button onclick="getEverything()">Get everything</button>
     <p>
-
-    <button onclick="drawMap()">Draw Map</button>
+    <select id="puppyList"  size=10 onchange = "puppyListChange()">
+      <option value="false">List not yet loaded</option>
+    </select>
+    <p id="puppyDescription">
+      No puppy selected.
+    </p>
+    <button onclick="initMap()">Draw Map</button>
     <p>
-    <canvas id="canvasMap" width="520" height="520" style="border:5px solid #000000;">
-    This element has not loaded because your browser does not support the HTML5 canvas tag.
-    </canvas>
+    <svg xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      id="svgMap"
+      width="520"
+      height="520"
+      style="border:5px solid #000000;"
+    >
+    This element has not loaded because your browser does not support the HTML5 SVG tag.
+    </svg>
 
+
+    <p id = "puppyMouseOver"></p>
 </body>
 </html>

@@ -27,8 +27,34 @@ namespace game
             return (x == c.x) && (y == c.y);
         }
 
+		public DoubleCoord toDouble()
+		{
+			DoubleCoord dc = new DoubleCoord(Convert.ToDouble (x), Convert.ToDouble (y));
+			return dc;
+		}
+
         public int x, y;
     }
+
+	public struct DoubleCoord
+	{
+		public DoubleCoord(double _x, double _y)
+		{
+			x=_x;
+			y=_y;
+		}
+		public override string ToString()
+		{
+			return "(" + string.Format("{0:N2}", x) + ", " + string.Format("{0:N2}", y) + ")";
+		}
+		public bool isValid()
+		{
+			return (x != -1 && y != -1);
+		}
+
+		public double x, y;
+	}
+
     
     public static class Util
     {

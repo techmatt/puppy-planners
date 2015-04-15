@@ -4,7 +4,9 @@ var sessionList = [];
 var gameState = null;
 
 
-function init() {}
+function init() {
+  listSessions();
+}
 dojo.ready(init);
 
 
@@ -22,8 +24,16 @@ function createSession() {
         console.log("An error occurred: " + error);
       }
     );
+
+    listSessions();
   });
 }
+
+function sessionListChange () {
+  var selected = document.getElementById('sessionSelect');
+  sessionID = sessionList[selected.value].sessionID;
+}
+
 
 function joinSession() {
   require(["dojo/request"], function(request) {
@@ -31,18 +41,9 @@ function joinSession() {
     var textRole = document.getElementById('textRole').value;
     var textPlayer = document.getElementById('textPlayer').value;
 
-    tempSessionID = null;
-    for (var i in sessionList) {
-      if (sessionList[i].sessionName == textName) {
-        tempSessionID = sessionList[i].sessionID;
-        break;
-      }
-    }
-    if (!tempSessionID) {
-      console.error("Failed to find session " + textName + ". Try reloading sessions.");
-      return;
-    }
-    sessionID = tempSessionID;
+
+    if (!sessionID) {return;}
+    console.log(sessionID);
 
     var requestText = URL + "p&joinSession&session=" + sessionID + "&playerName=" + textPlayer + "&role=" + textRole;
 
@@ -57,16 +58,19 @@ function joinSession() {
   });
 }
 
-function sessionListToString () {
-  var out = "";
-  for (var i in sessionList) {
-    out+=sessionList[i].sessionName+"<br />";
-    var players = sessionList[i].players;
-    for (var j in players){
-      out+="&nbsp&nbsp&nbsp&nbsp"+players[j].role+": "+players[j].name+"<br />\n";
-    }
+function sessionListForm () {
+  var select = document.getElementById('sessionSelect')
+  while (select.length>0) {
+    select.remove(0);
   }
-  return out;
+
+  for (var i in sessionList) {
+    var option = document.createElement("option");
+    option.text = sessionList[i].sessionName;
+    option.value = i;
+    select.add(option);
+  }
+
 }
 
 function listSessions() {
@@ -76,7 +80,7 @@ function listSessions() {
       function(text) {
         sessionList = text;
         console.log("The current sessions are: ", text);
-        dojo.byId("sessionListDisplay").innerHTML = sessionListToString();
+        sessionListForm();
       },
       function(error) {
         console.log("An error occurred: " + error);
@@ -89,25 +93,12 @@ function listSessions() {
 function getEverything() {
   require(["dojo/request"], function(request) {
     var textName = document.getElementById('textName').value;
-
-    tempSessionID = null;
-    for (var i in sessionList) {
-      if (sessionList[i].sessionName == textName) {
-        tempSessionID = sessionList[i].sessionID;
-        break;
-      }
-    }
-    if (!tempSessionID) {
-      console.error("Failed to find session " + textName + ". Try reloading sessions.");
-      return;
-    }
-    sessionID = tempSessionID;
-
     var requestText = URL + "p&getAllState&session=" + sessionID;
     console.log(requestText);
     request.get(requestText, {handleAs: "json"}).then(
       function(text) {
         gameState=text;
+        puppyListUpdate();
         console.log("Returned text: ", text);
       },
       function(error) {
@@ -115,4 +106,25 @@ function getEverything() {
       }
     );
   });
+}
+
+function puppyListUpdate() {
+  var select = document.getElementById('puppyList')
+  var selected = select.value;
+
+  while (select.length>0) {
+    select.remove(0);
+  }
+
+  var puppies = gameState.puppies;
+  var puppyNames = Object.getOwnPropertyNames(puppies);
+
+  for (var i in puppyNames) {
+    initials=puppyNames[i];
+    var option = document.createElement("option");
+    option.text = initials+" ("+puppies[initials].name+")";
+    option.value = initials;
+    select.add(option);
+  }
+  
 }
