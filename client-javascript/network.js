@@ -1,14 +1,33 @@
-var URL = "http://localhost:8080/puppies/";
-var sessionID;
-var sessionList = [];
-var gameState = null;
-
-
-function init() {
-  listSessions();
+function networkCall(string, action) {
+  require(["dojo/request"], function(request) {
+    var requestText=URL+"p&"+string;
+    request.get(requestText).then(
+      function(text) {
+        console.log("Returned text: ", text);
+        action(text);
+      },
+      function(error) {
+        console.log("An error occurred: " + error);
+      }
+    );
+  });
 }
-dojo.ready(init);
 
+function networkCallJSON(string) {
+  require(["dojo/request"], function(request) {
+    var requestText=URL+"p&"+string;
+    request.get(requestText, {handleAs: "json"}).then(
+      function(text) {
+        console.log("Returned text: ", text);
+        return text;
+      },
+      function(error) {
+        console.log("An error occurred: " + error);
+        return null;
+      }
+    );
+  });
+}
 
 function createSession() {
   require(["dojo/request"], function(request) {
@@ -29,9 +48,9 @@ function createSession() {
   });
 }
 
-function sessionListChange () {
-  var selected = document.getElementById('sessionSelect');
-  sessionID = sessionList[selected.value].sessionID;
+function assignPuppyTask (intials,x,y,task) {
+  var request = "p&assignPuppyTask&session=" + sessionID + "&puppy=" + intials + "&x=" + x + "&y="+y+"&task="+task;
+  networkCall(request, function (text) {});
 }
 
 
@@ -58,19 +77,23 @@ function joinSession() {
   });
 }
 
-function sessionListForm () {
-  var select = document.getElementById('sessionSelect')
-  while (select.length>0) {
-    select.remove(0);
-  }
+function createSession() {
+  require(["dojo/request"], function(request) {
+    var textName = document.getElementById('textName').value;
+    var requestText = URL + "p&newSession&sessionName=" + textName;
 
-  for (var i in sessionList) {
-    var option = document.createElement("option");
-    option.text = sessionList[i].sessionName;
-    option.value = i;
-    select.add(option);
-  }
+    request.get(requestText).then(
+      function(text) {
+        console.log("Returned text: ", text);
+        sessionid = text[0].sessionID;
+      },
+      function(error) {
+        console.log("An error occurred: " + error);
+      }
+    );
 
+    listSessions();
+  });
 }
 
 function listSessions() {
@@ -91,6 +114,7 @@ function listSessions() {
 
 
 function getEverything() {
+  if (!sessionID) {return;}
   require(["dojo/request"], function(request) {
     var textName = document.getElementById('textName').value;
     var requestText = URL + "p&getAllState&session=" + sessionID;
@@ -106,25 +130,4 @@ function getEverything() {
       }
     );
   });
-}
-
-function puppyListUpdate() {
-  var select = document.getElementById('puppyList')
-  var selected = select.value;
-
-  while (select.length>0) {
-    select.remove(0);
-  }
-
-  var puppies = gameState.puppies;
-  var puppyNames = Object.getOwnPropertyNames(puppies);
-
-  for (var i in puppyNames) {
-    initials=puppyNames[i];
-    var option = document.createElement("option");
-    option.text = initials+" ("+puppies[initials].name+")";
-    option.value = initials;
-    select.add(option);
-  }
-  
 }

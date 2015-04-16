@@ -1,62 +1,102 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+  <style>
+  #header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
+  }
+  #leftColumn {
+    line-height:30px;
+    background-color:#eeeeee;
+    /*height:300px;*/
+    width:150px;
+    float:left;
+    padding:5px;
+  }
+  #rightColumn {
+    width:350px;
+    float:left;
+    padding:10px;
+  }
+  #footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+   padding:5px;
+  }
+  </style>
+
+
     <meta charset="utf-8">
     <title>Puppies Paradise</title>
     <!-- load scripts -->
     <script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script>
     <script src="dojo.js"></script>
     <script src="game.js"></script>
+    <script src="network.js"></script>
     <script src="map.js"></script>
 </head>
 <body>
-    Game name: <input type="text" id="textName" value = "DebugSession">
-    <p>
-    Role:
-    <select id="textRole">
-      <option value="Builder">Builder</option>
-      <option value="Culture">Culture</option>
-      <option value="Intrigue">Intrigue</option>
-      <option value="Military">Military</option>
-    </select>
 
-    <p>
-    Player Name: <input type="text" id="textPlayer" value="DebugPlayer">
-    <p>
-    <button onclick="createSession()">Create new game</button>
-    <p>
-    <button onclick="joinSession()">Join game with role</button>
-    <p>
-    <button onclick="listSessions()">List games</button>
-    <p>
+    <div id="leftColumn">
 
-    <!-- <p id="sessionListDisplay">Session list not loaded</p> -->
-    <select id="sessionSelect"  size=10 onchange = "sessionListChange()">
-      <option value="false">List not yet loaded</option>
-    </select>
+      Game name: <input type="text" id="textName" value = "DebugSession">
 
-    <p>
-    <button onclick="getEverything()">Get everything</button>
-    <p>
-    <select id="puppyList"  size=10 onchange = "puppyListChange()">
-      <option value="false">List not yet loaded</option>
-    </select>
-    <p id="puppyDescription">
-      No puppy selected.
-    </p>
-    <button onclick="initMap()">Draw Map</button>
-    <p>
-    <svg xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      id="svgMap"
-      width="520"
-      height="520"
-      style="border:5px solid #000000;"
-    >
-    This element has not loaded because your browser does not support the HTML5 SVG tag.
-    </svg>
+      <p>
+      Role:
+      <select id="textRole">
+        <option value="Builder">Builder</option>
+        <option value="Culture">Culture</option>
+        <option value="Intrigue">Intrigue</option>
+        <option value="Military">Military</option>
+      </select>
+
+      <p>
+      Player Name: <input type="text" id="textPlayer" value="DebugPlayer">
+      <p>
+      <button onclick="createSession()">Create new game</button>
+      <p>
+      <button onclick="joinSession()">Join game with role</button>
+      <p>
+      <button onclick="listSessions()">List games</button>
+      <p>
+
+      <!-- <p id="sessionListDisplay">Session list not loaded</p> -->
+      <select id="sessionSelect"  size=10 onchange = "sessionListChange()">
+        <option value="false">List not yet loaded</option>
+      </select>
+
+      <p>
+      <button onclick="getEverything()">Get everything</button>
+      <p>
+      <select id="puppyList"  size=10 onchange = "updatePuppyDescription()">
+        <option value="false">List not yet loaded</option>
+      </select>
+    </div>
 
 
-    <p id = "puppyMouseOver"></p>
+
+    <div id="rightColumn">
+      <button onclick="initMap()">Draw Map</button>
+      <p>
+      <svg xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        id="svgMap"
+        width="520"
+        height="520"
+        style="border:5px solid #000000;"
+      >
+      This element has not loaded because your browser does not support the HTML5 SVG tag.
+      </svg>
+      <p id="puppyDescription">
+        No puppy selected.
+      </p>
+      <!-- <p id = "puppyMouseOver"></p> -->
+    </div>
 </body>
 </html>
