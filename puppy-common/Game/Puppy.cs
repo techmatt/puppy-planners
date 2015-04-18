@@ -84,7 +84,7 @@ namespace game
 
         public double health = 1.0;
         public double corruption = 0.0;
-		public double movementRate = 0.1; //grid squares/tick
+		public double movementRate = 0.2; //grid squares/tick
 
         public Dictionary<string, PuppySkill> skills = new Dictionary<string, PuppySkill>();
         public List<string> attributes = new List<string>();

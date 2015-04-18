@@ -1,5 +1,4 @@
 var map;
-//var mapInitialized = false;
 var currentTime = 0;
 var NS="http://www.w3.org/2000/svg";
 renderTimeout = null;
@@ -7,50 +6,131 @@ mapInitialized = false;
 mapSVGTerrainSquares = [];
 mapSVGGridLines = [];
 mapSVGPuppies={};
+mapPuppyHeight = 15;
+mapPuppyWidth = 18;
+mapPuppyTextStart = 11;
+mapSquareBuildingNameOffset = 4;
 
+//object constructors
+function mapPuppy(initials) {
+  this.selected=false;
+
+  //text object
+  this.container=document.createElementNS(NS,"svg");
+  this.container.setAttributeNS(null,"id","mapPuppyContainer");
+  //height and width need to be set explicitly as an attribute
+  this.container.setAttributeNS(null,"height",mapPuppyHeight);
+  this.container.setAttributeNS(null,"width",mapPuppyWidth);
+  map.appendChild(this.container);
+
+  this.background=document.createElementNS(NS,"rect");
+  this.background.setAttributeNS(null,"id","mapPuppyBackground");
+  //height and width need to be set explicitly as an attribute
+  this.background.setAttributeNS(null,"height",mapPuppyHeight);
+  this.background.setAttributeNS(null,"width",mapPuppyWidth);
+  this.container.appendChild(this.background);
+
+  this.text = document.createElementNS(NS,"text");
+  this.text.textContent=initials;
+  this.text.setAttributeNS(null,"id","mapPuppyText");
+  this.text.setAttributeNS(null,"x",mapPuppyWidth/2);
+  this.text.setAttributeNS(null,"y",mapPuppyTextStart);
+  this.container.appendChild(this.text);
+
+  this.moveTo=function(x,y) {
+    this.container.setAttributeNS(null,"x",x*squarePixels-mapPuppyWidth/2);
+    this.container.setAttributeNS(null,"y",y*squarePixels-mapPuppyHeight/2);
+  }
+  this.remove=function() {
+    mapSVGPuppies[initials].container.remove();
+  }
+  this.select=function() {
+    this.background.setAttributeNS(null,"id","mapPuppyBackgroundSelected");
+    this.selected=true;
+  }
+  this.unselect=function() {
+    this.background.setAttributeNS(null,"id","mapPuppyBackground");
+    this.selected=false;
+  }
+}
+
+function mapSquare() {
+  this.container=document.createElementNS(NS,"svg");
+  this.container.setAttributeNS(null,"id","mapSquareContainer");
+  this.container.setAttributeNS(null,"height",squarePixels);
+  this.container.setAttributeNS(null,"width",squarePixels);
+  map.appendChild(this.container);
+
+  this.background=document.createElementNS(NS,"rect");
+  this.background.setAttributeNS(null,"id","mapSquareBackground");
+  this.background.setAttributeNS(null,"height",squarePixels);
+  this.background.setAttributeNS(null,"width",squarePixels);
+  this.container.appendChild(this.background);
+
+  this.buildingName = document.createElementNS(NS,"text");
+  this.buildingName.textContent="purple";
+  this.buildingName.setAttributeNS(null,"id","mapPuppyText");
+  this.buildingName.setAttributeNS(null,"x",squarePixels/2);
+  this.buildingName.setAttributeNS(null,"y",squarePixels-mapSquareBuildingNameOffset);
+  this.container.appendChild(this.buildingName);
+
+  this.update=function (square) {
+    //update square color
+    if (square.explored) {
+      this.background.setAttributeNS(null,"fill",terrainColors[square.type]);
+    } else {
+      this.background.setAttributeNS(null,"fill",unexploredColor);
+    }
+
+    //move to the correct position
+    this.container.setAttributeNS(null,"x",square.coord.x*squarePixels);
+    this.container.setAttributeNS(null,"y",square.coord.y*squarePixels);
+    this.container.setAttributeNS(null,"onclick","squareClick("+square.coord.x+","+square.coord.y+")");
+
+    if (square.building) {
+      this.buildingName.textContent=square.building.name;
+    } else {
+      this.buildingName.textContent="---";
+    }
+  }
+}
+
+//initialization
 function initMap() {
   if (mapInitialized) {return;} else {mapInitialized=true;}
   mapInitialized=true;
   map = document.getElementById("svgMap");
   if (!gameState) {console.error("can not draw map: no game loaded");return;}
-  //addFakePuppieData();
-  //initializeMapObjects();
 
-  //if (renderTimeout) {clearInterval(renderTimeout);}
-  //renderTimeout=setInterval(drawMap,1000);
+  initializeSquares();
+  initializeGrid();
   drawMap();
 }
 
-function initializeMapObjects() {
-  // the terrain
+function clearMap() {
+  if(!mapInitialized) {return;} //don't reset if we havent drawn the map yet
+
+  if (renderTimeout) {clearInterval(renderTimeout);} // stop rendering
+
+  // reset our remembered SVG elements
+  mapInitialized = false;
   mapSVGTerrainSquares = [];
-  var mapAsList = gameState.map.mapAsList;
-  for (var i in gameState.map.mapAsList) {
-    var square = mapAsList[i];
-    var x = square.coord.x;
-    var y = square.coord.y;
+  mapSVGGridLines = [];
+  mapSVGPuppies={};
 
-    if (square.explored) {
-      fill = terrainColors[square.type];
-    } else {
-      fill = unexploredColor;
-    }
-
-    var square= document.createElementNS(NS,"rect");
-    square.width.baseVal.value=squarePixels;
-    square.height.baseVal.value=squarePixels;
-    square.style.fill=fill;
-    square.x.baseVal.value=x*squarePixels;
-    square.y.baseVal.value=y*squarePixels;
-    map.appendChild(square);
-    mapSVGTerrainSquares.push(square);
+  // clear everything from the svg canvas
+  while (map.lastChild) {
+    map.removeChild(map.lastChild);
   }
+}
 
-  // the grid
+function initializeSquares() {
+  for (var i in gameState.map.mapAsList) {
+    mapSVGTerrainSquares.push(new mapSquare());
+  }
+}
 
-  map.strokeStyle = gridColor;
-  map.lineWidth = gridWidth;
-
+function initializeGrid() {
   for (var x=0; x<mapSquares+1; x++) {
     var line = document.createElementNS(NS,"line");
     map.appendChild(line);
@@ -58,9 +138,8 @@ function initializeMapObjects() {
     line.setAttribute("x1",squarePixels*x);
     line.setAttribute("y1",0);
     line.setAttribute("x2",squarePixels*x);
-    line.setAttribute("y1",mapPixels);
-    line.style.stroke = gridColor;
-    line.style["stroke-width"] = gridWidth;
+    line.setAttribute("y2",mapPixels);
+    line.setAttribute("id","mapGridLine");
     map.appendChild(line);
     mapSVGGridLines.push(line);
   }
@@ -70,38 +149,21 @@ function initializeMapObjects() {
     line.setAttribute("y1",squarePixels*x);
     line.setAttribute("x1",0);
     line.setAttribute("y2",squarePixels*x);
-    line.setAttribute("x1",mapPixels);
-    line.style.stroke = gridColor;
-    line.style["stroke-width"] = gridWidth;
+    line.setAttribute("x2",mapPixels);
+    line.setAttribute("id","mapGridLine");
     map.appendChild(line);
     mapSVGGridLines.push(line);
   }
-
-}
-
-function drawNewPuppy(initials) {
-  var text = document.createElementNS(NS,"text");
-  text.setAttribute("text-anchor","middle");
-  text.setAttribute("lineWidth",initialsStrokeWidth);
-  text.textContent=initials;
-  text.setAttribute("onmouseover","mouseOver(\""+initials+"\")");
-  text.setAttribute("onmouseout","mouseOut()");
-  //text.setAttribute("draggable","true");
-  //text.setAttribute("ondrag","onDrag(\""+initials+"\")");
-  console.log(text);
-  //text.font="48px serif";
-  text.setAttributeNS(null,"fill","#black");
-  mapSVGPuppies[initials]=text;
-  text.setAttributeNS(null,"fill","#blue");
-  map.appendChild(text);
-
 }
 
 function drawMap(){
   if (!gameState) {console.error("can not draw map: no game loaded");return;}
+  if (!mapInitialized) {console.error("can not draw map: map not initialized");return;}
+
   currentTime = ((new Date()).getTime()-gameState.time)/1000.;
 
-  drawPuppies();
+  updateSquares();
+  updatePuppies();
 
   if (renderTimeout) {clearInterval(renderTimeout);}
   renderTimeout=setInterval(drawMap,100);
@@ -112,35 +174,18 @@ var mapSquares=13;
 var squarePixels = mapPixels/mapSquares;
 var unexploredColor = "#666666";
 var terrainColors = {"dirt":"#c9b189", "grass":"#b7d1aa"};
-var gridColor = "#888888";
-var gridWidth = 2;
-var initialsStrokeWidth=1;
 var initialsStrokeColor="#000000";
 var puppyColor = "black";
 var puppySelectedColor="#FF0000";
 
-function drawTerrain(){
-  var mapAsList = gameState.map.mapAsList;
+function updateSquares() {
   for (var i in gameState.map.mapAsList) {
-    var square = mapAsList[i];
-    if (square.explored) {
-      fill = terrainColors[square.type];
-    } else {
-      fill = unexploredColor;
-    }
-
-    var square= mapSVGTerrainSquares[i];
-    square.style.fill=fill;
+    square = gameState.map.mapAsList[i];
+    mapSVGTerrainSquares[i].update(square);
   }
 }
 
-function drawGrid() {
-  for (var i in mapSVGGridLines) {
-    mapSVGGridLines[i].x1.baseVal=mapSVGGridLines[i].x1.baseVal;
-  }
-}
-
-function drawPuppies() {
+function updatePuppies() {
   // Any puppies to delete?
   var puppies = gameState.puppies;
   var puppynames = Object.getOwnPropertyNames(puppies);
@@ -150,6 +195,7 @@ function drawPuppies() {
     if (!(initials in puppies)) {
       // delete the puppy
       mapSVGPuppies[initials].remove();
+      mapSVGPuppies[initials].delete();
     }
   }
 
@@ -157,14 +203,13 @@ function drawPuppies() {
   for (var i in puppynames) {
     initials=puppynames[i];
     if (!(initials in mapSVGPuppies)) {
-      drawNewPuppy(initials);
+      mapSVGPuppies[initials]=new mapPuppy(initials);
     }
   }
 
   for (var i in puppynames) {
     initials = puppynames[i];
     var puppy = puppies[initials];
-    var text = mapSVGPuppies[initials];
 
     var x0 = puppy.currentLocation.x;
     var y0 = puppy.currentLocation.y;
@@ -178,16 +223,8 @@ function drawPuppies() {
     //   x0 += (x1-x0)*fracTravelled;
     //   y0 += (y1-y0)*fracTravelled;
     // }
-    text.setAttributeNS(null,"x", (x0+.5)*squarePixels);
-    text.setAttributeNS(null,"y", (y0+.5)*squarePixels);
+    mapSVGPuppies[initials].moveTo(x0+0.5,y0+0.5);
+
   }
 
 }
-
-// function mouseOut() {
-//   dojo.byId("puppyMouseOver").innerHTML = "";
-// }
-// function mouseOver(initials) {
-//   var puppy = gameState.puppies[initials];
-//   dojo.byId("puppyMouseOver").innerHTML = JSON.stringify(puppy);
-// }

@@ -2,35 +2,7 @@
 <html>
 <head>
 
-  <style>
-  #header {
-    background-color:black;
-    color:white;
-    text-align:center;
-    padding:5px;
-  }
-  #leftColumn {
-    line-height:30px;
-    background-color:#eeeeee;
-    /*height:300px;*/
-    width:150px;
-    float:left;
-    padding:5px;
-  }
-  #rightColumn {
-    width:350px;
-    float:left;
-    padding:10px;
-  }
-  #footer {
-    background-color:black;
-    color:white;
-    clear:both;
-    text-align:center;
-   padding:5px;
-  }
-  </style>
-
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <meta charset="utf-8">
     <title>Puppies Paradise</title>
@@ -40,6 +12,7 @@
     <script src="game.js"></script>
     <script src="network.js"></script>
     <script src="map.js"></script>
+    <script src="cursor.js"></script>
 </head>
 <body>
 
@@ -72,11 +45,14 @@
       </select>
 
       <p>
-      <button onclick="getEverything()">Get everything</button>
+      <button onclick="getEverything()">Update State</button>
       <p>
       <select id="puppyList"  size=10 onchange = "updatePuppyDescription()">
         <option value="false">List not yet loaded</option>
       </select>
+
+      <button onclick="movePuppy()">Move Puppy</button>
+
     </div>
 
 
