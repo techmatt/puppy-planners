@@ -63,12 +63,31 @@
 }
 
 
-#mapSquareBackground {
-}
-#mapSquareContainer {
-}
+#mapSquareBackground {}
+#mapSquareContainer {}
 #mapSquareBuilding {
   fill:black;
   text-anchor:middle;
   lineWidth:1;
   font-size: 16px;}
+
+#mapProgressContainer {}
+#mapProgressBackground {
+    fill:#FFFFFF;
+    fill-opacity:1;
+    x:0;
+    y:0;
+}
+#mapProgressBorder {
+    fill:#FFFFFF;
+    fill-opacity:0;
+    x:0;
+    y:0;
+    stroke-width:2;
+    stroke:#000000;
+}
+#mapProgressBar {
+    fill:#0000FF;
+    x:0;
+    y:0;
+}

@@ -33,8 +33,9 @@ namespace game
         public List<string> churchPuppies = new List<string>();
 
         public Building building;
-        public double scoutCost;
+        public double scoutCost=1.0;
         public bool explored;
+		public double explorationProgress=0;
     }
 
     public class Map

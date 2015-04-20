@@ -281,6 +281,21 @@ namespace game
             }
         }
 
+		void processExploration()
+		{
+			foreach (MapCell c in map.mapAsList.Where(c => !c.explored))
+			{
+				foreach (String p in c.scoutPuppies.Where(p=>!puppies[p].currentlyMoving))
+				{
+					c.explorationProgress += .1;  //TODO: make this depend on puppy skill
+					if (c.explorationProgress>=c.scoutCost)
+					{
+						map.scoutCell(c.coord, 0);
+					}
+				}
+			}
+		}
+
 
 
 		void movePuppies()
@@ -292,7 +307,7 @@ namespace game
 					(p.destination.x - p.currentLocation.x) * (p.destination.x - p.currentLocation.x)
 					+ (p.destination.y - p.currentLocation.y) * (p.destination.y - p.currentLocation.y));
 				if (distance < p.movementRate) {
-					//Arrives as destination or is already there
+					//Arrives at destination or is already there
 					p.currentLocation = p.destination;
 					p.currentlyMoving = false;
 				} else {
@@ -308,9 +323,9 @@ namespace game
         {
             if (data.paused)
                 return;
-
 			movePuppies();
             updateResourceRates();
+			processExploration();
             processProduction();
 
             updatePuppyBuildingBindings();

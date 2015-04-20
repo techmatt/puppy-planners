@@ -29,7 +29,7 @@ function squareClick(x,y) {
   switch (cursorMode.name) {
     case "unselected": return;
     case "movePuppy":
-      initials = cursorMode.initials;
+      var initials = cursorMode.puppy.initials;
       assignPuppyTask(cursorMode.puppy.initials,x,y,"scout");
       resetCursor()
       return;
@@ -41,6 +41,6 @@ function movePuppy() {
     resetCursor();
     return;
   }
-  cursorMode = {name: "movePuppy", puppy: selectedPuppy, cursorStyle: 'crosshair'};
+  cursorMode = {name: "movePuppy", puppy: gameState.puppies[selectedPuppy], cursorStyle: 'crosshair'};
   updateCursor();
 }

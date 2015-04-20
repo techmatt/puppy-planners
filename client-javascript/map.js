@@ -12,20 +12,64 @@ mapPuppyTextStart = 11;
 mapSquareBuildingNameOffset = 4;
 
 //object constructors
+function mapProgressBar(x,y,height,width){
+  this.x=x;
+  this.y=y;
+  this.height=height;
+  this.width=width;
+
+  //centered progress bar
+  this.container=document.createElementNS(NS,"svg");
+  this.container.setAttributeNS(null,"id","mapProgressContainer");
+  this.container.setAttributeNS(null,"height",height);
+  this.container.setAttributeNS(null,"width",width);
+  this.container.setAttributeNS(null,"x",x-width/2);
+  this.container.setAttributeNS(null,"y",y-height/2);
+
+  this.background=document.createElementNS(NS,"rect");
+  this.background.setAttributeNS(null,"id","mapProgressBackground");
+  this.background.setAttributeNS(null,"height",height);
+  this.background.setAttributeNS(null,"width",width);
+  this.container.appendChild(this.background);
+
+  this.bar=document.createElementNS(NS,"rect");
+  this.bar.setAttributeNS(null,"id","mapProgressBar");
+  this.bar.setAttributeNS(null,"height",height);
+  this.bar.setAttributeNS(null,"width",0);
+  this.container.appendChild(this.bar);
+
+  this.border=document.createElementNS(NS,"rect");
+  this.border.setAttributeNS(null,"id","mapProgressBorder");
+  //height and width need to be set explicitly as an attribute
+  this.border.setAttributeNS(null,"height",height);
+  this.border.setAttributeNS(null,"width",width);
+  this.container.appendChild(this.border);
+
+  this.set = function (fraction) {
+    this.bar.setAttributeNS(null,"width",fraction*width);
+  }
+  this.hide = function() {
+    this.container.setAttributeNS(null,"visibility","hidden");
+  }
+  this.show = function() {
+    this.container.setAttributeNS(null,"visibility","visible");
+  }
+}
+
 function mapPuppy(initials) {
   this.selected=false;
+  this.initials=initials;
 
   //text object
   this.container=document.createElementNS(NS,"svg");
   this.container.setAttributeNS(null,"id","mapPuppyContainer");
-  //height and width need to be set explicitly as an attribute
   this.container.setAttributeNS(null,"height",mapPuppyHeight);
   this.container.setAttributeNS(null,"width",mapPuppyWidth);
+  this.container.setAttributeNS(null,"onclick","selectPuppy(\""+initials+"\")");
   map.appendChild(this.container);
 
   this.background=document.createElementNS(NS,"rect");
   this.background.setAttributeNS(null,"id","mapPuppyBackground");
-  //height and width need to be set explicitly as an attribute
   this.background.setAttributeNS(null,"height",mapPuppyHeight);
   this.background.setAttributeNS(null,"width",mapPuppyWidth);
   this.container.appendChild(this.background);
@@ -74,12 +118,22 @@ function mapSquare() {
   this.buildingName.setAttributeNS(null,"y",squarePixels-mapSquareBuildingNameOffset);
   this.container.appendChild(this.buildingName);
 
+  this.progressBar = new mapProgressBar(squarePixels/2,5,6,squarePixels/1.2);
+  this.progressBar.hide();
+  this.container.appendChild(this.progressBar.container);
+
   this.update=function (square) {
     //update square color
     if (square.explored) {
       this.background.setAttributeNS(null,"fill",terrainColors[square.type]);
+      this.progressBar.hide();
     } else {
       this.background.setAttributeNS(null,"fill",unexploredColor);
+      if (square.explorationProgress>0) {
+        this.progressBar.show();
+        this.progressBar.set(square.explorationProgress/square.scoutCost);
+      }
+
     }
 
     //move to the correct position
