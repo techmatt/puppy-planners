@@ -75,6 +75,12 @@ namespace game
         public double storage;
     }
 
+	public class ResourceInfo
+	{
+		public string name;
+		public string flavorText;
+	}
+
     public class BuildingInfo
     {
         public string name;
@@ -96,6 +102,7 @@ namespace game
         
         public Database()
         {
+			loadResources();
             loadBuildings();
             loadNames();
             loadSkills();
@@ -138,6 +145,17 @@ namespace game
                 if (skill.name != "none") puppySkills[skill.name] = skill;
             }
         }
+
+		void loadResources()
+		{
+			foreach (var line in parseCSVFile(Constants.dataDir + "resources.csv"))
+			{
+				ResourceInfo info = new ResourceInfo();
+				info.name = line["name"];
+				info.flavorText = line["flavorText"];
+			}
+
+		}
 
         void loadBuildings()
         {

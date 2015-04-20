@@ -7,7 +7,6 @@
     <meta charset="utf-8">
     <title>Puppies Paradise</title>
     <!-- load scripts -->
-    <script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script>
     <script src="dojo.js"></script>
     <script src="game.js"></script>
     <script src="network.js"></script>
@@ -32,26 +31,35 @@
       <p>
       Player Name: <input type="text" id="textPlayer" value="DebugPlayer">
       <p>
-      <button onclick="createSession()">Create new game</button>
+      <button onclick="networkCreateSession()">Create new game</button>
       <p>
-      <button onclick="joinSession()">Join game with role</button>
+      <button onclick="networkJoinSession()">Join game with role</button>
       <p>
-      <button onclick="listSessions()">List games</button>
+      <button onclick="networkListSessions()">List games</button>
       <p>
 
       <!-- <p id="sessionListDisplay">Session list not loaded</p> -->
-      <select id="sessionSelect"  size=10 onchange = "sessionListChange()">
+      <select id="sessionList"  size=10 onchange = "sessionListChange()">
         <option value="false">List not yet loaded</option>
       </select>
 
       <p>
-      <button onclick="getEverything()">Update State</button>
+      <button onclick="networkGetEverything()">Update State</button>
       <p>
       <select id="puppyList"  size=10 onchange = "puppyListChange()">
         <option value="false">List not yet loaded</option>
       </select>
+      <p>
 
       <button onclick="movePuppy()">Move Puppy</button>
+      <p>
+
+      <select id="buildingList"  size=10 >
+        <option value="false">List not yet loaded</option>
+      </select>
+      <p>
+
+      <button onclick="build()">Build</button>
 
     </div>
 

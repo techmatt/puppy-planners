@@ -22,6 +22,7 @@ namespace game
         public bool paused = false;
         public int tickCount = 0;
         public List<Resource> resources = new List<Resource>();
+		//public List<Buildings> buildings = new List<Buildings> ();
     }
 
     public class GameStateSerializer
@@ -31,10 +32,14 @@ namespace game
             map = state.map;
             data = state.data;
             puppies = state.puppies;
+			database = state.database;
+			log = state.log;
         }
         public Map map;
         public Dictionary<string, Puppy> puppies;
         public GameStateData data;
+		public Database database;
+		public GameLog log;
     }
 
     public class GameState
@@ -43,7 +48,7 @@ namespace game
         public Map map = new Map();
         public Database database = new Database();
         public GameStateData data = new GameStateData();
-        public GameLog log = new GameLog();
+		public GameLog log = new GameLog ();
 
         // puppies are indexed by initials
         public Dictionary<string, Puppy> puppies = new Dictionary<string, Puppy>();

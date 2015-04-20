@@ -19,8 +19,14 @@ document.onkeydown = function(evt) {
         resetCursor();
         return;
       case 77:
+      case 109:
         // m key
         movePuppy();
+        return;
+      case 66:
+      case 98:
+        // b key
+        build();
         return;
     }
 };
@@ -30,17 +36,36 @@ function squareClick(x,y) {
     case "unselected": return;
     case "movePuppy":
       var initials = cursorMode.puppy.initials;
-      assignPuppyTask(cursorMode.puppy.initials,x,y,"scout");
+      networkAssignPuppyTask(cursorMode.puppy.initials,x,y,"scout");
       resetCursor()
       return;
+    case "build":
+      networkBuild(cursorMode.building.name,x,y);
+      resetCursor()
   }
 }
 
 function movePuppy() {
+  if (!selectedPuppy) {return;}
   if (cursorMode.name=="movePuppy") {
     resetCursor();
     return;
   }
   cursorMode = {name: "movePuppy", puppy: gameState.puppies[selectedPuppy], cursorStyle: 'crosshair'};
+  updateCursor();
+}
+
+function build() {
+  if (!selectedPuppy) {return;}
+  if (cursorMode.name=="build") {
+    resetCursor();
+    return;
+  }
+
+  var select = document.getElementById('buildingList')
+  var selected = select.value;
+  if (!selected) {return;}
+
+  cursorMode = {name: "build", building: gameState.database.buildings[selected], cursorStyle: 'crosshair'};
   updateCursor();
 }

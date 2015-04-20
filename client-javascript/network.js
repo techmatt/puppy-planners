@@ -18,7 +18,7 @@ function networkCallwithOptions(string,action,options) {
   });
 }
 
-function createSession() {
+function networkCreateSession() {
   var textName = document.getElementById('textName').value;
   var requestText = "newSession&sessionName=" + textName;
   networkCall(requestText,
@@ -28,13 +28,17 @@ function createSession() {
       });
 }
 
-function assignPuppyTask (intials,x,y,task) {
+function networkAssignPuppyTask (intials,x,y,task) {
   var request = "assignPuppyTask&session=" + sessionID + "&puppy=" + intials + "&x=" + x + "&y="+y+"&task="+task;
   networkCall(request, function (text) {});
 }
 
+function networkBuild (building,x,y) {
+  var request = "build&session=" + sessionID + "&puppy=" + building + "&x=" + x + "&y="+y;
+  networkCall(request, function (text) {});
+}
 
-function joinSession() {
+function networkJoinSession() {
   var textName = document.getElementById('textName').value;
   var textRole = document.getElementById('textRole').value;
   var textPlayer = document.getElementById('textPlayer').value;
@@ -47,7 +51,7 @@ function joinSession() {
     });
 }
 
-function createSession() {
+function networkCreateSession() {
   var textName = document.getElementById('textName').value;
   var requestText = "newSession&sessionName=" + textName;
 
@@ -59,18 +63,22 @@ function createSession() {
     });
 }
 
-function listSessions() {
+function networkListSessions() {
     var requestText = "sessionList";
     networkCallJSON(requestText,
       function(text) {
-        sessionList = text;
+        var sessionListArray = text;
+        sessionList={};
+        for (i in sessionListArray) {
+          sessionList[sessionListArray[i].sessionID]=sessionListArray[i];
+        }
         console.log("The current sessions are: ", text);
-        sessionListForm();
+        sessionListUpdate();
       });
 }
 
 
-function getEverything() {
+function networkGetEverything() {
   if (!sessionID) {return;}
   var textName = document.getElementById('textName').value;
   var requestText = "getAllState&session=" + sessionID;
@@ -78,5 +86,7 @@ function getEverything() {
       function(text) {
         gameState=text;
         puppyListUpdate();
+        buildingListUpdate();
+        if(!mapInitialized) {initMap();}
       });
 }

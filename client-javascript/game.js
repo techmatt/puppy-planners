@@ -6,63 +6,65 @@ var selectedPuppy = null;
 
 
 function init() {
-  listSessions();
+  networkListSessions();
 
   networkUpdate = setInterval(function () {
-    if (mapInitialized) {getEverything()}
+    if (mapInitialized) {networkGetEverything()}
   },1000);
 }
 dojo.ready(init);
 
 
 function sessionListChange () {
-  var selected = document.getElementById('sessionSelect');
+  var selected = document.getElementById('sessionList');
   sessionID = sessionList[selected.value].sessionID;
   // should reset everything here.
   gameState = null; clearMap();
 
-  getEverything();
+  networkGetEverything();
 }
 
-function sessionListForm () {
-  var select = document.getElementById('sessionSelect')
-  while (select.length>0) {
-    select.remove(0);
-  }
-
-  for (var i in sessionList) {
-    var option = document.createElement("option");
-    option.text = sessionList[i].sessionName;
-    option.value = i;
-    select.add(option);
-  }
-
-}
-
-function puppyListUpdate() {
-  var select = document.getElementById('puppyList')
+function listUpdate (elementID, objects, labelingFunction) {
+  var select = document.getElementById(elementID);
   var selected = select.value;
 
   while (select.length>0) {
     select.remove(0);
   }
 
-  var puppies = gameState.puppies;
-  var puppyNames = Object.getOwnPropertyNames(puppies);
+  var objectNames = Object.getOwnPropertyNames(objects);
 
-  var selectedIndex=-1;
-  for (var i in puppyNames) {
-    initials=puppyNames[i];
+  var selectedIndex = -1;
+  for (var i in objectNames) {
+    name = objectNames[i];
     var option = document.createElement("option");
-    option.text = initials+" ("+puppies[initials].name+")";
-    option.value = initials;
+    option.text = labelingFunction(name,objects[name]);
+    option.value = name;
     select.add(option);
-    if (selected==initials) {
+    if (selected==option.value) {
       selectedIndex=i;
-    };
+    }
   }
   select.selectedIndex=selectedIndex;
+}
+
+function buildingListUpdate () {
+  listUpdate ('buildingList',gameState.database.buildings,
+    function (name, object) {return name;}
+  );
+}
+
+function puppyListUpdate () {
+  listUpdate ('puppyList',gameState.puppies,
+    function (name, object) {return name + " ("+object.name+")";}
+  );
   updatePuppyDescription();
+}
+
+function sessionListUpdate () {
+  listUpdate ('sessionList',sessionList,
+    function (name, object) {return object.sessionName;}
+  );
 }
 
 function selectPuppy(initials) {
