@@ -34,7 +34,7 @@ function networkAssignPuppyTask (intials,x,y,task) {
 }
 
 function networkBuild (building,x,y) {
-  var request = "build&session=" + sessionID + "&puppy=" + building + "&x=" + x + "&y="+y;
+  var request = "build&session=" + sessionID + "&building=" + building + "&x=" + x + "&y="+y;
   networkCall(request, function (text) {});
 }
 
@@ -88,5 +88,6 @@ function networkGetEverything() {
         puppyListUpdate();
         buildingListUpdate();
         if(!mapInitialized) {initMap();}
+        console.log("tick ",gameState.data.tickCount);
       });
 }

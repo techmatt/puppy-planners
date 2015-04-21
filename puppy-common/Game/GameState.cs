@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// only for debugging purposes
+using System.Diagnostics;
+
+
 namespace game
 {
     //
@@ -45,7 +49,7 @@ namespace game
     public class GameState
     {
         public Random random = new Random();
-        public Map map = new Map();
+        public Map map;
         public Database database = new Database();
         public GameStateData data = new GameStateData();
 		public GameLog log = new GameLog ();
@@ -57,6 +61,8 @@ namespace game
         {
             for (int i = 0; i < 4; i++)
                 addNewPuppy();
+
+			map = new Map (database);
         }
 
         void addNewPuppy()
@@ -188,6 +194,14 @@ namespace game
             c.culturePuppies.Add(p.initials);
         }
 
+		public void startNewBuilding (BuildingInfo b, MapCell c)
+		{
+			c.newBuilding (b);
+		}
+
+
+
+
         void updatePuppyBuildingBindings()
         {
             List<MapCell> openHomes = new List<MapCell>();
@@ -300,7 +314,20 @@ namespace game
 				}
 			}
 		}
-
+		void processConstruction()
+		{
+			foreach (MapCell c in map.mapAsList.Where(c => !(c.building==null) && !c.building.constructed))
+			{
+				foreach (String p in c.constructionPuppies.Where(p=>!puppies[p].currentlyMoving))
+				{
+					c.building.constructionProgress += .1;  //TODO: make this depend on puppy skill
+					if (c.explorationProgress>=c.building.info.constructionTime)
+					{
+						c.building.finish ();
+					}
+				}
+			}
+		}
 
 
 		void movePuppies()
@@ -326,16 +353,23 @@ namespace game
 
         public void tick()
         {
-            if (data.paused)
-                return;
+			if (data.paused)
+				return;
+			//			Console.WriteLine ("Starting tick " + Convert.ToString (data.tickCount));
+			//			var stopwatch = new Stopwatch();
+
+			//			stopwatch.Start();
 			movePuppies();
-            updateResourceRates();
+			updateResourceRates();
 			processExploration();
-            processProduction();
+			processConstruction();
+			processProduction();
+			updatePuppyBuildingBindings();
 
-            updatePuppyBuildingBindings();
-
-            data.tickCount++;
+			data.tickCount++;
+			//stopwatch.Stop();
+			//var elapsed = stopwatch.ElapsedMilliseconds;
+			//Console.WriteLine ("time for "+Convert.ToString(data.tickCount)+":  " + Convert.ToString (elapsed)+" ms");
         }
     }
 }

@@ -32,19 +32,33 @@ namespace game
         public List<string> culturePuppies = new List<string>();
         public List<string> churchPuppies = new List<string>();
 
-        public Building building;
+        public Building building=null;
         public double scoutCost=1.0;
         public bool explored;
 		public double explorationProgress=0;
+
+		public void newBuilding(BuildingInfo b)
+		{
+			if (!explored) return;
+			if (building!=null) return;
+			//attempt to pay here
+
+			building = new Building (b);
+		}
+		public void destroyBuilding ()
+		{
+			building = null;	
+		}
     }
 
     public class Map
     {
-        public Map()
+		public Map(Database _database)
         {
             Random random = new Random();
+			database = _database;
 
-            for(int x = 0; x < data.GetUpperBound(0); x++)
+			for(int x = 0; x < data.GetUpperBound(0); x++)
                 for(int y = 0; y < data.GetUpperBound(1); y++)
                 {
                     MapCell c = new MapCell();
@@ -62,10 +76,10 @@ namespace game
                         c.type = "dirt";
                 }
             int d = Constants.mapSize / 2 - 1;
-            data[d + 0, d + 0].building = new Building("field");
-            data[d + 0, d + 1].building = new Building("hovel");
-            data[d + 1, d + 0].building = new Building("hovel");
-            data[d + 1, d + 1].building = new Building("field");
+			data[d + 0, d + 0].building = new Building(database.buildings["field"]);
+			data[d + 0, d + 1].building = new Building(database.buildings["hovel"]);
+			data[d + 1, d + 0].building = new Building(database.buildings["hovel"]);
+			data[d + 1, d + 1].building = new Building(database.buildings["field"]);
             scoutCell(new Coord(d + 0, d + 0), 1);
             scoutCell(new Coord(d + 0, d + 1), 1);
             scoutCell(new Coord(d + 1, d + 0), 1);
@@ -119,6 +133,7 @@ namespace game
         // This is just a linear array of all elements in data; it is easier to serialize this.
         //
         public List<MapCell> mapAsList = new List<MapCell>();
+		public Database database;
 
         public MapCell getCell(Coord coord)
         {

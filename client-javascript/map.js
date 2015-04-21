@@ -126,8 +126,23 @@ function mapSquare() {
     //update square color
     if (square.explored) {
       this.background.setAttributeNS(null,"fill",terrainColors[square.type]);
+
+      if (square.building) {
+        //explored and contains a building
+        if (square.building.construted) {
+          this.progressBar.hide();
+        } else {
+          this.progressBar.show();
+          this.progressBar.set(square.building.constructionProgress/square.building.info.constructionTime);
+        }
+      } else {
+        //explored and no building
+        this.progressBar.hide();
+      }
+
       this.progressBar.hide();
     } else {
+      //unexplored
       this.background.setAttributeNS(null,"fill",unexploredColor);
       if (square.explorationProgress>0) {
         this.progressBar.show();

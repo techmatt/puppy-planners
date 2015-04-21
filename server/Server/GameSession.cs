@@ -91,6 +91,12 @@ namespace server
                 state.assignPuppyTask(state.puppies[parameters["puppy"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])], parameters["task"]);
                 return "";
             }
+			if (command == "build")
+			{
+				state.startNewBuilding(state.database.buildings[parameters["building"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])]);
+				return "";
+			}
+
 
             app.error("unrecognized command: " + command);
             return "error: unknown command";

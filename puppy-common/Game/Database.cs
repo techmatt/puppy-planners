@@ -85,6 +85,7 @@ namespace game
     {
         public string name;
         public string type;
+		public double constructionTime;
         public int workCap;
         public int residentCap;
         public int cultureCap;
@@ -168,6 +169,7 @@ namespace game
                 info.residentCap = Convert.ToInt32(line["resident cap"]);
                 info.cultureCap = Convert.ToInt32(line["culture cap"]);
                 info.religionCap = Convert.ToInt32(line["religion cap"]);
+				info.constructionTime = Convert.ToInt32(line["construction time"]);
 
                 var costHeaders = new string[] { "cost A", "cost B", "cost C" };
                 foreach (string header in costHeaders)

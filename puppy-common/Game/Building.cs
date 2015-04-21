@@ -8,25 +8,28 @@ namespace game
 {
     public class Building
     {
-        public Building()
+        public Building(BuildingInfo b)
         {
-
-        }
-        public Building(string _name)
-        {
-            name = _name;
-
-			// Buildings should actually try to look themselves up.
+			name = b.name;
 
             health = 1.0;
 			constructionProgress = 0.0;
 			constructed = false;
 
+			info = b;
+
 			maxBuilders = 1;
-			maxResidents = 0;
-			maxWorkers = 0;
-			maxCulture = 0;
         }
+
+		public void finish ()
+		{
+			this.constructed = true;
+			this.maxBuilders = 0;
+
+			//TODO: This should punt all the people currently working on the building.
+		}
+
+
         //
         // Buildings shouldn't store their position; generally you should pass around the MapCell object which encodes all terrain information.
         //
@@ -37,10 +40,10 @@ namespace game
 		public bool constructed;
 
 		public int maxBuilders;
-		public int maxResidents;
-		public int maxWorkers;
-		public int maxCulture;
-
+//		public int maxResidents;
+//		public int maxWorkers;
+//		public int maxCulture;
+		public BuildingInfo info;
 
 
 		public void construct(double additionalProgress)
