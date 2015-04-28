@@ -67,7 +67,10 @@ namespace server
             Task t = Task.Run(() =>
             {
                 serverTick();
-                Thread.Sleep((int)(1000 / Constants.ticksPerSecond));
+
+                int sleepTimeMS = (int)(1000 / Constants.ticksPerSecond);
+                Thread.Sleep(TimeSpan.FromMilliseconds(sleepTimeMS));
+                //Thread.Sleep();
             });
         }
     }
