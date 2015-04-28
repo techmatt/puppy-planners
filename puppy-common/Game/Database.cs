@@ -41,6 +41,7 @@ namespace game
 
     public class BuildingResourceCost
     {
+        public BuildingResourceCost() {}
         public BuildingResourceCost(string resourceDesc)
         {
             var parts = resourceDesc.Split('=');
@@ -53,6 +54,7 @@ namespace game
 
     public class BuildingResourceProduction
     {
+        public BuildingResourceProduction() {}
         public BuildingResourceProduction(string resourceDesc)
         {
             var parts = resourceDesc.Split('=');
@@ -65,6 +67,7 @@ namespace game
 
     public class BuildingResourceStorage
     {
+        public BuildingResourceStorage() {}
         public BuildingResourceStorage(string resourceDesc)
         {
             var parts = resourceDesc.Split('=');
@@ -75,10 +78,17 @@ namespace game
         public double storage;
     }
 
+	public class ResourceInfo
+	{
+		public string name;
+		public string flavorText;
+	}
+
     public class BuildingInfo
     {
         public string name;
         public string type;
+		public double constructionTime;
         public int workCap;
         public int residentCap;
         public int cultureCap;
@@ -96,6 +106,7 @@ namespace game
         
         public Database()
         {
+			loadResources();
             loadBuildings();
             loadNames();
             loadSkills();
@@ -139,6 +150,17 @@ namespace game
             }
         }
 
+		void loadResources()
+		{
+			foreach (var line in parseCSVFile(Constants.dataDir + "resources.csv"))
+			{
+				ResourceInfo info = new ResourceInfo();
+				info.name = line["name"];
+				info.flavorText = line["flavorText"];
+			}
+
+		}
+
         void loadBuildings()
         {
             foreach(var line in parseCSVFile(Constants.dataDir + "buildings.csv"))
@@ -150,6 +172,7 @@ namespace game
                 info.residentCap = Convert.ToInt32(line["resident cap"]);
                 info.cultureCap = Convert.ToInt32(line["culture cap"]);
                 info.religionCap = Convert.ToInt32(line["religion cap"]);
+				info.constructionTime = Convert.ToInt32(line["construction time"]);
 
                 var costHeaders = new string[] { "cost A", "cost B", "cost C" };
                 foreach (string header in costHeaders)

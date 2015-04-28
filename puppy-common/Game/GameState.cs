@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// only for debugging purposes
+using System.Diagnostics;
+
+
 namespace game
 {
     //
@@ -22,6 +26,7 @@ namespace game
         public bool paused = false;
         public int tickCount = 0;
         public List<Resource> resources = new List<Resource>();
+		//public List<Buildings> buildings = new List<Buildings> ();
     }
 
     public class GameStateSerializer
@@ -31,19 +36,23 @@ namespace game
             map = state.map;
             data = state.data;
             puppies = state.puppies;
+			database = state.database;
+			log = state.log;
         }
         public Map map;
         public Dictionary<string, Puppy> puppies;
         public GameStateData data;
+		public Database database;
+		public GameLog log;
     }
 
     public class GameState
     {
         public Random random = new Random();
-        public Map map = new Map();
+        public Map map;
         public Database database = new Database();
         public GameStateData data = new GameStateData();
-        public GameLog log = new GameLog();
+		public GameLog log = new GameLog ();
 
         // puppies are indexed by initials
         public Dictionary<string, Puppy> puppies = new Dictionary<string, Puppy>();
@@ -52,6 +61,8 @@ namespace game
         {
             for (int i = 0; i < 4; i++)
                 addNewPuppy();
+
+			map = new Map (database);
         }
 
         void addNewPuppy()
@@ -165,6 +176,14 @@ namespace game
             p.cultureLocation = c.coord;
             c.culturePuppies.Add(p.initials);
         }
+
+		public void startNewBuilding (BuildingInfo b, MapCell c)
+		{
+			c.newBuilding (b);
+		}
+
+
+
 
         void updatePuppyBuildingBindings()
         {
@@ -297,14 +316,76 @@ namespace game
             foreach(var r in info.cost)
                 data.getResource(r.resourceName).value -= r.cost;
 
-            c.building = new Building(buildingName);
+            c.building = new Building(database.buildings[buildingName]);
         }
+
+		void processExploration()
+		{
+			foreach (MapCell c in map.mapAsList.Where(c => !c.explored))
+			{
+				foreach (String p in c.scoutPuppies.Where(p=>!puppies[p].currentlyMoving))
+				{
+					c.explorationProgress += .1;  //TODO: make this depend on puppy skill
+					if (c.explorationProgress>=c.scoutCost)
+					{
+						map.scoutCell(c.coord, 0, 1.0);
+					}
+				}
+			}
+		}
+		void processConstruction()
+		{
+			foreach (MapCell c in map.mapAsList.Where(c => !(c.building==null) && !c.building.constructed))
+			{
+				foreach (String p in c.constructionPuppies.Where(p=>!puppies[p].currentlyMoving))
+				{
+					c.building.constructionProgress += .1;  //TODO: make this depend on puppy skill
+					if (c.explorationProgress>=c.building.info.constructionTime)
+					{
+						c.building.finish ();
+					}
+				}
+			}
+		}
+
+
+		void movePuppies()
+		{
+			foreach(Puppy p in puppies.Values)
+			{
+				p.updateDestination();
+				double distance = Math.Sqrt(
+					(p.destination.x - p.currentLocation.x) * (p.destination.x - p.currentLocation.x)
+					+ (p.destination.y - p.currentLocation.y) * (p.destination.y - p.currentLocation.y));
+				if (distance < p.movementRate) {
+					//Arrives at destination or is already there
+					p.currentLocation = p.destination;
+					p.currentlyMoving = false;
+				} else {
+					// move a little bit closer.
+					p.currentLocation.x+=p.movementRate*(p.destination.x - p.currentLocation.x)/distance;
+					p.currentLocation.y+=p.movementRate*(p.destination.y - p.currentLocation.y)/distance;
+					p.currentlyMoving = true;
+				}
+			}
+		}
 
         public void tick()
         {
-            if (data.paused)
-                return;
+			if (data.paused)
+				return;
+			//			Console.WriteLine ("Starting tick " + Convert.ToString (data.tickCount));
+			//			var stopwatch = new Stopwatch();
 
+			//			stopwatch.Start();
+			movePuppies();
+			updateResourceRates();
+			processExploration();
+			processConstruction();
+			processProduction();
+			updatePuppyBuildingBindings();
+
+            // TODO: check to see about duplicate coding between Ghost and I
             updateResourceRates();
             processProduction();
 
@@ -315,7 +396,10 @@ namespace game
             foreach (Puppy p in puppies.Values)
                 p.updateHappiness();
 
-            data.tickCount++;
+			data.tickCount++;
+			//stopwatch.Stop();
+			//var elapsed = stopwatch.ElapsedMilliseconds;
+			//Console.WriteLine ("time for "+Convert.ToString(data.tickCount)+":  " + Convert.ToString (elapsed)+" ms");
         }
     }
 }

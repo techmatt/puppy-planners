@@ -82,9 +82,15 @@ namespace game
         // the name of the role owned by this puppy (designated by Culture)
         public string assignedPlayer = "Unassigned";
 
+		// the current grid coordinates of the puppy
+		public DoubleCoord currentLocation = Constants.invalidDoubleCoord;
+		public bool currentlyMoving = false;
+		public DoubleCoord destination = Constants.invalidDoubleCoord;
+
         public double health = 1.0;
         public double corruption = 0.0;
         public double happiness;
+		public double movementRate = 0.2; //grid squares/tick
 
         // see skills.csv for a list of skill names
         public Dictionary<string, PuppySkill> skills = new Dictionary<string, PuppySkill>();
@@ -109,6 +115,10 @@ namespace game
             s.AppendLine("Culture location = " + cultureLocation.ToString());
             s.AppendLine("Church location = " + churchLocation.ToString());
             s.AppendLine("Health = " + health.ToString());
+			s.AppendLine("Location = " + currentLocation.ToString ());
+			s.AppendLine("Is moving = " + currentlyMoving.ToString ());
+			s.AppendLine ("Destination = " + destination.ToString ());
+
 
             s.AppendLine();
             s.AppendLine("Happiness:");
@@ -183,5 +193,17 @@ namespace game
             }
             happiness = Util.bound(happiness, 0.0, 3.0);
         }
+
+		public void updateDestination()
+		{
+			if (workLocation.isValid ()) {
+				destination = workLocation.toDouble();
+			} else if (homeLocation.isValid ()) {
+				destination = homeLocation.toDouble();
+			} else {
+				destination = currentLocation;
+			}
+		}
+			
     }
 }

@@ -1,0 +1,93 @@
+#header {
+  background-color:black;
+  color:white;
+  text-align:center;
+  padding:5px;
+}
+#leftColumn {
+  line-height:30px;
+  background-color:#eeeeee;
+  /*height:300px;*/
+  width:150px;
+  float:left;
+  padding:5px;
+}
+#rightColumn {
+  width:350px;
+  float:left;
+  padding:10px;
+}
+#footer {
+  background-color:black;
+  color:white;
+  clear:both;
+  text-align:center;
+  padding:5px;
+}
+#mapGridLine {
+  stroke:#888888;
+  stroke-width:2
+}
+#mapLayer {
+  width:520;
+  height:520;
+  border:5px solid #000000;
+}
+
+
+
+#mapPuppyText {
+  fill:black;
+  text-anchor:middle;
+  font-size: 10px;
+}
+#mapPuppyContainer {
+}
+#mapPuppyBackground {
+  x:0;
+  y:0;
+  fill:#0000FF;
+  fill-opacity:0.5;
+  stroke-opacity:0.8;
+  stroke-width:2;
+  stroke:#0000FF;
+}
+#mapPuppyBackgroundSelected {
+  x:0;
+  y:0;
+  fill:#FF0000;
+  fill-opacity:0.5;
+  stroke-opacity:0.8;
+  stroke-width:2;
+  stroke:#FF0000;
+}
+
+
+#mapSquareBackground {}
+#mapSquareContainer {}
+#mapSquareBuilding {
+  fill:black;
+  text-anchor:middle;
+  lineWidth:1;
+  font-size: 16px;}
+
+#mapProgressContainer {}
+#mapProgressBackground {
+    fill:#FFFFFF;
+    fill-opacity:1;
+    x:0;
+    y:0;
+}
+#mapProgressBorder {
+    fill:#FFFFFF;
+    fill-opacity:0;
+    x:0;
+    y:0;
+    stroke-width:2;
+    stroke:#000000;
+}
+#mapProgressBar {
+    fill:#0000FF;
+    x:0;
+    y:0;
+}

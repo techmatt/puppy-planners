@@ -89,6 +89,12 @@ namespace server
                 app.error("unrecognized command: " + command);
                 return "error: unknown command";
             }
+			if (command == "build")
+			{
+				state.startNewBuilding(state.database.buildings[parameters["building"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])]);
+				return "";
+			}
+
 
             return "";
         }

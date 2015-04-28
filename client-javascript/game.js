@@ -2,117 +2,127 @@ var URL = "http://localhost:8080/puppies/";
 var sessionID;
 var sessionList = [];
 var gameState = null;
+var selectedPuppy = null;
 
 
-function init() {}
+function init() {
+  networkListSessions();
+
+  networkUpdate = setInterval(function () {
+    if (mapInitialized) {networkGetEverything()}
+  },1000);
+}
 dojo.ready(init);
 
 
-function createSession() {
-  require(["dojo/request"], function(request) {
-    var textName = document.getElementById('textName').value;
-    var requestText = URL + "p&newSession&sessionName=" + textName;
+function sessionListChange () {
+  var selected = document.getElementById('sessionList');
+  sessionID = sessionList[selected.value].sessionID;
+  // should reset everything here.
+  gameState = null; clearMap();
 
-    request.get(requestText).then(
-      function(text) {
-        console.log("Returned text: ", text);
-        sessionid = text[0].sessionID;
-      },
-      function(error) {
-        console.log("An error occurred: " + error);
-      }
-    );
-  });
+  networkGetEverything();
 }
 
-function joinSession() {
-  require(["dojo/request"], function(request) {
-    var textName = document.getElementById('textName').value;
-    var textRole = document.getElementById('textRole').value;
-    var textPlayer = document.getElementById('textPlayer').value;
+function listUpdate (elementID, objects, labelingFunction) {
+  var select = document.getElementById(elementID);
+  var selected = select.value;
 
-    tempSessionID = null;
-    for (var i in sessionList) {
-      if (sessionList[i].sessionName == textName) {
-        tempSessionID = sessionList[i].sessionID;
-        break;
-      }
-    }
-    if (!tempSessionID) {
-      console.error("Failed to find session " + textName + ". Try reloading sessions.");
-      return;
-    }
-    sessionID = tempSessionID;
+  while (select.length>0) {
+    select.remove(0);
+  }
 
-    var requestText = URL + "p&joinSession&session=" + sessionID + "&playerName=" + textPlayer + "&role=" + textRole;
+  var objectNames = Object.getOwnPropertyNames(objects);
 
-    request.get(requestText).then(
-      function(text) {
-        console.log("Returned text: ", text);
-      },
-      function(error) {
-        console.log("An error occurred: " + error);
-      }
-    );
-  });
-}
-
-function sessionListToString () {
-  var out = "";
-  for (var i in sessionList) {
-    out+=sessionList[i].sessionName+"<br />";
-    var players = sessionList[i].players;
-    for (var j in players){
-      out+="&nbsp&nbsp&nbsp&nbsp"+players[j].role+": "+players[j].name+"<br />\n";
+  var selectedIndex = -1;
+  for (var i in objectNames) {
+    name = objectNames[i];
+    var option = document.createElement("option");
+    option.text = labelingFunction(name,objects[name]);
+    option.value = name;
+    select.add(option);
+    if (selected==option.value) {
+      selectedIndex=i;
     }
   }
-  return out;
+  select.selectedIndex=selectedIndex;
 }
 
-function listSessions() {
-  require(["dojo/request"], function(request) {
-    var requestText = URL+"p&sessionList";
-    request.get(requestText, {handleAs: "json"}).then(
-      function(text) {
-        sessionList = text;
-        console.log("The current sessions are: ", text);
-        dojo.byId("sessionListDisplay").innerHTML = sessionListToString();
-      },
-      function(error) {
-        console.log("An error occurred: " + error);
-      }
-    );
-  });
+function buildingListUpdate () {
+  listUpdate ('buildingList',gameState.database.buildings,
+    function (name, object) {return name;}
+  );
 }
 
+function puppyListUpdate () {
+  listUpdate ('puppyList',gameState.puppies,
+    function (name, object) {return name + " ("+object.name+")";}
+  );
+  updatePuppyDescription();
+}
 
-function getEverything() {
-  require(["dojo/request"], function(request) {
-    var textName = document.getElementById('textName').value;
+function sessionListUpdate () {
+  listUpdate ('sessionList',sessionList,
+    function (name, object) {return object.sessionName;}
+  );
+}
 
-    tempSessionID = null;
-    for (var i in sessionList) {
-      if (sessionList[i].sessionName == textName) {
-        tempSessionID = sessionList[i].sessionID;
-        break;
-      }
+function selectPuppy(initials) {
+  var select = document.getElementById('puppyList');
+  console.log("Attemping to select: "+initials);
+
+  if (selectedPuppy==initials) {
+    select.selectedIndex=-1;
+    selectedPuppy=null;
+    updatePuppyDescription();
+    return;
+  }
+
+  select.selectedIndex=i;
+  for (var i=0; i<select.length;i++) {
+    if (select[i].value==initials) {
+      select.selectedIndex=i;
     }
-    if (!tempSessionID) {
-      console.error("Failed to find session " + textName + ". Try reloading sessions.");
-      return;
-    }
-    sessionID = tempSessionID;
+  }
+  selectedPuppy=initials;
+  updatePuppyDescription();
+}
 
-    var requestText = URL + "p&getAllState&session=" + sessionID;
-    console.log(requestText);
-    request.get(requestText, {handleAs: "json"}).then(
-      function(text) {
-        gameState=text;
-        console.log("Returned text: ", text);
-      },
-      function(error) {
-        console.log("An error occurred: " + error);
-      }
-    );
-  });
+function puppyListChange() {
+  var select = document.getElementById('puppyList')
+  var selected = select.value;
+  if (selected) {
+    selectedPuppy=selected;
+  } else {
+    selectedPuppy=null;
+  }
+
+  updatePuppyDescription();
+}
+
+function updatePuppyDescription() {
+  var text = document.getElementById('puppyDescription')
+
+  if (!selectedPuppy) {
+    text.innerHTML="No puppy selected.";
+  } else {
+    // add text
+    var puppy = gameState.puppies[selectedPuppy];
+    text.innerHTML = JSON.stringify(puppy);
+
+    if (!mapInitialized) {return;}
+  }
+
+  // change the color of the corresponding puppy
+  var puppies = gameState.puppies;
+  var puppynames = Object.getOwnPropertyNames(puppies);
+  if (!mapInitialized) {return;}
+  for (var i in puppynames) {
+    initials = puppynames[i];
+    if(selectedPuppy==initials) {
+      mapSVGPuppies[initials].select();
+    } else {
+      mapSVGPuppies[initials].unselect();
+    }
+  }
 }
