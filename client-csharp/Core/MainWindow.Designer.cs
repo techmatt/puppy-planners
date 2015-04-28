@@ -52,11 +52,15 @@
             this.label7 = new System.Windows.Forms.Label();
             this.comboBoxPuppyAssignment = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.radioButtonBuilder = new System.Windows.Forms.RadioButton();
-            this.radioButtonCulture = new System.Windows.Forms.RadioButton();
-            this.radioButtonMilitary = new System.Windows.Forms.RadioButton();
             this.radioButtonIntrigue = new System.Windows.Forms.RadioButton();
+            this.radioButtonMilitary = new System.Windows.Forms.RadioButton();
+            this.radioButtonCulture = new System.Windows.Forms.RadioButton();
+            this.radioButtonBuilder = new System.Windows.Forms.RadioButton();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxMapCellData = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMap)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -289,51 +293,8 @@
             this.panel1.Controls.Add(this.label8);
             this.panel1.Location = new System.Drawing.Point(1060, 382);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(134, 136);
+            this.panel1.Size = new System.Drawing.Size(134, 114);
             this.panel1.TabIndex = 13;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.label8.Location = new System.Drawing.Point(3, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(125, 16);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Control game as:";
-            // 
-            // radioButtonBuilder
-            // 
-            this.radioButtonBuilder.AutoSize = true;
-            this.radioButtonBuilder.Location = new System.Drawing.Point(9, 23);
-            this.radioButtonBuilder.Name = "radioButtonBuilder";
-            this.radioButtonBuilder.Size = new System.Drawing.Size(57, 17);
-            this.radioButtonBuilder.TabIndex = 1;
-            this.radioButtonBuilder.TabStop = true;
-            this.radioButtonBuilder.Text = "Builder";
-            this.radioButtonBuilder.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonCulture
-            // 
-            this.radioButtonCulture.AutoSize = true;
-            this.radioButtonCulture.Location = new System.Drawing.Point(9, 43);
-            this.radioButtonCulture.Name = "radioButtonCulture";
-            this.radioButtonCulture.Size = new System.Drawing.Size(58, 17);
-            this.radioButtonCulture.TabIndex = 1;
-            this.radioButtonCulture.TabStop = true;
-            this.radioButtonCulture.Text = "Culture";
-            this.radioButtonCulture.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonMilitary
-            // 
-            this.radioButtonMilitary.AutoSize = true;
-            this.radioButtonMilitary.Location = new System.Drawing.Point(9, 66);
-            this.radioButtonMilitary.Name = "radioButtonMilitary";
-            this.radioButtonMilitary.Size = new System.Drawing.Size(57, 17);
-            this.radioButtonMilitary.TabIndex = 1;
-            this.radioButtonMilitary.TabStop = true;
-            this.radioButtonMilitary.Text = "Military";
-            this.radioButtonMilitary.UseVisualStyleBackColor = true;
             // 
             // radioButtonIntrigue
             // 
@@ -346,18 +307,103 @@
             this.radioButtonIntrigue.Text = "Intrigue";
             this.radioButtonIntrigue.UseVisualStyleBackColor = true;
             // 
+            // radioButtonMilitary
+            // 
+            this.radioButtonMilitary.AutoSize = true;
+            this.radioButtonMilitary.Location = new System.Drawing.Point(9, 66);
+            this.radioButtonMilitary.Name = "radioButtonMilitary";
+            this.radioButtonMilitary.Size = new System.Drawing.Size(57, 17);
+            this.radioButtonMilitary.TabIndex = 1;
+            this.radioButtonMilitary.TabStop = true;
+            this.radioButtonMilitary.Text = "Military";
+            this.radioButtonMilitary.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonCulture
+            // 
+            this.radioButtonCulture.AutoSize = true;
+            this.radioButtonCulture.Location = new System.Drawing.Point(9, 43);
+            this.radioButtonCulture.Name = "radioButtonCulture";
+            this.radioButtonCulture.Size = new System.Drawing.Size(58, 17);
+            this.radioButtonCulture.TabIndex = 1;
+            this.radioButtonCulture.TabStop = true;
+            this.radioButtonCulture.Text = "Culture";
+            this.radioButtonCulture.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonBuilder
+            // 
+            this.radioButtonBuilder.AutoSize = true;
+            this.radioButtonBuilder.Location = new System.Drawing.Point(9, 23);
+            this.radioButtonBuilder.Name = "radioButtonBuilder";
+            this.radioButtonBuilder.Size = new System.Drawing.Size(57, 17);
+            this.radioButtonBuilder.TabIndex = 1;
+            this.radioButtonBuilder.TabStop = true;
+            this.radioButtonBuilder.Text = "Builder";
+            this.radioButtonBuilder.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
+            this.label8.Location = new System.Drawing.Point(3, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(125, 16);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Control game as:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(1060, 532);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(106, 16);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Map cell data:";
+            // 
+            // textBoxMapCellData
+            // 
+            this.textBoxMapCellData.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxMapCellData.Enabled = false;
+            this.textBoxMapCellData.Location = new System.Drawing.Point(1060, 551);
+            this.textBoxMapCellData.Multiline = true;
+            this.textBoxMapCellData.Name = "textBoxMapCellData";
+            this.textBoxMapCellData.Size = new System.Drawing.Size(287, 303);
+            this.textBoxMapCellData.TabIndex = 9;
+            this.textBoxMapCellData.Text = "Line 1\r\nLine 2\r\n";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(1057, 499);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(52, 13);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Buildings:";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(1111, 496);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(236, 21);
+            this.comboBox1.TabIndex = 14;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1739, 918);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.comboBoxPuppyAssignment);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.listBoxPuppies);
+            this.Controls.Add(this.textBoxMapCellData);
             this.Controls.Add(this.textBoxPuppyData);
             this.Controls.Add(this.textBoxResources);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.pictureBoxMap);
@@ -414,6 +460,10 @@
         private System.Windows.Forms.RadioButton radioButtonCulture;
         private System.Windows.Forms.RadioButton radioButtonBuilder;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBoxMapCellData;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

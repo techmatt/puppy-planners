@@ -33,8 +33,8 @@ namespace game
         public List<string> churchPuppies = new List<string>();
 
         public Building building;
-        public double scoutCost;
-        public bool explored;
+        public double scoutCostRemaining;
+        public bool explored = false;
     }
 
     public class Map
@@ -51,6 +51,9 @@ namespace game
                     mapAsList.Add(c);
                     c.coord = new Coord(x, y);
 
+                    c.scoutCostRemaining = GameFunctions.scoutCost(c.coord.x + 0.5 - Constants.mapSize / 2.0,
+                                                                   c.coord.y + 0.5 - Constants.mapSize / 2.0);
+
                     //
                     // TODO: do actual terrain somehow
                     //
@@ -65,10 +68,11 @@ namespace game
             data[d + 0, d + 1].building = new Building("hovel");
             data[d + 1, d + 0].building = new Building("hovel");
             data[d + 1, d + 1].building = new Building("field");
-            scoutCell(new Coord(d + 0, d + 0), 1);
-            scoutCell(new Coord(d + 0, d + 1), 1);
-            scoutCell(new Coord(d + 1, d + 0), 1);
-            scoutCell(new Coord(d + 1, d + 1), 1);
+
+            scoutCell(new Coord(d + 0, d + 0), 1, 1e10);
+            scoutCell(new Coord(d + 0, d + 1), 1, 1e10);
+            scoutCell(new Coord(d + 1, d + 0), 1, 1e10);
+            scoutCell(new Coord(d + 1, d + 1), 1, 1e10);
         }
 
         public void removePuppyFromAllWorkLists(Puppy p)
@@ -89,13 +93,27 @@ namespace game
             }
         }
 
-        public void scoutCell(Coord c, int scoutRadius)
+        public void scoutCell(Coord c, int scoutRadius, double scoutValue)
         {
+            int regionsToScout = 0;
+            for (int xOffset = -scoutRadius; xOffset <= scoutRadius; xOffset++)
+                for (int yOffset = -scoutRadius; yOffset <= scoutRadius; yOffset++)
+                    if (!data[c.x + xOffset, c.y + yOffset].explored)
+                        regionsToScout++;
+
             for(int xOffset = -scoutRadius; xOffset <= scoutRadius; xOffset++)
                 for(int yOffset = -scoutRadius; yOffset <= scoutRadius; yOffset++)
                 {
                     MapCell cell = data[c.x + xOffset, c.y + yOffset];
-                    cell.explored = true;
+                    if(!cell.explored)
+                    {
+                        cell.scoutCostRemaining -= scoutValue / regionsToScout;
+                        if(cell.scoutCostRemaining < 0.0)
+                        {
+                            cell.explored = true;
+                            cell.scoutCostRemaining = 0.0;
+                        }
+                    }
                 }
         }
 

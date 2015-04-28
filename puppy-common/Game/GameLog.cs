@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace game
 {
+    public class GameException : Exception
+    {
+        public GameException()
+            : base() { }
+        public GameException(string message)
+            : base(message) { }
+    }
+
     public class GameLogEntry
     {
         public GameLogEntry(int _gameTick, string _message)
@@ -24,10 +32,11 @@ namespace game
             Console.WriteLine("log: " + message);
             entries.Add(new GameLogEntry(gameTick, message));
         }
-        public void error(int gameTick, string message)
+        public GameException error(int gameTick, string message)
         {
             Console.WriteLine("error: " + message);
             entries.Add(new GameLogEntry(gameTick, message));
+            return new GameException(message);
         }
 
         List<GameLogEntry> entries = new List<GameLogEntry>();

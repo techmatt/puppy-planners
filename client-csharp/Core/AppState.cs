@@ -30,6 +30,7 @@ namespace client_csharp
         public bool suppressRequests = false;
         public Dictionary<Puppy, Rectangle> puppyMapLocations = new Dictionary<Puppy, Rectangle>();
         public Dictionary<MapCell, Rectangle> cellMapLocations = new Dictionary<MapCell, Rectangle>();
+        public Coord selectedMapCell = Constants.invalidCoord;
         
         public AppState()
         {
@@ -39,6 +40,7 @@ namespace client_csharp
             brushes.Add("water", new SolidBrush(Color.Blue));
             brushes.Add("grass", new SolidBrush(Color.LawnGreen));
             brushes.Add("dirt", new SolidBrush(Color.SandyBrown));
+            brushes.Add("unexplored", new SolidBrush(Color.FromArgb(255, 50, 50, 50)));
 
             //
             // Puppy brushes
@@ -54,6 +56,7 @@ namespace client_csharp
             //
             brushes.Add("black", new SolidBrush(Color.Black));
             pens.Add("black", new Pen(Color.Black, 1.0f));
+            pens.Add("selection", new Pen(Color.DarkMagenta, 3.0f));
 
             //
             // Fonts
@@ -100,7 +103,14 @@ namespace client_csharp
                 Point cellPoint = new Point(c.coord.x * Constants.mapCellSize, c.coord.y * Constants.mapCellSize);
                 Rectangle mapRectangle = new Rectangle(cellPoint.X, cellPoint.Y, Constants.mapCellSize, Constants.mapCellSize);
                 cellMapLocations[c] = mapRectangle;
-                g.FillRectangle(brushes[c.type], mapRectangle);
+                
+                Brush cellBrush = brushes[c.type];
+                if(!c.explored)
+                    cellBrush = brushes["unexplored"];
+                g.FillRectangle(cellBrush, mapRectangle);
+
+                if (c.coord.Compare(selectedMapCell))
+                    g.DrawRectangle(pens["selection"], mapRectangle);
 
                 if(c.building != null)
                 {

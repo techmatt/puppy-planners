@@ -142,6 +142,19 @@ namespace client_csharp
                 }
             }
 
+            StringBuilder mapCellDesc = new StringBuilder();
+            if(app.selectedMapCell.isValid())
+            {
+                MapCell c = app.gameMap.Find(x => x.coord.Equals(app.selectedMapCell));
+                mapCellDesc.AppendLine("Coord: " + c.coord.ToString());
+                mapCellDesc.AppendLine("Scouting left: " + c.scoutCostRemaining);
+                if(c.building != null)
+                {
+                    mapCellDesc.AppendLine("Building: " + c.building.name);
+                }
+            }
+            textBoxMapCellData.Text = mapCellDesc.ToString();
+
             app.suppressRequests = false;
         }
 
@@ -223,6 +236,9 @@ namespace client_csharp
         {
             if(e.Button == MouseButtons.Left)
             {
+                //
+                // Check for puppy clicks
+                //
                 foreach (var v in app.puppyMapLocations)
                 {
                     if (v.Value.Contains(e.X, e.Y))
@@ -237,8 +253,15 @@ namespace client_csharp
                             }
                             selectedIndex++;
                         }
+                        return;
                     }
                 }
+
+                //
+                // Check for building clicks
+                //
+                foreach (var v in app.cellMapLocations.Where(v => v.Value.Contains(e.X, e.Y)))
+                    app.selectedMapCell = v.Key.coord;
             }
             if(e.Button == MouseButtons.Right)
             {

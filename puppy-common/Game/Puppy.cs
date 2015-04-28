@@ -41,6 +41,11 @@ namespace game
         {
             return (fadeTimeTotal > 0.0);
         }
+        public double currentStrength()
+        {
+            // TODO: implement fading happiness modifiers
+            return fullStrength;
+        }
 
         public string id;
         public string description;
@@ -79,10 +84,17 @@ namespace game
 
         public double health = 1.0;
         public double corruption = 0.0;
+        public double happiness;
 
+        // see skills.csv for a list of skill names
         public Dictionary<string, PuppySkill> skills = new Dictionary<string, PuppySkill>();
         public List<string> attributes = new List<string>();
         public Dictionary<string, HappinessModifier> happinessMods = new Dictionary<string, HappinessModifier>();
+
+        public double skillEffectiveness(string skillName)
+        {
+            return happiness * GameFunctions.skillTrainingToEffectiveness(skills[skillName].totalTraining);
+        }
 
         public string describe()
         {
@@ -163,6 +175,13 @@ namespace game
                 recordHappiness("work", "Has a job", 0.0);
             else
                 recordHappiness("work", "On vacation!", 0.2);
+
+            happiness = 0.0;
+            foreach(HappinessModifier h in happinessMods.Values)
+            {
+                happiness += h.currentStrength();
+            }
+            happiness = Util.bound(happiness, 0.0, 3.0);
         }
     }
 }

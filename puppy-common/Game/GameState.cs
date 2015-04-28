@@ -80,15 +80,13 @@ namespace game
             p.workLocation = Constants.invalidCoord;
 
             if (c.building == null)
-                log.error(data.tickCount, "assign production with no building");
+                throw log.error(data.tickCount, "assign production with no building");
             else if (c.productionPuppies.Count >= database.buildings[c.building.name].workCap)
-                log.error(data.tickCount, "assign production to over-capacity building: " + c.building.name);
-            else
-            {
-                p.task = "production";
-                p.workLocation = c.coord;
-                c.productionPuppies.Add(p.initials);
-            }
+                throw log.error(data.tickCount, "assign production to over-capacity building: " + c.building.name);
+            
+            p.task = "production";
+            p.workLocation = c.coord;
+            c.productionPuppies.Add(p.initials);
         }
 
         void assignPuppyScout(Puppy p, MapCell c)
@@ -97,13 +95,13 @@ namespace game
             p.workLocation = Constants.invalidCoord;
 
             if (c.scoutPuppies.Count >= 1)
-                log.error(data.tickCount, "multiple scouts assigned to same cell");
-            else
-            {
-                p.task = "scout";
-                p.workLocation = c.coord;
-                c.scoutPuppies.Add(p.initials);
-            }
+                throw log.error(data.tickCount, "You cannot assign multiple scouts to the same tile");
+            else if (!c.explored)
+                throw log.error(data.tickCount, "You can only assign scouts to explored tiles");
+
+            p.task = "scout";
+            p.workLocation = c.coord;
+            c.scoutPuppies.Add(p.initials);
         }
 
         void assignPuppyMilitary(Puppy p, MapCell c)
@@ -112,10 +110,7 @@ namespace game
             p.workLocation = Constants.invalidCoord;
 
             if (c.militaryPuppies.Count >= 1)
-            {
-                log.error(data.tickCount, "assign to occupied military location");
-                return;
-            }
+                throw log.error(data.tickCount, "assign to occupied military location");
 
             p.task = "military";
             p.workLocation = c.coord;
@@ -128,10 +123,7 @@ namespace game
             p.workLocation = Constants.invalidCoord;
 
             if (c.building == null || c.constructionPuppies.Count >= 1)
-            {
-                log.error(data.tickCount, "assign to invalid building");
-                return;
-            }
+                throw log.error(data.tickCount, "assign to invalid building");
 
             p.task = "construction";
             p.workLocation = c.coord;
@@ -144,10 +136,7 @@ namespace game
             p.homeLocation = Constants.invalidCoord;
             
             if (c.building == null || c.homePuppies.Count >= database.buildings[c.building.name].residentCap)
-            {
-                log.error(data.tickCount, "assign to invalid building");
-                return;
-            }
+                throw log.error(data.tickCount, "assign to invalid building");
 
             p.homeLocation = c.coord;
             c.homePuppies.Add(p.initials);
@@ -159,10 +148,7 @@ namespace game
             p.churchLocation = Constants.invalidCoord;
 
             if (c.building == null || c.churchPuppies.Count >= database.buildings[c.building.name].religionCap)
-            {
-                log.error(data.tickCount, "assign to invalid building");
-                return;
-            }
+                throw log.error(data.tickCount, "assign to invalid building");
 
             p.churchLocation = c.coord;
             c.churchPuppies.Add(p.initials);
@@ -174,10 +160,7 @@ namespace game
             p.cultureLocation = Constants.invalidCoord;
 
             if (c.building == null || c.culturePuppies.Count >= database.buildings[c.building.name].cultureCap)
-            {
-                log.error(data.tickCount, "assign to invalid building");
-                return;
-            }
+                throw log.error(data.tickCount, "assign to invalid building");
 
             p.cultureLocation = c.coord;
             c.culturePuppies.Add(p.initials);
@@ -232,7 +215,6 @@ namespace game
                     assignPuppyChurch(p, openReligions[0]);
                     openReligions.RemoveRange(0, 1);
                 }
-                p.updateHappiness();
             }
         }
 
@@ -281,6 +263,43 @@ namespace game
             }
         }
 
+        void processScouting()
+        {
+            foreach(MapCell m in map.mapAsList)
+            {
+                foreach(Puppy p in m.scoutPuppies.Select(x => puppies[x]))
+                {
+                    double scoutValue = p.skillEffectiveness("Explorer");
+                    map.scoutCell(m.coord, 1, scoutValue);
+                }
+            }
+        }
+
+        public void buildBuilding(string buildingName, MapCell c)
+        {
+            if(c.building == null)
+                throw log.error(data.tickCount, "You must destroy the existing building first");
+            
+            BuildingInfo info = database.buildings[buildingName];
+            
+            //TODO: verify we have the needed technology
+
+            //
+            // verify we have enough resources to build the building
+            //
+            foreach(var r in info.cost)
+                if (data.getResource(r.resourceName).value < r.cost)
+                    throw log.error(data.tickCount, "You do not have enough " + r.resourceName + " to build a " + buildingName);
+
+            //
+            // subtract the needed resources
+            //
+            foreach(var r in info.cost)
+                data.getResource(r.resourceName).value -= r.cost;
+
+            c.building = new Building(buildingName);
+        }
+
         public void tick()
         {
             if (data.paused)
@@ -289,7 +308,12 @@ namespace game
             updateResourceRates();
             processProduction();
 
+            processScouting();
+
             updatePuppyBuildingBindings();
+
+            foreach (Puppy p in puppies.Values)
+                p.updateHappiness();
 
             data.tickCount++;
         }
