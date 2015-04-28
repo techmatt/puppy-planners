@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.buttonLaunch = new System.Windows.Forms.Button();
-            this.timerGameTick = new System.Windows.Forms.Timer(this.components);
+            this.timerStart = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // buttonLaunch
@@ -43,11 +43,10 @@
             this.buttonLaunch.UseVisualStyleBackColor = true;
             this.buttonLaunch.Click += new System.EventHandler(this.buttonLaunch_Click);
             // 
-            // timerGameTick
+            // timerStart
             // 
-            this.timerGameTick.Enabled = true;
-            this.timerGameTick.Interval = 200;
-            this.timerGameTick.Tick += new System.EventHandler(this.timerGameTick_Tick);
+            this.timerStart.Enabled = true;
+            this.timerStart.Tick += new System.EventHandler(this.timerStart_Tick);
             // 
             // MainWindow
             // 
@@ -65,7 +64,7 @@
         #endregion
 
         private System.Windows.Forms.Button buttonLaunch;
-        private System.Windows.Forms.Timer timerGameTick;
+        private System.Windows.Forms.Timer timerStart;
     }
 }
 

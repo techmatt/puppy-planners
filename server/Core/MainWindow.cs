@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using game;
@@ -22,10 +23,7 @@ namespace server
 
         private void launchServer()
         {
-            timerGameTick.Interval = (int)(1000 / Constants.ticksPerSecond);
-
-            // @daniel: experiment with this to see if it's a compute bottleneck or something else
-            timerGameTick.Interval = 10;
+            //timerGameTick.Interval = (int)(1000 / Constants.ticksPerSecond);
 
             app.server.launch();
             buttonLaunch.Enabled = false;
@@ -50,7 +48,7 @@ namespace server
             launchServer();
         }
 
-        private void timerGameTick_Tick(object sender, EventArgs e)
+        private void serverTick()
         {
             if (app.sessionManager.sessions.Count == 0 && Constants.createDebugSession)
             {
@@ -58,10 +56,19 @@ namespace server
                 app.sessionManager.dispatchCommand("joinSession&session=" + sessionID + "&playerName=DebugPlayer&role=Builder");
             }
 
-            foreach(var s in app.sessionManager.sessions)
+            foreach (var s in app.sessionManager.sessions)
             {
                 s.Value.state.tick();
             }
+        }
+
+        private void timerStart_Tick(object sender, EventArgs e)
+        {
+            Task t = Task.Run(() =>
+            {
+                serverTick();
+                Thread.Sleep((int)(1000 / Constants.ticksPerSecond));
+            });
         }
     }
 }
