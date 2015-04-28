@@ -24,6 +24,9 @@ namespace server
         {
             timerGameTick.Interval = (int)(1000 / Constants.ticksPerSecond);
 
+            // @daniel: experiment with this to see if it's a compute bottleneck or something else
+            timerGameTick.Interval = 10;
+
             app.server.launch();
             buttonLaunch.Enabled = false;
         }

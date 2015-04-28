@@ -1,6 +1,6 @@
 name,tech,type,work cap,resident cap,culture cap,religion cap,construction time,cost A,cost B,cost C,resource A,resource B,resource C,storage A,storage B,storage C
 hovel,none,residence,0,2,0,0,1,wood=10,none,none,none,none,none,food=20,wood=20,none
-field,none,production,1,0,0,0,1,wood=20,none,none,food=0.1,none,none,food=40,none,none
+field,none,production,1,0,0,0,1,wood=20,none,none,food=0.1,none,none,food=40000,none,none
 statue,none,culture,0,0,3,0,1,wood=20,none,none,culture=0.1,none,none,none,none,none
 shrine,mysticism,religion,0,0,0,3,1,wood=15,food=10,none,faith=0.1,none,none,none,none,none
 lumber mill,none,production,1,0,0,0,1,food=20,none,none,wood=0.1,none,none,none,none,none

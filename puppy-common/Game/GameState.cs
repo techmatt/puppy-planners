@@ -374,7 +374,7 @@ namespace game
         {
 			if (data.paused)
 				return;
-			//			Console.WriteLine ("Starting tick " + Convert.ToString (data.tickCount));
+            			Console.WriteLine ("Starting tick " + Convert.ToString (data.tickCount));
 			//			var stopwatch = new Stopwatch();
 
 			//			stopwatch.Start();
