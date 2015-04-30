@@ -15,12 +15,20 @@ namespace game
     //
     public class GameStateData
     {
-        public Resource getResource(string name)
+		public GameStateData()
+		{
+			foreach (ResourceInfo r in Database.Get.resources.Values)
+				resources.Add (new Resource (r));
+		}
+
+		public Resource getResource(string name)
         {
             foreach (Resource r in resources)
                 if (r.name == name) return r;
-            resources.Add(new Resource(name));
-            return resources.Last();
+            //All resources should be declared at game start
+			//resources.Add(new Resource(name));
+			Console.WriteLine("Failed to find resource: "+name);
+            return null;
         }
 
         public bool paused = false;
@@ -36,21 +44,19 @@ namespace game
             map = state.map;
             data = state.data;
             puppies = state.puppies;
-			database = state.database;
 			log = state.log;
         }
         public Map map;
         public Dictionary<string, Puppy> puppies;
         public GameStateData data;
-		public Database database;
 		public GameLog log;
+		public Database database = Database.Get;
     }
 
     public class GameState
     {
         public Random random = new Random();
         public Map map;
-        public Database database = new Database();
         public GameStateData data = new GameStateData();
 		public GameLog log = new GameLog ();
 
@@ -62,7 +68,7 @@ namespace game
             for (int i = 0; i < 4; i++)
                 addNewPuppy();
 
-			map = new Map (database);
+			map = new Map ();
         }
 
         void addNewPuppy()
@@ -92,7 +98,7 @@ namespace game
 
             if (c.building == null)
                 throw log.error(data.tickCount, "assign production with no building");
-            else if (c.productionPuppies.Count >= database.buildings[c.building.name].workCap)
+			else if (c.productionPuppies.Count >= Database.Get.buildings[c.building.name].workCap)
                 throw log.error(data.tickCount, "assign production to over-capacity building: " + c.building.name);
             
             p.task = "production";
@@ -146,7 +152,7 @@ namespace game
             map.removePuppyFromList(p, x => x.homePuppies);
             p.homeLocation = Constants.invalidCoord;
             
-            if (c.building == null || c.homePuppies.Count >= database.buildings[c.building.name].residentCap)
+			if (c.building == null || c.homePuppies.Count >= Database.Get.buildings[c.building.name].residentCap)
                 throw log.error(data.tickCount, "assign to invalid building");
 
             p.homeLocation = c.coord;
@@ -158,7 +164,7 @@ namespace game
             map.removePuppyFromList(p, x => x.churchPuppies);
             p.churchLocation = Constants.invalidCoord;
 
-            if (c.building == null || c.churchPuppies.Count >= database.buildings[c.building.name].religionCap)
+			if (c.building == null || c.churchPuppies.Count >= Database.Get.buildings[c.building.name].religionCap)
                 throw log.error(data.tickCount, "assign to invalid building");
 
             p.churchLocation = c.coord;
@@ -170,20 +176,12 @@ namespace game
             map.removePuppyFromList(p, x => x.culturePuppies);
             p.cultureLocation = Constants.invalidCoord;
 
-            if (c.building == null || c.culturePuppies.Count >= database.buildings[c.building.name].cultureCap)
+			if (c.building == null || c.culturePuppies.Count >= Database.Get.buildings[c.building.name].cultureCap)
                 throw log.error(data.tickCount, "assign to invalid building");
 
             p.cultureLocation = c.coord;
             c.culturePuppies.Add(p.initials);
         }
-
-		public void startNewBuilding (BuildingInfo b, MapCell c)
-		{
-			c.newBuilding (b);
-		}
-
-
-
 
         void updatePuppyBuildingBindings()
         {
@@ -196,7 +194,7 @@ namespace game
             //
             foreach (MapCell c in map.cellsWithBuildings())
             {
-                var info = database.buildings[c.building.name];
+				var info = Database.Get.buildings[c.building.name];
                 
                 int residenceVacancies = info.residentCap - c.homePuppies.Count;
                 for (int i = 0; i < residenceVacancies; i++)
@@ -247,7 +245,7 @@ namespace game
 
             foreach(MapCell c in map.mapAsList.Where(c => c.building != null))
             {
-                BuildingInfo info = database.buildings[c.building.name];
+				BuildingInfo info = Database.Get.buildings[c.building.name];
                 foreach(BuildingResourceProduction production in info.production)
                 {
                     Resource r = data.getResource(production.resourceName);
@@ -286,7 +284,7 @@ namespace game
         {
             foreach(MapCell m in map.mapAsList)
             {
-                foreach(Puppy p in m.scoutPuppies.Select(x => puppies[x]))
+				foreach(Puppy p in m.scoutPuppies.Select(x => puppies[x]).Where(p=>!p.currentlyMoving))
                 {
                     double scoutValue = p.skillEffectiveness("Explorer");
                     map.scoutCell(m.coord, 1, scoutValue);
@@ -296,10 +294,10 @@ namespace game
 
         public void buildBuilding(string buildingName, MapCell c)
         {
-            if(c.building == null)
+            if(c.building != null)
                 throw log.error(data.tickCount, "You must destroy the existing building first");
             
-            BuildingInfo info = database.buildings[buildingName];
+			BuildingInfo info = Database.Get.buildings[buildingName];
             
             //TODO: verify we have the needed technology
 
@@ -316,31 +314,31 @@ namespace game
             foreach(var r in info.cost)
                 data.getResource(r.resourceName).value -= r.cost;
 
-            c.building = new Building(database.buildings[buildingName]);
+			c.building = new Building(Database.Get.buildings[buildingName]);
         }
 
-		void processExploration()
-		{
-			foreach (MapCell c in map.mapAsList.Where(c => !c.explored))
-			{
-				foreach (String p in c.scoutPuppies.Where(p=>!puppies[p].currentlyMoving))
-				{
-					c.explorationProgress += .1;  //TODO: make this depend on puppy skill
-					if (c.explorationProgress>=c.scoutCost)
-					{
-						map.scoutCell(c.coord, 0, 1.0);
-					}
-				}
-			}
-		}
+//		void processExploration()
+//		{
+//			foreach (MapCell c in map.mapAsList.Where(c => !c.explored))
+//			{
+//				foreach (String p in c.scoutPuppies.Where(p=>!puppies[p].currentlyMoving))
+//				{
+//					c.explorationProgress += .1;  //TODO: make this depend on puppy skill
+//					if (c.explorationProgress>=c.scoutCost)
+//					{
+//						map.scoutCell(c.coord, 0, 1.0);
+//					}
+//				}
+//			}
+//		}
 		void processConstruction()
 		{
 			foreach (MapCell c in map.mapAsList.Where(c => !(c.building==null) && !c.building.constructed))
 			{
 				foreach (String p in c.constructionPuppies.Where(p=>!puppies[p].currentlyMoving))
 				{
-					c.building.constructionProgress += .1;  //TODO: make this depend on puppy skill
-					if (c.explorationProgress>=c.building.info.constructionTime)
+					c.building.constructionProgress += puppies[p].skillEffectiveness("Builder");
+					if (c.building.constructionProgress>=c.building.info.constructionTime)
 					{
 						c.building.finish ();
 					}
@@ -380,7 +378,7 @@ namespace game
 			//			stopwatch.Start();
 			movePuppies();
 			updateResourceRates();
-			processExploration();
+			//processExploration();
 			processConstruction();
 			processProduction();
 			updatePuppyBuildingBindings();

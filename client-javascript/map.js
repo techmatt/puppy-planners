@@ -48,6 +48,9 @@ function mapProgressBar(x,y,height,width){
   this.set = function (fraction) {
     this.bar.setAttributeNS(null,"width",fraction*width);
   }
+  this.color = function (color) {
+    this.bar.setAttributeNS(null,"fill",color) // default "#0000FF"
+  }
   this.hide = function() {
     this.container.setAttributeNS(null,"visibility","hidden");
   }
@@ -144,9 +147,9 @@ function mapSquare() {
     } else {
       //unexplored
       this.background.setAttributeNS(null,"fill",unexploredColor);
-      if (square.explorationProgress>0) {
+      if (square.scoutProgress>0) {
         this.progressBar.show();
-        this.progressBar.set(square.explorationProgress/square.scoutCost);
+        this.progressBar.set(square.scoutProgress/square.scoutCost);
       }
 
     }

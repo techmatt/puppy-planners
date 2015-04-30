@@ -81,7 +81,9 @@ namespace game
 	public class ResourceInfo
 	{
 		public string name;
+		public int startingQuantity;
 		public string flavorText;
+		public int baseStorage;
 	}
 
     public class BuildingInfo
@@ -103,8 +105,30 @@ namespace game
         public Dictionary<string, BuildingInfo> buildings = new Dictionary<string, BuildingInfo>();
         public List<PuppyName> puppyNames = new List<PuppyName>();
         public Dictionary<string, SkillInfo> puppySkills = new Dictionary<string, SkillInfo>();
-        
-        public Database()
+		public Dictionary<string, ResourceInfo> resources = new Dictionary<string, ResourceInfo>();
+
+		//Singleton Implementation
+		private static volatile Database instance;
+		private static object syncRoot = new Object();
+		public static Database Get
+		{
+			get 
+			{
+				if (instance == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (instance == null) 
+							instance = new Database();
+					}
+				}
+
+				return instance;
+			}
+		}
+
+
+        Database()
         {
 			loadResources();
             loadBuildings();
@@ -150,13 +174,19 @@ namespace game
             }
         }
 
+		// Load in all of the resources in resources.csv and add them to resources[info]
 		void loadResources()
 		{
 			foreach (var line in parseCSVFile(Constants.dataDir + "resources.csv"))
 			{
 				ResourceInfo info = new ResourceInfo();
 				info.name = line["name"];
+				info.startingQuantity=Convert.ToInt32(line["startingQuantity"]);
+				info.baseStorage=Convert.ToInt32(line["baseStorage"]);
 				info.flavorText = line["flavorText"];
+
+				if (info.name != "none") resources[info.name] = info;
+
 			}
 
 		}

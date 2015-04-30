@@ -1,4 +1,4 @@
-name,flavorText
-Wood,flavor for wood
-Culture,flavor for culture
-Food,flavor for food
+name,startingQuantity,baseStorage,flavorText
+wood,1000,1000,flavor for wood
+culture,1000,1000,flavor for culture
+food,1000,1000,flavor for food

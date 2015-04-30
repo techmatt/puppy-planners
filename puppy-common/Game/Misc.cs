@@ -12,9 +12,11 @@ namespace game
         {
 
         }
-        public Resource(string resourceName)
+		public Resource(ResourceInfo r)
         {
-            name = resourceName;
+			name = r.name;
+			value = r.startingQuantity;
+
         }
         public override string ToString()
         {
@@ -27,6 +29,7 @@ namespace game
         }
         public string name;
         public double value;
+		public double baseStorage;
         public double storage;
         public double productionPerSecond;
     }

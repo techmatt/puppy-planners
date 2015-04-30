@@ -1,8 +1,16 @@
 ﻿<Properties StartupItem="puppy-common.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../server/Core/MainWindow.cs">
+    <Files>
+      <File FileName="Game/Database.cs" Line="1" Column="1" />
+      <File FileName="Game/GameState.cs" Line="1" Column="1" />
+      <File FileName="../server/Core/MainWindow.cs" Line="29" Column="23" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint enabled="false" file="/Users/dwhalen/Desktop/puppy-planners/server/Server/GameSession.cs" line="75" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

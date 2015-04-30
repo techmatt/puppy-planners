@@ -34,7 +34,7 @@ function networkAssignPuppyTask (intials,x,y,task) {
 }
 
 function networkBuild (building,x,y) {
-  var request = "build&session=" + sessionID + "&building=" + building + "&x=" + x + "&y="+y;
+  var request = "buildBuilding&session=" + sessionID + "&name=" + building + "&x=" + x + "&y="+y;
   networkCall(request, function (text) {});
 }
 

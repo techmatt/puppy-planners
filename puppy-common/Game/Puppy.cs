@@ -145,11 +145,11 @@ namespace game
 
         public Puppy(GameState state)
         {
-            PuppyName puppyName = state.database.randomPuppyName(state);
+			PuppyName puppyName = Database.Get.randomPuppyName(state);
             name = puppyName.fullName;
             initials = puppyName.initials;
             
-            foreach(SkillInfo skill in state.database.puppySkills.Values)
+			foreach(SkillInfo skill in Database.Get.puppySkills.Values)
             {
                 skills[skill.name] = new PuppySkill(skill, state.random);
             }

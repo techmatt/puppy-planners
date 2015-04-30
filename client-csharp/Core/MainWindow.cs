@@ -147,7 +147,7 @@ namespace client_csharp
             {
                 MapCell c = app.gameMap.Find(x => x.coord.Equals(app.selectedMapCell));
                 mapCellDesc.AppendLine("Coord: " + c.coord.ToString());
-                mapCellDesc.AppendLine("Scouting left: " + c.scoutCostRemaining);
+				mapCellDesc.AppendLine("Scouting left: " + (c.scoutCost-c.scoutProgress));
                 if(c.building != null)
                 {
                     mapCellDesc.AppendLine("Building: " + c.building.name);

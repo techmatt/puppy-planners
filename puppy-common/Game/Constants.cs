@@ -32,8 +32,8 @@ namespace game
         //
         // Base storage values
         //
-        public const double baseFoodStorage = 20.0;
-        public const double baseWoodStorage = 10.0;
+        //public const double baseFoodStorage = 20.0;
+        //public const double baseWoodStorage = 10.0;
 
         //
         // Debug
