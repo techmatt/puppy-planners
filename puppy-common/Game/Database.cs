@@ -106,6 +106,7 @@ namespace game
         public List<PuppyName> puppyNames = new List<PuppyName>();
         public Dictionary<string, SkillInfo> puppySkills = new Dictionary<string, SkillInfo>();
 		public Dictionary<string, ResourceInfo> resources = new Dictionary<string, ResourceInfo>();
+		public Dictionary<string,Role> playerRoles = Constants.playerRoles;
 
 		//Singleton Implementation
 		private static volatile Database instance;

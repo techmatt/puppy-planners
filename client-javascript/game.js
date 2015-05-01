@@ -28,22 +28,34 @@ function listUpdate (elementID, objects, labelingFunction) {
   var select = document.getElementById(elementID);
   var selected = select.value;
 
+  drawList (elementID, selected, objects, labelingFunction)
+}
+
+function drawList (elementID, targetValue, objects, labelingFunction) {
+  var select = document.getElementById(elementID);
+
+  // delete everything
   while (select.length>0) {
     select.remove(0);
   }
 
+  if (!objects) {return;}
+
   var objectNames = Object.getOwnPropertyNames(objects);
 
   var selectedIndex = -1;
-  for (var i in objectNames) {
-    name = objectNames[i];
+
+  var currentIndex=0;
+  for (var name in objects) {
+    if (!i) {continue;}
     var option = document.createElement("option");
     option.text = labelingFunction(name,objects[name]);
     option.value = name;
     select.add(option);
-    if (selected==option.value) {
-      selectedIndex=i;
+    if (targetValue==option.value) {
+      selectedIndex=currentIndex;
     }
+    currentIndex++;
   }
   select.selectedIndex=selectedIndex;
 }
@@ -125,4 +137,25 @@ function updatePuppyDescription() {
       mapSVGPuppies[initials].unselect();
     }
   }
+
+  // Create the menus for owner and task selection
+  if (selectedPuppy) {
+    var assignedPlayer = gameState.puppies[selectedPuppy].assignedPlayer;
+    var task = gameState.puppies[selectedPuppy].task;
+    drawList("playerRolesList", assignedPlayer, gameState.database.playerRoles, function(name,object){return object.displayName;});
+    drawList("tasksList", task, gameState.database.playerRoles[assignedPlayer].tasks, function(name,object){return object;});
+  } else {
+    drawList("playerRolesList", null, {}, function(name,object){return "";});
+    drawList("tasksList", null, {}, function(object){return "";});
+  }
+}
+
+function playerRolesListChange () {
+  var select = document.getElementById("playerRolesList");
+  networkAssignPuppyToRole(selectedPuppy,select.value);
+}
+function tasksListChange () {
+  var selectRoles = document.getElementById("playerRolesList");
+  var selectTasks = document.getElementById("tasksList");
+  networkAssignPuppyToTask(selectedPuppy,selectRoles.value,selectTasks.value);
 }

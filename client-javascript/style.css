@@ -32,6 +32,21 @@
   text-align:center;
   padding:5px;
 }
+
+#sessionList {
+  width:100px;
+}
+#playerRolesList {
+  width:100px;
+}
+#tasksList {
+  width:100px;
+}
+
+
+
+
+
 #mapGridLine {
   stroke:#888888;
   stroke-width:2

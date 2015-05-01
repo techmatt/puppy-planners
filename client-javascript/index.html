@@ -68,7 +68,16 @@
     <div id="middleColumn">
       <table id="resourceTable">
       </table>
+
+      <select id="playerRolesList"  size=5 onchange = "playerRolesListChange()">
+        <option value="false">List not yet loaded</option>
+      </select>
+
+      <select id="tasksList"  size=5 onchange = "tasksListChange()">
+        <option value="false">List not yet loaded</option>
+      </select>
     </div>
+
 
     <div id="rightColumn">
       <button onclick="initMap()">Draw Map</button>

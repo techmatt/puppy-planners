@@ -42,5 +42,33 @@ namespace game
         public const bool autoJoinSession = true;
         public const bool createDebugSession = true;
         public const bool echoServerRequests = false;
+
+
+
+
+		// I'm going to hardcode in all the role data.  Presumably, this should end up in a csv at some point, but I'm lazy...
+
+		public static Dictionary<string,Role> playerRoles = new Dictionary<string,Role>
+		{
+			{"unassigned",new Role("unassigned", "Unassigned",new List<string>())},
+			{"military",new Role("military", "Military",new List<string> (new string[] {"soldier"}))},
+			{"culture",new Role("culture", "Culture",new List<string> (new string[] {"preacher"}))},
+			{"intrigue",new Role("intrigue", "Intrigue",new List<string> (new string[] {"spy"}))},
+			{"builder",new Role("builder", "Builder",new List<string> (new string[] {"scout","builder"}))},
+		};
     }
+
+	public class Role // these will be defined for each player.  
+	{
+		public string name;
+		public string displayName;	// the name that the UI uses
+		public List<string> tasks;	// the tasks that the corresponding player can assign to them
+
+		public Role (string _name, string _displayName, List<string> _tasks)
+		{
+			name = _name;
+			displayName=_displayName;
+			tasks = _tasks;
+		}
+	}
 }

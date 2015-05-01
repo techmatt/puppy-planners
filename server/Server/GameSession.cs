@@ -40,25 +40,28 @@ namespace server
             string roleName = parameters["role"];
             PlayerData playerData = new PlayerData();
             playerData.name = playerName;
-            if (Enum.TryParse(roleName, out playerData.role))
-            {
-                foreach(var p in data.players)
-                {
-                    if (p.name == playerData.name || p.role == playerData.role)
-                    {
-                        app.error("duplicate role or name");
-                        return "error: name or role already exists in session";
-                    }
-                }
-                app.log(EventType.Server, "adding " + playerData.name + " as " + playerData.role.ToString());
-                data.players.Add(playerData);
-                return "";
-            }
-            else
-            {
-                app.error("invalid role");
-                return "error: invalid role";
-            }
+			return "";
+			// I'm going to cut the role checking: we want the server to be totally independent from the UI: it shouldn't care about who is issuing orders.
+
+//            if (Enum.TryParse(roleName, out playerData.role))
+//            {
+//                foreach(var p in data.players)
+//                {
+//                    if (p.name == playerData.name || p.role == playerData.role)
+//                    {
+//                        app.error("duplicate role or name");
+//                        return "error: name or role already exists in session";
+//                    }
+//                }
+//                app.log(EventType.Server, "adding " + playerData.name + " as " + playerData.role.ToString());
+//                data.players.Add(playerData);
+//                return "";
+//            }
+//            else
+//            {
+//                app.error("invalid role");
+//                return "error: invalid role";
+//            }
         }
 
         public string dispatchCommand(string command, Dictionary<string, string> parameters)
@@ -76,12 +79,14 @@ namespace server
             //
             // Action
             //
-            if(command == "setPaused")
-                state.data.paused = Convert.ToBoolean(parameters["paused"]);
-            else if(command == "assignPuppyToRole")
-                state.puppies[parameters["puppy"]].assignedPlayer = parameters["role"];
+			if (command == "setPaused")
+				state.data.paused = Convert.ToBoolean (parameters ["paused"]);
+			else if (command == "assignPuppyToRole")
+				state.puppies [parameters ["puppy"]].assignRole (parameters ["role"]);
             else if (command == "assignPuppyTask")
                 state.assignPuppyTask(state.puppies[parameters["puppy"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])], parameters["task"]);
+			else if (command == "assignPuppyToTask")
+				state.puppies [parameters ["puppy"]].assignTask (parameters ["role"],parameters ["task"]);
             else if (command == "buildBuilding")
                 state.buildBuilding(parameters["name"], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])]);
             else

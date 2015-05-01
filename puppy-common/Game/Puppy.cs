@@ -59,10 +59,19 @@ namespace game
         public string name;
         public string initials;
 
+
+		// the name of the role owned by this puppy (designated by Culture)
+		// this should always be one of the Roles in Constants.playerRoles
+		public string assignedPlayer = "unassigned";
+
+		//task is the task that the puppy is assigned for each Role
+		public Dictionary<string,string> tasks=new Dictionary<string,string>();
+		public string task; // should always be tasks[assignedPlayer]
+
         // task is the name of the skill being used
         // possible tasks:
         // scout, military, work, construction
-        public string task = "none";
+        //public string task = "none";
 
         // the name of the skill being learned (only relevant of the puppy is at a school-equivalent building)
         public string learningSkill = "none";
@@ -79,8 +88,6 @@ namespace game
         // religionLocation = location of the church they attend
         public Coord churchLocation = Constants.invalidCoord;
 
-        // the name of the role owned by this puppy (designated by Culture)
-        public string assignedPlayer = "Unassigned";
 
 		// the current grid coordinates of the puppy
 		public DoubleCoord currentLocation = Constants.invalidDoubleCoord;
@@ -108,7 +115,7 @@ namespace game
             s.AppendLine("Initials = " + initials);
             s.AppendLine("Full name = " + name);
             s.AppendLine("Assigned to " + assignedPlayer);
-            s.AppendLine("Task = " + task);
+			s.AppendLine("Task = " + tasks[assignedPlayer]);
             s.AppendLine("Skill being learned = " + learningSkill);
             s.AppendLine("Work location = " + workLocation.ToString());
             s.AppendLine("Home location = " + homeLocation.ToString());
@@ -154,6 +161,10 @@ namespace game
                 skills[skill.name] = new PuppySkill(skill, state.random);
             }
 
+			// initialize the roles
+			foreach (string r in Constants.playerRoles.Keys)
+				tasks.Add(r, "");
+
             //
             // TODO: add random puppy attributes
             //
@@ -164,6 +175,20 @@ namespace game
             happinessMods[id] = new HappinessModifier(id, description, strength);
         }
         
+		public void assignRole(string _assignedPlayer)
+		{
+			assignedPlayer = _assignedPlayer;
+			task = tasks [assignedPlayer];
+		}
+
+		public void assignTask(string _assignedPlayer, string _task)
+		{
+			assignedPlayer = _assignedPlayer;
+			task = _task;
+			tasks [assignedPlayer] = task;
+			Console.WriteLine ("assigned task");
+		}
+
         public void updateHappiness()
         {
             if (homeLocation.isValid())

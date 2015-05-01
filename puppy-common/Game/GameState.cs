@@ -91,7 +91,8 @@ namespace game
 			else if (c.productionPuppies.Count >= Database.Get.buildings[c.building.name].workCap)
                 throw log.error(data.tickCount, "assign production to over-capacity building: " + c.building.name);
             
-            p.task = "production";
+			p.assignedPlayer = "builder";
+			p.tasks["builder"] = "builder";
             p.workLocation = c.coord;
             c.productionPuppies.Add(p.initials);
         }
@@ -106,7 +107,8 @@ namespace game
             else if (!c.explored)
                 throw log.error(data.tickCount, "You can only assign scouts to explored tiles");
 
-            p.task = "scout";
+			p.assignedPlayer = "builder";
+			p.tasks["builder"] = "scout";
             p.workLocation = c.coord;
             c.scoutPuppies.Add(p.initials);
         }
@@ -119,7 +121,8 @@ namespace game
             if (c.militaryPuppies.Count >= 1)
                 throw log.error(data.tickCount, "assign to occupied military location");
 
-            p.task = "military";
+			p.assignedPlayer = "military";
+            p.tasks["military"] = "soldier";
             p.workLocation = c.coord;
             c.militaryPuppies.Add(p.initials);
         }
@@ -132,7 +135,8 @@ namespace game
             if (c.building == null || c.constructionPuppies.Count >= 1)
                 throw log.error(data.tickCount, "assign to invalid building");
 
-            p.task = "construction";
+			p.assignedPlayer = "builder";
+            p.tasks["builder"] = "builder";
             p.workLocation = c.coord;
             c.constructionPuppies.Add(p.initials);
         }

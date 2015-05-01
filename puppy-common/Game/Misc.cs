@@ -69,14 +69,6 @@ namespace game
         }
     }
 
-    public enum Role
-    {
-        Builder,
-        Culture,
-        Intrigue,
-        Military
-    }
-
     public class Misc
     {
         
