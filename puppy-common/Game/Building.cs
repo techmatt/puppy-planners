@@ -19,6 +19,7 @@ namespace game
 
             health = 1.0;
 			constructionProgress = 0.0;
+			constructionCost = b.constructionTime; // maybe we should make this depend on position or other factors
 			constructed = false;
 
 			info = b;
@@ -26,7 +27,13 @@ namespace game
 			maxBuilders = 1;
         }
 
-		public void finish ()
+		public void constructBuilding(double value) {
+			this.constructionProgress += value;
+			if (this.constructionProgress > this.constructionCost)
+				this.finishBuilding ();
+		}
+
+		public void finishBuilding ()
 		{
 			this.constructed = true;
 			this.maxBuilders = 0;
@@ -43,6 +50,7 @@ namespace game
         public double health;
 		public double constructionProgress;
 		public bool constructed;
+		public double constructionCost;
 
 		public int maxBuilders;
 //		public int maxResidents;

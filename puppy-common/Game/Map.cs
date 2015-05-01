@@ -76,6 +76,10 @@ namespace game
 			data[d + 0, d + 1].building = new Building(Database.Get.buildings["hovel"]);
 			data[d + 1, d + 0].building = new Building(Database.Get.buildings["hovel"]);
 			data[d + 1, d + 1].building = new Building(Database.Get.buildings["field"]);
+			data [d + 0, d + 0].building.finishBuilding ();
+			data [d + 0, d + 1].building.finishBuilding ();
+			data [d + 1, d + 0].building.finishBuilding ();
+			data [d + 1, d + 1].building.finishBuilding ();
 
             scoutCell(new Coord(d + 0, d + 0), 1, 1e10);
             scoutCell(new Coord(d + 0, d + 1), 1, 1e10);

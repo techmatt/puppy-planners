@@ -18,23 +18,13 @@ namespace game
 		public GameStateData()
 		{
 			foreach (ResourceInfo r in Database.Get.resources.Values)
-				resources.Add (new Resource (r));
+				resources [r.name] = new Resource (r);
+				//resources.Add (new Resource (r));
 		}
-
-		public Resource getResource(string name)
-        {
-            foreach (Resource r in resources)
-                if (r.name == name) return r;
-            //All resources should be declared at game start
-			//resources.Add(new Resource(name));
-			Console.WriteLine("Failed to find resource: "+name);
-            return null;
-        }
 
         public bool paused = false;
         public int tickCount = 0;
-        public List<Resource> resources = new List<Resource>();
-		//public List<Buildings> buildings = new List<Buildings> ();
+		public Dictionary<string, Resource> resources = new Dictionary<string, Resource>(); //Now a dictionary
     }
 
     public class GameStateSerializer
@@ -237,10 +227,10 @@ namespace game
 
         void updateResourceRates()
         {
-            foreach (Resource r in data.resources)
+			foreach (Resource r in data.resources.Values)
             {
                 r.productionPerSecond = 0.0;
-                r.storage = 0.0;
+				r.storage = Database.Get.resources[r.name].baseStorage;
             }
 
             foreach(MapCell c in map.mapAsList.Where(c => c.building != null))
@@ -248,12 +238,12 @@ namespace game
 				BuildingInfo info = Database.Get.buildings[c.building.name];
                 foreach(BuildingResourceProduction production in info.production)
                 {
-                    Resource r = data.getResource(production.resourceName);
+					Resource r = data.resources[production.resourceName];
                     r.productionPerSecond += production.productionPerSecond;
                 }
                 foreach (BuildingResourceStorage storage in info.storage)
                 {
-                    Resource r = data.getResource(storage.resourceName);
+					Resource r = data.resources[storage.resourceName];
                     r.storage += storage.storage;
                 }
             }
@@ -271,7 +261,7 @@ namespace game
 
         void processProduction()
         {
-            foreach (Resource r in data.resources)
+            foreach (Resource r in data.resources.Values)
             {
                 r.value += r.productionPerSecond / Constants.ticksPerSecond;
                 if (r.value < 0.0) processResourceDeficit(r, -r.value);
@@ -305,43 +295,25 @@ namespace game
             // verify we have enough resources to build the building
             //
             foreach(var r in info.cost)
-                if (data.getResource(r.resourceName).value < r.cost)
+				if (data.resources[r.resourceName].value < r.cost)
                     throw log.error(data.tickCount, "You do not have enough " + r.resourceName + " to build a " + buildingName);
 
             //
             // subtract the needed resources
             //
             foreach(var r in info.cost)
-                data.getResource(r.resourceName).value -= r.cost;
+				data.resources[r.resourceName].value -= r.cost;
 
 			c.building = new Building(Database.Get.buildings[buildingName]);
         }
-
-//		void processExploration()
-//		{
-//			foreach (MapCell c in map.mapAsList.Where(c => !c.explored))
-//			{
-//				foreach (String p in c.scoutPuppies.Where(p=>!puppies[p].currentlyMoving))
-//				{
-//					c.explorationProgress += .1;  //TODO: make this depend on puppy skill
-//					if (c.explorationProgress>=c.scoutCost)
-//					{
-//						map.scoutCell(c.coord, 0, 1.0);
-//					}
-//				}
-//			}
-//		}
+			
 		void processConstruction()
 		{
 			foreach (MapCell c in map.mapAsList.Where(c => !(c.building==null) && !c.building.constructed))
 			{
 				foreach (String p in c.constructionPuppies.Where(p=>!puppies[p].currentlyMoving))
 				{
-					c.building.constructionProgress += puppies[p].skillEffectiveness("Builder");
-					if (c.building.constructionProgress>=c.building.info.constructionTime)
-					{
-						c.building.finish ();
-					}
+					c.building.constructBuilding (puppies [p].skillEffectiveness ("Builder"));
 				}
 			}
 		}
@@ -372,21 +344,18 @@ namespace game
         {
 			if (data.paused)
 				return;
-            			Console.WriteLine ("Starting tick " + Convert.ToString (data.tickCount));
+            
+			Console.WriteLine ("Starting tick " + Convert.ToString (data.tickCount));
 			//			var stopwatch = new Stopwatch();
 
 			//			stopwatch.Start();
 			movePuppies();
 			updateResourceRates();
-			//processExploration();
 			processConstruction();
 			processProduction();
 			updatePuppyBuildingBindings();
-
-            // TODO: check to see about duplicate coding between Ghost and I
             updateResourceRates();
             processProduction();
-
             processScouting();
 
             updatePuppyBuildingBindings();

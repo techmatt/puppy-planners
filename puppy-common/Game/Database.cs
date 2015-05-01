@@ -81,9 +81,9 @@ namespace game
 	public class ResourceInfo
 	{
 		public string name;
-		public int startingQuantity;
+		public double startingQuantity;
 		public string flavorText;
-		public int baseStorage;
+		public double baseStorage;
 	}
 
     public class BuildingInfo
@@ -181,8 +181,8 @@ namespace game
 			{
 				ResourceInfo info = new ResourceInfo();
 				info.name = line["name"];
-				info.startingQuantity=Convert.ToInt32(line["startingQuantity"]);
-				info.baseStorage=Convert.ToInt32(line["baseStorage"]);
+				info.startingQuantity=Convert.ToDouble(line["startingQuantity"]);
+				info.baseStorage=Convert.ToDouble(line["baseStorage"]);
 				info.flavorText = line["flavorText"];
 
 				if (info.name != "none") resources[info.name] = info;

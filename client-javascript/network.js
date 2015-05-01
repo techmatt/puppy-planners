@@ -87,6 +87,7 @@ function networkGetEverything() {
         gameState=text;
         puppyListUpdate();
         buildingListUpdate();
+        updateResourceTable();
         if(!mapInitialized) {initMap();}
         console.log("tick ",gameState.data.tickCount);
       });

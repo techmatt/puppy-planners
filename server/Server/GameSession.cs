@@ -78,11 +78,11 @@ namespace server
             //
             if(command == "setPaused")
                 state.data.paused = Convert.ToBoolean(parameters["paused"]);
-            if(command == "assignPuppyToRole")
+            else if(command == "assignPuppyToRole")
                 state.puppies[parameters["puppy"]].assignedPlayer = parameters["role"];
-            if (command == "assignPuppyTask")
+            else if (command == "assignPuppyTask")
                 state.assignPuppyTask(state.puppies[parameters["puppy"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])], parameters["task"]);
-            if (command == "buildBuilding")
+            else if (command == "buildBuilding")
                 state.buildBuilding(parameters["name"], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])]);
             else
             {

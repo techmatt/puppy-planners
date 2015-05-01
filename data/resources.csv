@@ -2,3 +2,5 @@ name,startingQuantity,baseStorage,flavorText
 wood,1000,1000,flavor for wood
 culture,1000,1000,flavor for culture
 food,1000,1000,flavor for food
+faith,1000,1000,flavor for faith
+angst,0,1000,test resource

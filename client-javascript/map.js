@@ -132,18 +132,20 @@ function mapSquare() {
 
       if (square.building) {
         //explored and contains a building
-        if (square.building.construted) {
+        if (square.building.constructed) {
           this.progressBar.hide();
         } else {
           this.progressBar.show();
-          this.progressBar.set(square.building.constructionProgress/square.building.info.constructionTime);
+          //console.log(square.building.constructionProgress);
+          // console.log(square.building.constructionCost);
+          // console.log(square.coord);
+          // console.log(square.coord.x*13+square.coord.y);
+          this.progressBar.set(square.building.constructionProgress/square.building.constructionCost);
         }
       } else {
         //explored and no building
         this.progressBar.hide();
       }
-
-      this.progressBar.hide();
     } else {
       //unexplored
       this.background.setAttributeNS(null,"fill",unexploredColor);
@@ -162,7 +164,7 @@ function mapSquare() {
     if (square.building) {
       this.buildingName.textContent=square.building.name;
     } else {
-      this.buildingName.textContent="---";
+      this.buildingName.textContent=".";
     }
   }
 }

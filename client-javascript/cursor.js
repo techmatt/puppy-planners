@@ -31,18 +31,39 @@ document.onkeydown = function(evt) {
     }
 };
 
+function getSquare(x,y) {
+  var list = gameState.map.mapAsList;
+  for (i in list) {
+    if (list[i].coord.x==x&&list[i].coord.y==y) {return list[i]}
+  }
+  console.error("Failed to find square at coordinates",x,y)
+  return null
+}
+
 function squareClick(x,y) {
   switch (cursorMode.name) {
     case "unselected": return;
     case "movePuppy":
       var initials = cursorMode.puppy.initials;
-      networkAssignPuppyTask(cursorMode.puppy.initials,x,y,"scout");
+      assignPuppyToSquare(initials,x,y)
       resetCursor()
       return;
     case "build":
       networkBuild(cursorMode.building.name,x,y);
       resetCursor()
   }
+}
+
+function assignPuppyToSquare (initials, x,y) {
+  var square = getSquare(x,y);
+
+  if (square.building && !square.building.constructed) {
+    networkAssignPuppyTask(initials,x,y,"construction");
+    return;
+  }
+
+
+  networkAssignPuppyTask(cursorMode.puppy.initials,x,y,"scout");
 }
 
 function movePuppy() {
@@ -56,7 +77,10 @@ function movePuppy() {
 }
 
 function build() {
-  if (!selectedPuppy) {return;}
+  var select = document.getElementById('buildingList');
+  var selected = select.value;
+  if (!selected) {return;}
+
   if (cursorMode.name=="build") {
     resetCursor();
     return;

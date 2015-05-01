@@ -29,7 +29,7 @@ namespace game
         }
         public string name;
         public double value;
-		public double baseStorage;
+//		public double baseStorage;
         public double storage;
         public double productionPerSecond;
     }
