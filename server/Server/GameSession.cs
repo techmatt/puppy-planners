@@ -83,8 +83,9 @@ namespace server
 				state.data.paused = Convert.ToBoolean (parameters ["paused"]);
 			else if (command == "assignPuppyToRole")
 				state.puppies [parameters ["puppy"]].assignRole (parameters ["role"]);
-            else if (command == "assignPuppyTask")
-                state.assignPuppyTask(state.puppies[parameters["puppy"]], state.map.data[Convert.ToInt32(parameters["x"]), Convert.ToInt32(parameters["y"])], parameters["task"]);
+			//assignPuppyTask is depricated.  Puppies should be assigned and given move orders seperately.
+        	else if (command == "movePuppy")
+				state.movePuppy (state.puppies [parameters ["puppy"]], state.map.data [Convert.ToInt32 (parameters ["x"]), Convert.ToInt32 (parameters ["y"])]);
 			else if (command == "assignPuppyToTask")
 				state.puppies [parameters ["puppy"]].assignTask (parameters ["role"],parameters ["task"]);
             else if (command == "buildBuilding")

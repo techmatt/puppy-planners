@@ -30,8 +30,12 @@ function listUpdate (elementID, objects, labelingFunction) {
 
   drawList (elementID, selected, objects, labelingFunction)
 }
-
 function drawList (elementID, targetValue, objects, labelingFunction) {
+  drawListValue(elementID, targetValue, objects, labelingFunction, function (name, object) {return name});
+}
+
+function drawListValue (elementID, targetValue, objects, labelingFunction,valueFunction) {
+
   var select = document.getElementById(elementID);
 
   // delete everything
@@ -50,7 +54,7 @@ function drawList (elementID, targetValue, objects, labelingFunction) {
     if (!i) {continue;}
     var option = document.createElement("option");
     option.text = labelingFunction(name,objects[name]);
-    option.value = name;
+    option.value = valueFunction(name,objects[name]);
     select.add(option);
     if (targetValue==option.value) {
       selectedIndex=currentIndex;
@@ -143,10 +147,10 @@ function updatePuppyDescription() {
     var assignedPlayer = gameState.puppies[selectedPuppy].assignedPlayer;
     var task = gameState.puppies[selectedPuppy].task;
     drawList("playerRolesList", assignedPlayer, gameState.database.playerRoles, function(name,object){return object.displayName;});
-    drawList("tasksList", task, gameState.database.playerRoles[assignedPlayer].tasks, function(name,object){return object;});
+    drawListValue("tasksList", task, gameState.database.playerRoles[assignedPlayer].tasks, function(name,object){return object;},function(name,object){return object;});
   } else {
     drawList("playerRolesList", null, {}, function(name,object){return "";});
-    drawList("tasksList", null, {}, function(object){return "";});
+    drawListValue("tasksList", null, {}, function(object){return "";},function(name,object){return "";});
   }
 }
 

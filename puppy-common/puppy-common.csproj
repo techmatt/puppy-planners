@@ -54,6 +54,8 @@
     <Compile Include="Game\Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AssetManager.cs" />
+    <Compile Include="Game\GameStateTick.cs" />
+    <Compile Include="Game\Technologies.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

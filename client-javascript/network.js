@@ -36,6 +36,10 @@ function networkAssignPuppyToRole (intials,role) {
   var request = "assignPuppyToRole&session=" + sessionID + "&puppy=" + intials +"&role="+role;
   networkCall(request, function (text) {});
 }
+function networkMovePuppy (intials,x,y) {
+  var request = "movePuppy&session=" + sessionID + "&puppy=" + intials + "&x=" + x + "&y="+y;
+  networkCall(request, function (text) {});
+}
 function networkAssignPuppyToTask (intials,role,task) {
   var request = "assignPuppyToTask&session=" + sessionID + "&puppy=" + intials +"&role="+role+"&task="+task;
   networkCall(request, function (text) {});

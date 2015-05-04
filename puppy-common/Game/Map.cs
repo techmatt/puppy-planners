@@ -24,6 +24,8 @@ namespace game
         // Many only make sense in the context of buildings, but for parallel
         // structure, it is cleanest if everything lives in MapCell.
         //
+
+		public List<string> employees = new List<string> ();
         public List<string> scoutPuppies = new List<string>();
         public List<string> militaryPuppies = new List<string>();
         public List<string> constructionPuppies = new List<string>();
@@ -31,6 +33,16 @@ namespace game
         public List<string> homePuppies = new List<string>();
         public List<string> culturePuppies = new List<string>();
         public List<string> churchPuppies = new List<string>();
+
+		public List<string> puppies = new List<string>();
+		public void addPuppy (Puppy p)
+		{
+			puppies.Add (p.initials);
+		}
+		public void removePuppy (Puppy p)
+		{
+			puppies.Remove (p.initials);
+		}
 
         public Building building;
         public bool explored = false;
@@ -143,6 +155,12 @@ namespace game
         }
 
         public MapCell[,] data = new MapCell[Constants.mapSize, Constants.mapSize];
+
+		public MapCell cellAtCoord(Coord c)
+		{
+			return data[c.x,c.y];
+		}
+
 
         //
         // This is just a linear array of all elements in data; it is easier to serialize this.

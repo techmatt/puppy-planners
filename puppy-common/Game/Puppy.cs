@@ -93,6 +93,7 @@ namespace game
 		public DoubleCoord currentLocation = Constants.invalidDoubleCoord;
 		public bool currentlyMoving = false;
 		public DoubleCoord destination = Constants.invalidDoubleCoord;
+		public bool isEmployee = false;
 
         public double health = 1.0;
         public double corruption = 0.0;
@@ -183,10 +184,17 @@ namespace game
 
 		public void assignTask(string _assignedPlayer, string _task)
 		{
-			assignedPlayer = _assignedPlayer;
+			assignRole(_assignedPlayer);
 			task = _task;
 			tasks [assignedPlayer] = task;
 			Console.WriteLine ("assigned task");
+		}
+
+		public void moveToCell(MapCell c)
+		{
+			workLocation = c.coord;
+			destination = workLocation.toDouble ();
+			isEmployee = false;
 		}
 
         public void updateHappiness()
@@ -218,17 +226,6 @@ namespace game
             }
             happiness = Util.bound(happiness, 0.0, 3.0);
         }
-
-		public void updateDestination()
-		{
-			if (workLocation.isValid ()) {
-				destination = workLocation.toDouble();
-			} else if (homeLocation.isValid ()) {
-				destination = homeLocation.toDouble();
-			} else {
-				destination = currentLocation;
-			}
-		}
 			
     }
 }

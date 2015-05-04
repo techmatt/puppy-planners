@@ -54,7 +54,7 @@ namespace game
 			{"military",new Role("military", "Military",new List<string> (new string[] {"soldier"}))},
 			{"culture",new Role("culture", "Culture",new List<string> (new string[] {"preacher"}))},
 			{"intrigue",new Role("intrigue", "Intrigue",new List<string> (new string[] {"spy"}))},
-			{"builder",new Role("builder", "Builder",new List<string> (new string[] {"scout","builder"}))},
+			{"builder",new Role("builder", "Builder",new List<string> (new string[] {"scout","worker"}))},
 		};
     }
 

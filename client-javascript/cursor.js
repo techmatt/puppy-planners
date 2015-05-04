@@ -45,8 +45,9 @@ function squareClick(x,y) {
     case "unselected": return;
     case "movePuppy":
       var initials = cursorMode.puppy.initials;
-      assignPuppyToSquare(initials,x,y)
-      resetCursor()
+      //assignPuppyToSquare(initials,x,y)
+      networkMovePuppy(initials,x,y);
+      resetCursor();
       return;
     case "build":
       networkBuild(cursorMode.building.name,x,y);
@@ -54,17 +55,18 @@ function squareClick(x,y) {
   }
 }
 
-function assignPuppyToSquare (initials, x,y) {
-  var square = getSquare(x,y);
-
-  if (square.building && !square.building.constructed) {
-    networkAssignPuppyTask(initials,x,y,"construction");
-    return;
-  }
-
-
-  networkAssignPuppyTask(cursorMode.puppy.initials,x,y,"scout");
-}
+//Depricated
+// function assignPuppyToSquare (initials, x,y) {
+//   var square = getSquare(x,y);
+//
+//   if (square.building && !square.building.constructed) {
+//     networkAssignPuppyTask(initials,x,y,"construction");
+//     return;
+//   }
+//
+//
+//   networkAssignPuppyTask(cursorMode.puppy.initials,x,y,"scout");
+// }
 
 function movePuppy() {
   if (!selectedPuppy) {return;}

@@ -39,10 +39,10 @@ namespace game
         public string initials;
     }
 
-    public class BuildingResourceCost
+    public class ResourceCost
     {
-        public BuildingResourceCost() {}
-        public BuildingResourceCost(string resourceDesc)
+        public ResourceCost() {}
+        public ResourceCost(string resourceDesc)
         {
             var parts = resourceDesc.Split('=');
             resourceName = parts[0];
@@ -86,18 +86,31 @@ namespace game
 		public double baseStorage;
 	}
 
+	public class TechnologyInfo
+	{
+		public string name;
+		public string displayName;
+		public List<ResourceCost> cost;
+		public List<string> prereqs;
+		public string role;
+	}
+
+
     public class BuildingInfo
     {
         public string name;
         public string type;
 		public double constructionTime;
-        public int workCap;
+		public string employeeTask;
+		public int employeeCapacity;
+        //public int workCap;
         public int residentCap;
         public int cultureCap;
         public int religionCap;
-        public List<BuildingResourceCost> cost = new List<BuildingResourceCost>();
+        public List<ResourceCost> cost = new List<ResourceCost>();
         public List<BuildingResourceProduction> production = new List<BuildingResourceProduction>();
         public List<BuildingResourceStorage> storage = new List<BuildingResourceStorage>();
+		public string tech;
     }
 
     public class Database
@@ -107,6 +120,7 @@ namespace game
         public Dictionary<string, SkillInfo> puppySkills = new Dictionary<string, SkillInfo>();
 		public Dictionary<string, ResourceInfo> resources = new Dictionary<string, ResourceInfo>();
 		public Dictionary<string,Role> playerRoles = Constants.playerRoles;
+		public Dictionary<string,TechnologyInfo> techs = new Dictionary<string,TechnologyInfo> ();
 
 		//Singleton Implementation
 		private static volatile Database instance;
@@ -135,6 +149,7 @@ namespace game
             loadBuildings();
             loadNames();
             loadSkills();
+			loadTechnologies ();
         }
 
         public PuppyName randomPuppyName(GameState state)
@@ -192,6 +207,35 @@ namespace game
 
 		}
 
+		void loadTechnologies()
+		{
+			foreach(var line in parseCSVFile(Constants.dataDir + "techs.csv"))
+			{
+				TechnologyInfo info = new TechnologyInfo ();
+				info.name = line ["name"];
+				info.displayName = line ["display name"];
+				info.role = line ["role"];
+
+				var costHeaders = new string[] { "cost A", "cost B", "cost C" };
+				foreach (string header in costHeaders)
+				{
+					string desc = line[header];
+					if (desc != "none")
+						info.cost.Add(new ResourceCost(desc));
+				}
+
+				var reqHeaders = new string[] { "req A", "req B", "req C" };
+				foreach (string header in reqHeaders)
+				{
+					string desc = line[header];
+					if (desc != "none")
+						info.cost.Add(new ResourceCost(desc));
+				}
+
+				if (info.name != "none") techs[info.name] = info;
+			}
+		}
+
         void loadBuildings()
         {
             foreach(var line in parseCSVFile(Constants.dataDir + "buildings.csv"))
@@ -199,8 +243,12 @@ namespace game
                 BuildingInfo info = new BuildingInfo();
                 info.name = line["name"];
                 info.type = line["type"];
-                info.workCap = Convert.ToInt32(line["work cap"]);
-                info.residentCap = Convert.ToInt32(line["resident cap"]);
+				info.tech = line ["tech"];
+                //info.workCap = Convert.ToInt32(line["work cap"]);
+                
+				info.employeeTask = line ["employee task"];
+				info.employeeCapacity = Convert.ToInt32(line["employee capacity"]);
+				info.residentCap = Convert.ToInt32(line["resident cap"]);
                 info.cultureCap = Convert.ToInt32(line["culture cap"]);
                 info.religionCap = Convert.ToInt32(line["religion cap"]);
 				info.constructionTime = Convert.ToInt32(line["construction time"]);
@@ -210,7 +258,7 @@ namespace game
                 {
                     string resourceDesc = line[header];
                     if (resourceDesc != "none")
-                        info.cost.Add(new BuildingResourceCost(resourceDesc));
+                        info.cost.Add(new ResourceCost(resourceDesc));
                 }
 
                 var resourceHeaders = new string[] { "resource A", "resource B", "resource C" };

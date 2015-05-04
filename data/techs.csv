@@ -1,46 +1,5 @@
-name,tech,pop,cost A,cost B,cost C,resource A,resource B,resource C,storage A,storage B,storage C
-hovel,none,2,wood=10,none,none,none,none,none,food=20,wood=20,none
-field,none,0,wood=20,none,none,food=0.1,none,none,food=40,none,none
-statue,none,0,wood=20,none,none,culture=0.1,none,none,none,none,none
-shrine,mysticism,0,wood=15,food=10,none,faith=0.1,none,none,none,none,none
-lumber mill,none,0,food=20,none,none,wood=0.1,none,none,none,none,none
-greenhouse,ecology,0,steel=10,none,none,food=0.5,electricity=-0.1,none,none,none,none
-coal plant,industrial revolution,0,steel=20,wood=10,none,electricity=0.2,coal=-0.1,none,none,none,none
-house,modernism,4,steel=20,wood=20,none,electricity=-0.1,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
-none,none,0,none,none,none,none,none,none,none,none,none
+tech,display name,role,cost A,cost B,cost C,req A,req B,req C
+mysticism,Mysticism,builder,faith=10,none,none,none,none,none
+ecology,Ecology,builder,wood=10,none,none,none,none,none
+industrialRevolution,Industrial Revolution,builder,culture=10,none,none,s,none,none
+modernism,Modernism,builder,culture=10,none,none,industrialRevolution,none,none
