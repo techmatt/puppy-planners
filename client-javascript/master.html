@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <meta charset="utf-8">
+    <title>Puppies Paradise</title>
+    <!-- load scripts -->
+    <script src="dojo.js"></script>
+    <script src="game.js"></script>
+    <script src="network.js"></script>
+    <script src="map.js"></script>
+    <script src="cursor.js"></script>
+    <script src="resources.js"></script>
+
+    <script>
+    //Extract the sessionID from the URL request
+    var query = window.location.search.substring(1).split("&")
+    locationSearch = {};
+    for (i in query) {
+      var parts = query[i].split("=");
+      locationSearch[parts[0]]=parts[1];
+    }
+    sessionID = locationSearch["session"];
+    </script>
+
+
+</head>
+
+<body>
+
+    <div id="leftColumn">
+      <p>
+      <button onclick="networkGetEverything()">Update State</button>
+      <p>
+      <select id="puppyList"  size=10 onchange = "puppyListChange()">
+        <option value="false">List not yet loaded</option>
+      </select>
+      <p>
+
+      <button onclick="movePuppy()">Move Puppy</button>
+      <p>
+
+      <select id="buildingList"  size=10 >
+        <option value="false">List not yet loaded</option>
+      </select>
+      <p>
+
+      <button onclick="build()">Build</button>
+
+    </div>
+
+    <div id="middleColumn">
+      <table id="resourceTable">
+      </table>
+
+      <select id="playerRolesList"  size=5 onchange = "playerRolesListChange()">
+        <option value="false">List not yet loaded</option>
+      </select>
+
+      <select id="tasksList"  size=5 onchange = "tasksListChange()">
+        <option value="false">List not yet loaded</option>
+      </select>
+    </div>
+
+
+    <div id="rightColumn">
+      <button onclick="initMap()">Draw Map</button>
+      <p>
+      <svg xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        id="svgMap"
+        width="520"
+        height="520"
+        style="border:5px solid #000000;"
+      >
+      This element has not loaded because your browser does not support the HTML5 SVG tag.
+      </svg>
+      <p id="puppyDescription">
+        No puppy selected.
+      </p>
+      <!-- <p id = "puppyMouseOver"></p> -->
+    </div>
+</body>
+</html>

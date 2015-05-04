@@ -62,7 +62,7 @@ namespace game
 	{
 		public string name;
 		public string displayName;	// the name that the UI uses
-		public List<string> tasks;	// the tasks that the corresponding player can assign to them
+		public List<string> tasks = new List<string>();	// the tasks that the corresponding player can assign to them
 
 		public Role (string _name, string _displayName, List<string> _tasks)
 		{

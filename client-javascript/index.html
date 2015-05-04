@@ -2,17 +2,14 @@
 <html>
 <head>
 
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
 
     <meta charset="utf-8">
     <title>Puppies Paradise</title>
     <!-- load scripts -->
     <script src="dojo.js"></script>
-    <script src="game.js"></script>
+    <script src="index.js"></script>
     <script src="network.js"></script>
-    <script src="map.js"></script>
-    <script src="cursor.js"></script>
-    <script src="resources.js"></script>
 </head>
 
 <body>
@@ -21,80 +18,21 @@
 
       Game name: <input type="text" id="textName" value = "DebugSession">
 
-      <p>
-      Role:
-      <select id="textRole">
-        <option value="Builder">Builder</option>
-        <option value="Culture">Culture</option>
-        <option value="Intrigue">Intrigue</option>
-        <option value="Military">Military</option>
-      </select>
 
       <p>
-      Player Name: <input type="text" id="textPlayer" value="DebugPlayer">
-      <p>
       <button onclick="networkCreateSession()">Create new game</button>
-      <p>
-      <button onclick="networkJoinSession()">Join game with role</button>
       <p>
       <button onclick="networkListSessions()">List games</button>
       <p>
 
-      <!-- <p id="sessionListDisplay">Session list not loaded</p> -->
       <select id="sessionList"  size=10 onchange = "sessionListChange()">
         <option value="false">List not yet loaded</option>
       </select>
-
-      <p>
-      <button onclick="networkGetEverything()">Update State</button>
-      <p>
-      <select id="puppyList"  size=10 onchange = "puppyListChange()">
-        <option value="false">List not yet loaded</option>
-      </select>
-      <p>
-
-      <button onclick="movePuppy()">Move Puppy</button>
-      <p>
-
-      <select id="buildingList"  size=10 >
-        <option value="false">List not yet loaded</option>
-      </select>
-      <p>
-
-      <button onclick="build()">Build</button>
-
     </div>
 
     <div id="middleColumn">
-      <table id="resourceTable">
-      </table>
-
-      <select id="playerRolesList"  size=5 onchange = "playerRolesListChange()">
-        <option value="false">List not yet loaded</option>
-      </select>
-
-      <select id="tasksList"  size=5 onchange = "tasksListChange()">
-        <option value="false">List not yet loaded</option>
-      </select>
-    </div>
-
-
-    <div id="rightColumn">
-      <button onclick="initMap()">Draw Map</button>
-      <p>
-      <svg xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        id="svgMap"
-        width="520"
-        height="520"
-        style="border:5px solid #000000;"
-      >
-      This element has not loaded because your browser does not support the HTML5 SVG tag.
-      </svg>
-      <p id="puppyDescription">
-        No puppy selected.
+      <p id="roleLinks">
       </p>
-      <!-- <p id = "puppyMouseOver"></p> -->
     </div>
 </body>
 </html>

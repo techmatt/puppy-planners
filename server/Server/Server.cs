@@ -97,7 +97,8 @@ namespace server
                     //
                     try
                     {
-                        responseString = File.ReadAllText(Constants.fileHostDir + parts[0].Replace("/puppies/", ""));
+						string filePath = parts[0].Split('?')[0];
+                        responseString = File.ReadAllText(Constants.fileHostDir + filePath.Replace("/puppies/", ""));
                     }
                     catch (Exception ex)
                     {

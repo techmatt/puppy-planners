@@ -6,23 +6,12 @@ var selectedPuppy = null;
 
 
 function init() {
-  networkListSessions();
 
   networkUpdate = setInterval(function () {
-    if (mapInitialized) {networkGetEverything()}
+    {networkGetEverything()}
   },1000);
 }
 dojo.ready(init);
-
-
-function sessionListChange () {
-  var selected = document.getElementById('sessionList');
-  sessionID = sessionList[selected.value].sessionID;
-  // should reset everything here.
-  gameState = null; clearMap();
-
-  networkGetEverything();
-}
 
 function listUpdate (elementID, objects, labelingFunction) {
   var select = document.getElementById(elementID);

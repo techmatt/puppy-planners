@@ -59,7 +59,7 @@ namespace game
 
         // puppies are indexed by initials
         public Dictionary<string, Puppy> puppies = new Dictionary<string, Puppy>();
-		public List<Puppy> deadPuppies;
+		public List<Puppy> deadPuppies = new List<Puppy>();
 
 
         public GameState()

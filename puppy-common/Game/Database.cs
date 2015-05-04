@@ -90,8 +90,8 @@ namespace game
 	{
 		public string name;
 		public string displayName;
-		public List<ResourceCost> cost;
-		public List<string> prereqs;
+		public List<ResourceCost> cost = new List<ResourceCost> ();
+		public List<string> prereqs = new List<string>();
 		public string role;
 	}
 
@@ -229,7 +229,7 @@ namespace game
 				{
 					string desc = line[header];
 					if (desc != "none")
-						info.cost.Add(new ResourceCost(desc));
+						info.prereqs.Add(desc);
 				}
 
 				if (info.name != "none") techs[info.name] = info;

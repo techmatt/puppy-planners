@@ -70,7 +70,7 @@ function networkCreateSession() {
     function(text) {
       console.log("Returned text: ", text);
       sessionid = text[0].sessionID;
-      listSessions();
+      networklistSessions();
     });
 }
 
@@ -91,7 +91,6 @@ function networkListSessions() {
 
 function networkGetEverything() {
   if (!sessionID) {return;}
-  var textName = document.getElementById('textName').value;
   var requestText = "getAllState&session=" + sessionID;
   networkCallJSON(requestText,
       function(text) {
