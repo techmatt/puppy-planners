@@ -55,7 +55,7 @@ function drawListValue (elementID, targetValue, objects, labelingFunction,valueF
 
 function buildingListUpdate () {
   listUpdate ('buildingList',gameState.database.buildings,
-    function (name, object) {return name;}
+    function (name, object) {return object.displayName;}
   );
 }
 

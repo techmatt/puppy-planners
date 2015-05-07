@@ -59,6 +59,7 @@ namespace game
         public string name;
         public string initials;
 
+		public CombatStats combat = new CombatStats ();
 
 		// the name of the role owned by this puppy (designated by Culture)
 		// this should always be one of the Roles in Constants.playerRoles

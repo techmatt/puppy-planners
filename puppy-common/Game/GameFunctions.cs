@@ -26,3 +26,40 @@ namespace game
         }
     }
 }
+
+
+public static class Extensions
+{
+	public static int ArgMax (this List<double> list)
+	{
+		if (list.Count==0)
+			return 0;
+
+		var max = list[0];
+		int index = 0;
+		for (int i = 1; i < list.Count; i++)
+			if (list[i]>max)
+			{
+				max = list[i];
+				index = i;
+			}
+			
+		return index;
+	}
+	public static int ArgMin (this List<double> list)
+	{
+		if (list.Count==0)
+			return 0;
+
+		var max = list[0];
+		int index = 0;
+		for (int i = 1; i < list.Count; i++)
+			if (list[i]<max)
+			{
+				max = list[i];
+				index = i;
+			}
+
+		return index;
+	}
+}

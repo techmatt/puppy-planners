@@ -99,6 +99,7 @@ namespace game
     public class BuildingInfo
     {
         public string name;
+		public string displayName;
         public string type;
 		public double constructionTime;
 		public string employeeTask;
@@ -242,6 +243,7 @@ namespace game
             {
                 BuildingInfo info = new BuildingInfo();
                 info.name = line["name"];
+				info.displayName = line ["displayName"];
                 info.type = line["type"];
 				info.tech = line ["tech"];
                 //info.workCap = Convert.ToInt32(line["work cap"]);

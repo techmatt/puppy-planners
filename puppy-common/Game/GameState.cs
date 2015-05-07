@@ -89,13 +89,6 @@ namespace game
 				c.addPuppy (p);
 		}
 
-		public void killPuppy(Puppy p)
-		{
-			map.cellAtCoord (p.workLocation).employees.Remove (p.initials);
-			puppies.Remove (p.name);
-			deadPuppies.Add (p);
-		}
-
         void assignPuppyHome(Puppy p, MapCell c)
         {
             map.removePuppyFromList(p, x => x.homePuppies);

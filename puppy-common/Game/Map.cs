@@ -49,11 +49,6 @@ namespace game
 
         public double scoutCost;
 		public double scoutProgress = 0;
-
-		public void destroyBuilding ()
-		{
-			building = null;	
-		}
     }
 
     public class Map

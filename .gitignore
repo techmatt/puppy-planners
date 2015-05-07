@@ -108,3 +108,7 @@ server/obj/Debug/server.csproj.FilesWrittenAbsolute.txt
 /client-csharp/obj/Release/DesignTimeResolveAssemblyReferences.cache
 
 *.csv#
+
+*.userprefs
+
+puppy-common/puppy-common.userprefs

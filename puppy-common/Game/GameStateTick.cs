@@ -190,6 +190,8 @@ namespace game
 			processConstruction();	//req: assignEmployees
 			processProduction();	//req: assignEmployeees
 
+			decrementCooldowns ();
+
 			updatePuppyBuildingBindings();
 			processScouting();
 
