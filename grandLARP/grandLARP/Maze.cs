@@ -10,35 +10,32 @@ namespace grandLARP
     {
         public int x;
         public int y;
+        public int radius;
         public string trueID;
+        public string sampledID;
+
+        public void resampleID()
+        {
+
+        }
     }
 
     class Maze
     {
         Maze()
         {
-            critialLetters.Add('T');
-            critialLetters.Add('S');
-            critialLetters.Add('M');
-            critialLetters.Add('N');
-            critialLetters.Add('R');
+            radiusLetters.Add('A'); // 0
+            radiusLetters.Add('B'); // 1
+            radiusLetters.Add('C'); // 2
+            radiusLetters.Add('Z'); // 3
 
-            randomLetters.Add('A');
-            randomLetters.Add('E');
-            randomLetters.Add('I');
-
-            radiusLetters.Add('B'); // 0
-            radiusLetters.Add('C'); // 1
-            radiusLetters.Add('D'); // 2
-            radiusLetters.Add('F'); // 3
-
-            // ZZZZZZZ 0120120 *******
-            // ZABCDEZ 2012111 *A+T+N*
-            // ZFGHIJZ 1001012 *B++C+*
-            // ZKLMNOZ 0200110 *++S++*
-            // ZPQRSTZ 2110011 *+U+C+*
-            // ZUVWXYZ 1201122 *W+++L*
-            // ZZZZZZZ 0210210 *******
+            // ******* 3333333 ******* 6543456 3333333
+            // *ABCDE* 3012113 *A+T+N* 5432345 3222223
+            // *FGHIJ* 3001013 *BC+U+* 4321234 3211123
+            // *KLMNO* 3200113 *C+S+P* 3210123 3210123
+            // *PQRST* 3110013 *D+C++* 4321234 3211123
+            // *UVWXY* 3201123 *W+++L* 5432345 3222223
+            // ******* 3333333 ******* 6543456 3333333
 
             // S = shuttle landing site
             // L = Hannah's lab
@@ -49,7 +46,12 @@ namespace grandLARP
             // C = warp crystal chips
             // W = warp crystal mines
             // A = Almanac
+            // P = pool of water
+            // D = one of Hannah's devices
 
+            // a locations  is *I*L*
+            // R is the radius, L is the label, I is the 'interesting' flag (vowel is good, consnant is boring)
+            // presence of a Z anywhere is really bad
         }
         public List<char> critialLetters = new List<char>();
         public List<char> randomLetters = new List<char>();
