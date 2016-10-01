@@ -50,9 +50,9 @@ symbol=b.jpg
 
 id=H
 internalName=none
-name=A cloudy landscape
+name=A snowy plain
 desc=Description! There is stuff here.
-image=clouds.jpg
+image=snowyPlain.jpg
 symbol=none
 
 id=I
@@ -64,9 +64,9 @@ symbol=c.jpg
 
 id=J
 internalName=none
-name=Persistent auroras
+name=An intimidating red crystal pillar
 desc=Description! There is stuff here.
-image=aurora.jpg
+image=crystalShaft.jpg
 symbol=none
 
 id=K
@@ -78,14 +78,14 @@ symbol=none
 
 id=L
 internalName=none
-name=Persistent auroras
+name=A frosty landscape
 desc=Description! There is stuff here.
-image=aurora.jpg
+image=frosty.jpg
 symbol=none
 
 id=M
 internalName=shuttleLanding
-name=Shuttle landing site
+name=The shuttle landing site
 desc=Description! There is stuff here.
 image=shuttleLanding.jpg
 symbol=none

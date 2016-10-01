@@ -50,7 +50,10 @@ namespace grandLARP
             var scaleHeight = (int)(bmpIn.Height * scale);
 
             graph.FillRectangle(brush, new RectangleF(0, 0, Constants.imgWidth, Constants.imgHeight));
-            graph.DrawImage(bmpOut, new Rectangle(((int)Constants.imgWidth - scaleWidth) / 2, ((int)Constants.imgHeight - scaleHeight) / 2, scaleWidth, scaleHeight));
+            //graph.DrawImage(bmpIn, new Rectangle(((int)Constants.imgWidth - scaleWidth) / 2, ((int)Constants.imgHeight - scaleHeight) / 2, scaleWidth, scaleHeight));
+            graph.DrawImage(bmpIn, 0, 0, Constants.imgWidth, Constants.imgHeight);
+
+            //bmpOut.Save(Constants.outDir + "test.jpg");
 
             return bmpOut;
         }
@@ -76,7 +79,7 @@ namespace grandLARP
             {
                 for(int j = 0; j < 5; j++)
                 {
-                    vertices[i + 1, j + 1].trueID = lines[i][j].ToString();
+                    vertices[i + 1, j + 1].trueID = lines[j][i].ToString();
                     vertices[i + 1, j + 1].isBorder = false;
                 }
             }
@@ -139,7 +142,7 @@ namespace grandLARP
                 }
             }
 
-            imgOut.Save(Constants.outDir + "GMImage.png");
+            imgOut.Save(Constants.outDir + "GMImage.jpg");
         }
 
         public Maze()
