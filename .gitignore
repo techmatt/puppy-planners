@@ -123,3 +123,11 @@ puppy-common/puppy-common.userprefs
 /grandLARP/grandLARP/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
 /grandLARP/grandLARP/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
 /grandLARP/grandLARP/obj/Debug/grandLARP.csproj.FileListAbsolute.txt
+/grandLARP/out
+/grandLARP/grandLARP/bin/Debug/*.exe
+/grandLARP/grandLARP/bin/Debug/*.pdb
+/grandLARP/grandLARP/obj/Debug/*.resources
+/grandLARP/grandLARP/obj/Debug/*.Cache
+/grandLARP/grandLARP/obj/Debug/*.cache
+/grandLARP/grandLARP/obj/Debug/*.exe
+/grandLARP/grandLARP/obj/Debug/*.pdb

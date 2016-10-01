@@ -1,0 +1,195 @@
+
+id=A
+internalName=almanac
+name=A peaceful cave
+desc=Description! There is stuff here.
+image=almnac.jpg
+symbol=a.jpg
+
+id=B
+internalName=none
+name=A foreboding expanse
+desc=Description! There is stuff here.
+image=expanse.jpg
+symbol=none
+
+id=C
+internalName=picnic
+name=A calming outcropping
+desc=Description! There is stuff here.
+image=picnic.jpg
+symbol=b.jpg
+
+id=D
+internalName=none
+name=A hostile mountainscape
+desc=Description! There is stuff here.
+image=evil.jpg
+symbol=none
+
+id=E
+internalName=habitat
+name=A crystal cave
+desc=Description! There is stuff here.
+image=habitat.jpg
+symbol=b.jpg
+
+id=F
+internalName=button
+name=A turquoise cavern
+desc=Description! There is stuff here.
+image=button.jpg
+symbol=b.jpg
+
+id=G
+internalName=chipsA
+name=An eerie chamber
+desc=Description! There is stuff here.
+image=chipsA.jpg
+symbol=b.jpg
+
+id=H
+internalName=none
+name=A cloudy landscape
+desc=Description! There is stuff here.
+image=clouds.jpg
+symbol=none
+
+id=I
+internalName=uzuki
+name=Giant crystal formations
+desc=Description! There is stuff here.
+image=uzuki.jpg
+symbol=c.jpg
+
+id=J
+internalName=none
+name=Persistent auroras
+desc=Description! There is stuff here.
+image=aurora.jpg
+symbol=none
+
+id=K
+internalName=none
+name=Persistent auroras
+desc=Description! There is stuff here.
+image=aurora.jpg
+symbol=none
+
+id=L
+internalName=none
+name=Persistent auroras
+desc=Description! There is stuff here.
+image=aurora.jpg
+symbol=none
+
+id=M
+internalName=shuttleLanding
+name=Shuttle landing site
+desc=Description! There is stuff here.
+image=shuttleLanding.jpg
+symbol=none
+
+id=N
+internalName=none
+name=A perlious descent
+desc=Description! There is stuff here.
+image=descent.jpg
+symbol=none
+
+id=O
+internalName=pool
+name=A crystalline pool
+desc=Description! There is stuff here.
+image=pool.jpg
+symbol=a.jpg
+
+id=P
+internalName=device
+name=A spooky crystal forest
+desc=Description! There is stuff here.
+image=device.jpg
+symbol=a.jpg
+
+id=Q
+internalName=none
+name=A mysterious pyramid
+desc=Description! There is stuff here.
+image=pyramid.jpg
+symbol=none
+
+id=R
+internalName=chipsB
+name=A harsh and jagged basin
+desc=Description! There is stuff here.
+image=chipsB.jpg
+symbol=none
+
+id=S
+internalName=caveA
+name=A mesmerizing cave
+desc=Description! There is stuff here.
+image=caveA.jpg
+symbol=none
+
+id=T
+internalName=none
+name=The Pillars of Creation
+desc=Description! There is stuff here.
+image=pillars.jpg
+symbol=none
+
+id=U
+internalName=warpMine
+name=A scintillating quarry
+desc=Description! There is stuff here.
+image=warpMine.jpg
+symbol=none
+
+id=V
+internalName=none
+name=A blue landscape
+desc=Description! There is stuff here.
+image=landscapeA.jpg
+symbol=none
+
+id=W
+internalName=none
+name=A daunting cloudscape
+desc=Description! There is stuff here.
+image=landscapeB.jpg
+symbol=none
+
+id=X
+internalName=none
+name=A frightening red cavern
+desc=Description! There is stuff here.
+image=caveB.jpg
+symbol=none
+
+id=Y
+internalName=lab
+name=A mysterious shaft
+desc=Description! There is stuff here.
+image=lab.jpg
+symbol=none
+
+# ******* 3333333 ******* 6543456 3333333
+# *ABCDE* 3012123 *A+T+N* 5432345 3222223
+# *FGHIJ* 3021013 *BC+U+* 4321234 3211123
+# *KLMNO* 3200113 *++S+P* 3210123 3210123
+# *PQRST* 3110013 *D+C++* 4321234 3211123
+# *UVWXY* 3231123 *W+++L* 5432345 3222223
+# ******* 3333333 ******* 6543456 3333333
+
+# S = shuttle landing site
+# L = Hannah's lab
+# N = Niesseling's portal
+# B = button to irritate the Niesseling
+# U = Uzuki Umiak
+# T = Tabitha's picnic table with her corpse
+# C = warp crystal chips
+# W = warp crystal mines
+# A = Almanac
+# P = pool of water
+# D = one of Hannah's devices
