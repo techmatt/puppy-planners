@@ -28,15 +28,50 @@ namespace grandLARP
         public string sampledID;
         public string publicName, internalName, desc, symbol, image;
         public bool isBorder = true;
-
-        public void resampleID()
+        
+        public string randomLetter(Maze m)
         {
+            char c = 'A';
+            c += (char)m.random.Next(0, 26);
+            return c.ToString();
+        }
+        public void resampleID(Maze m)
+        {
+            bool valid = true;
+            sampledID = randomLetter(m) + randomLetter(m) + randomLetter(m) + randomLetter(m) + randomLetter(m);
 
+            int warningChars = 0;
+            foreach (char c in sampledID)
+                if (c == 'Q' || c == 'X' || c == 'Z')
+                    warningChars++;
+
+            if (isBorder)
+            {
+                if (warningChars != 1) valid = false;
+            }
+
+            if(!isBorder)
+            {
+                if (warningChars != 0 && trueID != "Q" && trueID != "X") valid = false;
+                if (sampledID[3] != trueID[0]) valid = false;
+
+                if (internalName == "none" && m.vowels.Contains(sampledID[1])) valid = false;
+                if (internalName != "none" && m.consonants.Contains(sampledID[1])) valid = false;
+            }
+
+            if (!valid) resampleID(m);
         }
 
-        public Bitmap loadImage()
+        public Bitmap loadImage(Random r)
         {
-            Bitmap bmpIn = new Bitmap(Image.FromFile(Constants.landscapeDir + image));
+            string imageFilename = Constants.landscapeDir + image;
+            if(isBorder)
+            {
+                var allImages = Directory.EnumerateFiles(Constants.landscapeDir).ToList();
+                imageFilename = allImages[r.Next(allImages.Count)];
+            }
+
+            Bitmap bmpIn = new Bitmap(Image.FromFile(imageFilename));
             var bmpOut = new Bitmap((int)Constants.imgWidth, (int)Constants.imgHeight);
             var graph = Graphics.FromImage(bmpOut);
             var brush = new SolidBrush(Color.Black);
@@ -61,6 +96,11 @@ namespace grandLARP
 
     class Maze
     {
+        public Random random = new Random();
+        public List<char> vowels = new List<char>();
+        public List<char> consonants = new List<char>();
+        public Vertex[,] vertices = new Vertex[7, 7];
+        
         public void loadID()
         {
             var lines = File.ReadAllLines(Constants.dataDir + "trueIDMap.txt");
@@ -128,17 +168,23 @@ namespace grandLARP
             const int buffer = 10;
             const int wSize = (int)Constants.imgWidth + buffer;
             const int hSize = (int)Constants.imgHeight + buffer;
-            var imgOut = new Bitmap(wSize * 5, hSize * 5);
+            var imgOut = new Bitmap(wSize * 7, hSize * 7);
             var graph = Graphics.FromImage(imgOut);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 7; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < 7; j++)
                 {
-                    Vertex v = vertices[i + 1, j + 1];
-                    Bitmap vImg = v.loadImage();
+                    Vertex v = vertices[i, j];
+                    Bitmap vImg = v.loadImage(random);
 
                     graph.DrawImage(vImg, new Point(i * wSize, j * hSize));
+
+                    StringFormat sf = new StringFormat();
+                    sf.Alignment = StringAlignment.Center;
+                    sf.LineAlignment = StringAlignment.Center;
+                    graph.DrawString(v.sampledID, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.5f) * hSize, sf);
+                    graph.DrawString(v.internalName, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.7f) * hSize, sf);
                 }
             }
 
@@ -177,6 +223,10 @@ namespace grandLARP
             
             loadID();
             loadInfo();
+
+            foreach (Vertex v in vertices)
+                v.resampleID(this);
+
             makeGMImage();
 
             // ******* 3333333 ******* 6543456 3333333
@@ -203,8 +253,6 @@ namespace grandLARP
             // R is the radius, L is the label, I is the 'interesting' flag (vowel is good, consnant is boring)
             // presence of a Z anywhere is really bad
         }
-        public List<char> vowels = new List<char>();
-        public List<char> consonants = new List<char>();
-        public Vertex[,] vertices = new Vertex[7, 7];
+
     }
 }

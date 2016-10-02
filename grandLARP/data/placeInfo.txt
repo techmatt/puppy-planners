@@ -126,7 +126,7 @@ image=chipsB.jpg
 symbol=none
 
 id=S
-internalName=caveA
+internalName=none
 name=A mesmerizing cave
 desc=Description! There is stuff here.
 image=caveA.jpg
@@ -175,13 +175,13 @@ image=lab.jpg
 symbol=none
 
 # ******* 3333333 ******* 6543456 3333333
-# *ABCDE* 3012123 *A+T+N* 5432345 3222223
-# *FGHIJ* 3021013 *BC+U+* 4321234 3211123
+# *ABCDE* 3012113 *A+T+N* 5432345 3222223
+# *FGHIJ* 3001013 *BC+U+* 4321234 3211123
 # *KLMNO* 3200113 *++S+P* 3210123 3210123
 # *PQRST* 3110013 *D+C++* 4321234 3211123
-# *UVWXY* 3231123 *W+++L* 5432345 3222223
+# *UVWXY* 3201123 *W+++L* 5432345 3222223
 # ******* 3333333 ******* 6543456 3333333
-
+#
 # S = shuttle landing site
 # L = Hannah's lab
 # N = Niesseling's portal
