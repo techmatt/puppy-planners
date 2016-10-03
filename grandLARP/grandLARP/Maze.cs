@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace grandLARP
 {
     static class Constants
     {
-        public const int imgWidth = 640;
+        public const int imgWidth = 720;
         public const int imgHeight = 480;
 
         public const string baseDir = @"C:\Code\puppy-planners\grandLARP\";
@@ -24,9 +25,11 @@ namespace grandLARP
     {
         public int x;
         public int y;
+        public int escapeDifficulty;
         public string trueID;
         public string sampledID;
-        public string publicName, internalName, desc, symbol, image;
+        public string publicName, internalName, desc, symbol, image, sampledImageAFilename, sampledImageBFilename;
+        public Bitmap sampledImageA, sampledImageB;
         public bool isBorder = true;
         
         public string randomLetter(Maze m)
@@ -62,7 +65,13 @@ namespace grandLARP
             if (!valid) resampleID(m);
         }
 
-        public Bitmap loadImage(Random r)
+        public void resampleImage(Maze m)
+        {
+            sampledImageA = loadImage(m.random, Constants.imgWidth, Constants.imgHeight);
+            sampledImageB = loadImage(m.random, Constants.imgWidth / 2, Constants.imgHeight / 2);
+        }
+
+        public Bitmap loadImage(Random r, int width, int height)
         {
             string imageFilename = Constants.landscapeDir + image;
             if(isBorder)
@@ -72,7 +81,7 @@ namespace grandLARP
             }
 
             Bitmap bmpIn = new Bitmap(Image.FromFile(imageFilename));
-            var bmpOut = new Bitmap((int)Constants.imgWidth, (int)Constants.imgHeight);
+            var bmpOut = new Bitmap(width, height);
             var graph = Graphics.FromImage(bmpOut);
             var brush = new SolidBrush(Color.Black);
 
@@ -80,13 +89,12 @@ namespace grandLARP
             graph.CompositingQuality = CompositingQuality.HighQuality;
             graph.SmoothingMode = SmoothingMode.AntiAlias;
 
-            float scale = Math.Min(Constants.imgWidth / bmpIn.Width, Constants.imgHeight / bmpIn.Height);
+            float scale = Math.Min(width / bmpIn.Width, height / bmpIn.Height);
             var scaleWidth = (int)(bmpIn.Width * scale);
             var scaleHeight = (int)(bmpIn.Height * scale);
 
-            graph.FillRectangle(brush, new RectangleF(0, 0, Constants.imgWidth, Constants.imgHeight));
-            //graph.DrawImage(bmpIn, new Rectangle(((int)Constants.imgWidth - scaleWidth) / 2, ((int)Constants.imgHeight - scaleHeight) / 2, scaleWidth, scaleHeight));
-            graph.DrawImage(bmpIn, 0, 0, Constants.imgWidth, Constants.imgHeight);
+            graph.FillRectangle(brush, new RectangleF(0, 0, width, height));
+            graph.DrawImage(bmpIn, 0, 0, width, height);
 
             //bmpOut.Save(Constants.outDir + "test.jpg");
 
@@ -94,11 +102,31 @@ namespace grandLARP
         }
     }
 
+    static class MyExtensions
+    {
+        private static Random rng = new Random();
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+    }
+
+
     class Maze
     {
         public Random random = new Random();
         public List<char> vowels = new List<char>();
         public List<char> consonants = new List<char>();
+        public List<string> randomWordsA;
+        public List<string> randomWordsB;
         public Vertex[,] vertices = new Vertex[7, 7];
         
         public void loadID()
@@ -110,8 +138,10 @@ namespace grandLARP
                 {
                     Vertex v = new Vertex();
                     v.trueID = "Z";
+                    v.symbol = "none.jpg";
                     v.x = i;
                     v.y = j;
+                    v.escapeDifficulty = 8;
                     vertices[i, j] = v;
                 }
             }
@@ -121,6 +151,18 @@ namespace grandLARP
                 {
                     vertices[i + 1, j + 1].trueID = lines[j][i].ToString();
                     vertices[i + 1, j + 1].isBorder = false;
+                }
+            }
+        }
+
+        public void loadEscape()
+        {
+            var lines = File.ReadAllLines(Constants.dataDir + "escape.txt");
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    vertices[i + 1, j + 1].escapeDifficulty = Convert.ToInt32(lines[j][i].ToString());
                 }
             }
         }
@@ -158,7 +200,11 @@ namespace grandLARP
                     if (p == "image")
                         activeVertex.image = v;
                     if (p == "symbol")
+                    {
                         activeVertex.symbol = v;
+                        if (activeVertex.symbol == "none")
+                            activeVertex.symbol = "none.jpg";
+                    }
                 }
             }
         }
@@ -176,19 +222,120 @@ namespace grandLARP
                 for (int j = 0; j < 7; j++)
                 {
                     Vertex v = vertices[i, j];
-                    Bitmap vImg = v.loadImage(random);
+                    Bitmap vImg = v.loadImage(random, Constants.imgWidth, Constants.imgHeight);
 
                     graph.DrawImage(vImg, new Point(i * wSize, j * hSize));
 
                     StringFormat sf = new StringFormat();
                     sf.Alignment = StringAlignment.Center;
                     sf.LineAlignment = StringAlignment.Center;
-                    graph.DrawString(v.sampledID, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.5f) * hSize, sf);
-                    graph.DrawString(v.internalName, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.7f) * hSize, sf);
+                    //graph.DrawString(v.sampledID, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.5f) * hSize, sf);
+                    //graph.DrawString(v.internalName, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.7f) * hSize, sf);
                 }
             }
 
             imgOut.Save(Constants.outDir + "GMImage.jpg");
+        }
+
+        public string computeVertexHTMLName(Vertex prevV, Vertex curV)
+        {
+            return "p" + prevV.x.ToString() + prevV.y.ToString() + "c" + curV.x.ToString() + curV.y.ToString() + ".html";
+        }
+        
+        public void makeVertexHTML(string baseDir, int prevX, int prevY, int curX, int curY)
+        {
+            if (prevX < 0 || prevX >= 7) return;
+            if (prevY < 0 || prevY >= 7) return;
+            Vertex prevV = vertices[prevX, prevY];
+            Vertex curV = vertices[curX, curY];
+            
+            string outName = computeVertexHTMLName(prevV, curV);
+
+            string HTML;
+            if(curV.symbol == "none.jpg")
+                HTML = File.ReadAllText(Constants.dataDir + "templateA.html");
+            else
+                HTML = File.ReadAllText(Constants.dataDir + "templateB.html");
+
+            var targets = new List<Vertex>();
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    int dist = Math.Abs(x - curX) + Math.Abs(y - curY);
+                    if (x == prevX && y == prevY && !curV.isBorder) continue;
+                    if (dist == 1)
+                    {
+                        targets.Add(vertices[x, y]);
+                    }
+                }
+            }
+            targets.Shuffle();
+
+            if (targets.Count == 2) targets.Add(targets[0]);
+            Debug.Assert(targets.Count == 3);
+            
+            HTML = HTML.Replace("#Title", curV.publicName);
+            HTML = HTML.Replace("#CurrentImage", curV.sampledImageAFilename);
+            HTML = HTML.Replace("#CurrentLetters", curV.sampledID);
+            HTML = HTML.Replace("#EscapeDifficulty", curV.escapeDifficulty.ToString());
+            
+            if (!File.Exists(baseDir + curV.symbol))
+            {
+                File.Copy(Constants.symbolDir + curV.symbol, baseDir + curV.symbol);
+            }
+
+            if (curV.symbol == "none.jpg")
+            {
+                HTML = HTML.Replace("#InteractText", "");
+            }
+            else
+            {
+                HTML = HTML.Replace("#InteractText", "You may open the box that contains this symbol:");
+            }
+
+            HTML = HTML.Replace("#CurrentSymbol", curV.symbol);
+            HTML = HTML.Replace("#TargetA", targets[0].sampledImageBFilename);
+            HTML = HTML.Replace("#TargetB", targets[1].sampledImageBFilename);
+            HTML = HTML.Replace("#TargetC", targets[2].sampledImageBFilename);
+            HTML = HTML.Replace("#LettersA", targets[0].sampledID);
+            HTML = HTML.Replace("#LettersB", targets[1].sampledID);
+            HTML = HTML.Replace("#LettersC", targets[2].sampledID);
+
+            HTML = HTML.Replace("#HTMLA", computeVertexHTMLName(curV, targets[0]));
+            HTML = HTML.Replace("#HTMLB", computeVertexHTMLName(curV, targets[1]));
+            HTML = HTML.Replace("#HTMLC", computeVertexHTMLName(curV, targets[2]));
+            
+            File.WriteAllText(baseDir + outName, HTML);
+        }
+
+        public void toHTML(string prefix)
+        {
+            string baseDir = Constants.outDir + prefix + "/";
+            Directory.CreateDirectory(baseDir);
+
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    vertices[x, y].sampledImageAFilename = "b" + x.ToString() + y.ToString() + ".jpg";
+                    vertices[x, y].sampledImageA.Save(baseDir + vertices[x, y].sampledImageAFilename);
+
+                    vertices[x, y].sampledImageBFilename = "s" + x.ToString() + y.ToString() + ".jpg";
+                    vertices[x, y].sampledImageB.Save(baseDir + vertices[x, y].sampledImageBFilename);
+                }
+            }
+
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    makeVertexHTML(baseDir, x - 1, y, x, y);
+                    makeVertexHTML(baseDir, x + 1, y, x, y);
+                    makeVertexHTML(baseDir, x, y - 1, x, y);
+                    makeVertexHTML(baseDir, x, y + 1, x, y);
+                }
+            }
         }
 
         public Maze()
@@ -220,15 +367,27 @@ namespace grandLARP
             consonants.Add('W');
             consonants.Add('X');
             consonants.Add('Y');
-            
+
+            randomWordsA = new List<string>(File.ReadAllLines(Constants.dataDir + "randomNameA.txt"));
+            randomWordsB = new List<string>(File.ReadAllLines(Constants.dataDir + "randomNameB.txt"));
+
             loadID();
+            loadEscape();
             loadInfo();
 
             foreach (Vertex v in vertices)
+            {
+                if(v.isBorder)
+                {
+                    v.publicName = "A " + randomWordsA[random.Next(randomWordsA.Count)] + " " + randomWordsB[random.Next(randomWordsB.Count)];
+                }
                 v.resampleID(this);
+                v.resampleImage(this);
+            }
 
-            makeGMImage();
-
+            //makeGMImage();
+            toHTML("maze00");
+            
             // ******* 3333333 ******* 6543456 3333333
             // *ABCDE* 3012113 *A+T+N* 5432345 3222223
             // *FGHIJ* 3001013 *BC+U+* 4321234 3211123

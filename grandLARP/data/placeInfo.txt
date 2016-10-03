@@ -43,7 +43,7 @@ symbol=b.jpg
 
 id=G
 internalName=chipsA
-name=An eerie chamber
+name=The Jeskeri Burial Ground
 desc=Description! There is stuff here.
 image=chipsA.jpg
 symbol=b.jpg
@@ -78,7 +78,7 @@ symbol=none
 
 id=L
 internalName=none
-name=A frosty landscape
+name=Ozda's Teeth
 desc=Description! There is stuff here.
 image=frosty.jpg
 symbol=none
@@ -88,7 +88,7 @@ internalName=shuttleLanding
 name=The shuttle landing site
 desc=Description! There is stuff here.
 image=shuttleLanding.jpg
-symbol=none
+symbol=a.jpg
 
 id=N
 internalName=none
@@ -188,7 +188,7 @@ symbol=none
 # B = button to irritate the Niesseling
 # U = Uzuki Umiak
 # T = Tabitha's picnic table with her corpse
-# C = warp crystal chips
+# C = warp crystal chips, burial ground
 # W = warp crystal mines
 # A = Almanac
 # P = pool of water
