@@ -35,7 +35,7 @@ namespace grandLARP
             // ZZZZZZZ 0120120 *******
             // ZABCDEZ 2012111 *A+T+N*
             // ZFGHIJZ 1001012 *B++C+*
-            // ZKLMNOZ 0200110 *++S++*
+            // ZKLMNOZ 0200110 *++S+P*
             // ZPQRSTZ 2110011 *+U+C+*
             // ZUVWXYZ 1201122 *W+++L*
             // ZZZZZZZ 0210210 *******
@@ -49,6 +49,8 @@ namespace grandLARP
             // C = warp crystal chips
             // W = warp crystal mines
             // A = Almanac
+            // P = pool
+            // if any are a Z
 
         }
         public List<char> critialLetters = new List<char>();
