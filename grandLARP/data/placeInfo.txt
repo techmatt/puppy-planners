@@ -154,7 +154,7 @@ image=landscapeA.jpg
 symbol=none
 
 id=W
-internalName=none
+internalName=network
 name=A daunting cloudscape
 desc=Description! There is stuff here.
 image=landscapeB.jpg
@@ -175,11 +175,11 @@ image=lab.jpg
 symbol=none
 
 # ******* 3333333 ******* 6543456 3333333
-# *ABCDE* 3012113 *A+T+N* 5432345 3222223
-# *FGHIJ* 3001013 *BC+U+* 4321234 3211123
+# *ABCDE* 3112113 *A+T+N* 5432345 3222223
+# *FGHIJ* 3101013 *BC+U+* 4321234 3211123
 # *KLMNO* 3200113 *++S+P* 3210123 3210123
 # *PQRST* 3110013 *D+C++* 4321234 3211123
-# *UVWXY* 3201123 *W+++L* 5432345 3222223
+# *UVWXY* 3201123 *W+K+L* 5432345 3222223
 # ******* 3333333 ******* 6543456 3333333
 #
 # S = shuttle landing site
@@ -193,3 +193,4 @@ symbol=none
 # A = Almanac
 # P = pool of water
 # D = one of Hannah's devices
+# K = Taralym network

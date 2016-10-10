@@ -19,7 +19,18 @@ namespace grandLARP
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Maze m = new Maze();
+            Maze m;
+            m = new Maze("maze00");
+            m = new Maze("maze01");
+            m = new Maze("maze02");
+            m = new Maze("maze03");
+            m = new Maze("maze04");
+            m = new Maze("maze05");
+            m = new Maze("maze06");
+            m = new Maze("maze07");
+            m = new Maze("maze08");
+            m = new Maze("maze09");
+            m = new Maze("maze10");
         }
 
         private void buttonBase_Click(object sender, EventArgs e)
