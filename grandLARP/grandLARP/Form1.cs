@@ -20,11 +20,11 @@ namespace grandLARP
         private void button1_Click(object sender, EventArgs e)
         {
             Maze m;
-            m = new Maze("maze00");
-            m = new Maze("maze01");
-            m = new Maze("maze02");
-            m = new Maze("maze03");
-            m = new Maze("maze04");
+            //m = new Maze("maze00");
+            //m = new Maze("maze01");
+            //m = new Maze("maze02");
+            //m = new Maze("maze03");
+            //m = new Maze("maze04");
             m = new Maze("maze05");
             m = new Maze("maze06");
             m = new Maze("maze07");

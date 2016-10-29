@@ -97,6 +97,9 @@ namespace grandLARP
             graph.FillRectangle(brush, new RectangleF(0, 0, width, height));
             graph.DrawImage(bmpIn, 0, 0, width, height);
 
+            graph.Dispose();
+
+
             //bmpOut.Save(Constants.outDir + "test.jpg");
 
             return bmpOut;
@@ -227,6 +230,7 @@ namespace grandLARP
                     Bitmap vImg = v.loadImage(random, Constants.imgWidth, Constants.imgHeight);
 
                     graph.DrawImage(vImg, new Point(i * wSize, j * hSize));
+                    vImg.Dispose();
 
                     StringFormat sf = new StringFormat();
                     sf.Alignment = StringAlignment.Center;
@@ -407,7 +411,7 @@ namespace grandLARP
             }
 
             makeGMImage();
-            toHTML(outName);
+            //toHTML(outName);
             
             // ******* 3333333 ******* 6543456 3333333
             // *ABCDE* 3012113 *A+T+N* 5432345 3222223

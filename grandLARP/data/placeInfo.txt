@@ -4,7 +4,7 @@ internalName=almanac
 name=A peaceful cave
 desc=Description! There is stuff here.
 image=almnac.jpg
-symbol=a.jpg
+symbol=cube9.jpg
 
 id=B
 internalName=none
@@ -18,7 +18,7 @@ internalName=picnic
 name=A calming outcropping
 desc=Description! There is stuff here.
 image=picnic.jpg
-symbol=b.jpg
+symbol=cube5.jpg
 
 id=D
 internalName=none
@@ -32,21 +32,21 @@ internalName=habitat
 name=A crystal cave
 desc=Description! There is stuff here.
 image=habitat.jpg
-symbol=b.jpg
+symbol=cube2.jpg
 
 id=F
 internalName=button
 name=A turquoise cavern
 desc=Description! There is stuff here.
 image=button.jpg
-symbol=b.jpg
+symbol=cube3.jpg
 
 id=G
 internalName=chipsA
 name=The Jeskeri Burial Ground
 desc=Description! There is stuff here.
 image=chipsA.jpg
-symbol=b.jpg
+symbol=cube7.jpg
 
 id=H
 internalName=none
@@ -60,7 +60,7 @@ internalName=uzuki
 name=Giant crystal formations
 desc=Description! There is stuff here.
 image=uzuki.jpg
-symbol=c.jpg
+symbol=cube4.jpg
 
 id=J
 internalName=none
@@ -88,7 +88,7 @@ internalName=shuttleLanding
 name=The shuttle landing site
 desc=Description! There is stuff here.
 image=shuttleLanding.jpg
-symbol=a.jpg
+symbol=none
 
 id=N
 internalName=none
@@ -102,14 +102,14 @@ internalName=pool
 name=A crystalline pool
 desc=Description! There is stuff here.
 image=pool.jpg
-symbol=a.jpg
+symbol=cube10.jpg
 
 id=P
 internalName=device
 name=A spooky crystal forest
 desc=Description! There is stuff here.
 image=device.jpg
-symbol=a.jpg
+symbol=cube11.jpg
 
 id=Q
 internalName=none
@@ -123,7 +123,7 @@ internalName=chipsB
 name=A harsh and jagged basin
 desc=Description! There is stuff here.
 image=chipsB.jpg
-symbol=none
+symbol=cube6.jpg
 
 id=S
 internalName=none
@@ -144,7 +144,7 @@ internalName=warpMine
 name=A scintillating quarry
 desc=Description! There is stuff here.
 image=warpMine.jpg
-symbol=none
+symbol=cube8.jpg
 
 id=V
 internalName=none
@@ -158,7 +158,7 @@ internalName=network
 name=A daunting cloudscape
 desc=Description! There is stuff here.
 image=landscapeB.jpg
-symbol=none
+symbol=cube12.jpg
 
 id=X
 internalName=none
@@ -172,7 +172,7 @@ internalName=lab
 name=A mysterious shaft
 desc=Description! There is stuff here.
 image=lab.jpg
-symbol=none
+symbol=cube1.jpg
 
 # ******* 3333333 ******* 6543456 3333333
 # *ABCDE* 3112113 *A+T+N* 5432345 3222223
