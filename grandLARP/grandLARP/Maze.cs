@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 
 namespace grandLARP
 {
@@ -95,6 +96,9 @@ namespace grandLARP
 
             graph.FillRectangle(brush, new RectangleF(0, 0, width, height));
             graph.DrawImage(bmpIn, 0, 0, width, height);
+
+            graph.Dispose();
+
 
             //bmpOut.Save(Constants.outDir + "test.jpg");
 
@@ -211,6 +215,7 @@ namespace grandLARP
 
         public void makeGMImage()
         {
+            if (File.Exists(Constants.outDir + "GMImage.jpg")) return;
             const int buffer = 10;
             const int wSize = (int)Constants.imgWidth + buffer;
             const int hSize = (int)Constants.imgHeight + buffer;
@@ -225,12 +230,13 @@ namespace grandLARP
                     Bitmap vImg = v.loadImage(random, Constants.imgWidth, Constants.imgHeight);
 
                     graph.DrawImage(vImg, new Point(i * wSize, j * hSize));
+                    vImg.Dispose();
 
                     StringFormat sf = new StringFormat();
                     sf.Alignment = StringAlignment.Center;
                     sf.LineAlignment = StringAlignment.Center;
-                    //graph.DrawString(v.sampledID, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.5f) * hSize, sf);
-                    //graph.DrawString(v.internalName, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.WhiteSmoke, (i + 0.5f) * wSize, (j + 0.7f) * hSize, sf);
+                    graph.DrawString(v.sampledID, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.White, (i + 0.5f) * wSize, (j + 0.4f) * hSize, sf);
+                    graph.DrawString(v.internalName, new System.Drawing.Font("Calibri", 48, FontStyle.Bold), Brushes.White, (i + 0.5f) * wSize, (j + 0.6f) * hSize, sf);
                 }
             }
 
@@ -309,8 +315,27 @@ namespace grandLARP
             File.WriteAllText(baseDir + outName, HTML);
         }
 
+        private static ImageCodecInfo GetEncoderInfo(String mimeType)
+        {
+            int j;
+            ImageCodecInfo[] encoders;
+            encoders = ImageCodecInfo.GetImageEncoders();
+            for (j = 0; j < encoders.Length; ++j)
+            {
+                if (encoders[j].MimeType == mimeType)
+                    return encoders[j];
+            }
+            return null;
+        }
+        
         public void toHTML(string prefix)
         {
+            ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 50L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
             string baseDir = Constants.outDir + prefix + "/";
             Directory.CreateDirectory(baseDir);
 
@@ -319,10 +344,10 @@ namespace grandLARP
                 for (int y = 0; y < 7; y++)
                 {
                     vertices[x, y].sampledImageAFilename = "b" + x.ToString() + y.ToString() + ".jpg";
-                    vertices[x, y].sampledImageA.Save(baseDir + vertices[x, y].sampledImageAFilename);
+                    vertices[x, y].sampledImageA.Save(baseDir + vertices[x, y].sampledImageAFilename, myImageCodecInfo, myEncoderParameters);
 
                     vertices[x, y].sampledImageBFilename = "s" + x.ToString() + y.ToString() + ".jpg";
-                    vertices[x, y].sampledImageB.Save(baseDir + vertices[x, y].sampledImageBFilename);
+                    vertices[x, y].sampledImageB.Save(baseDir + vertices[x, y].sampledImageBFilename, myImageCodecInfo, myEncoderParameters);
                 }
             }
 
@@ -338,7 +363,7 @@ namespace grandLARP
             }
         }
 
-        public Maze()
+        public Maze(string outName)
         {
             vowels.Add('A');
             vowels.Add('E');
@@ -385,8 +410,8 @@ namespace grandLARP
                 v.resampleImage(this);
             }
 
-            //makeGMImage();
-            toHTML("maze00");
+            makeGMImage();
+            //toHTML(outName);
             
             // ******* 3333333 ******* 6543456 3333333
             // *ABCDE* 3012113 *A+T+N* 5432345 3222223
