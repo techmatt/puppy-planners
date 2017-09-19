@@ -24,37 +24,9 @@ namespace grandLARP
 
         private void buttonBase_Click(object sender, EventArgs e)
         {
-            string input = "welcome to the second part";
+            string input = "welcome to the taralym network";
             var values = new List<string>();
             /*values.Add("1");
-            values.Add("2");
-            values.Add("3");
-            values.Add("10");
-            values.Add("11");
-            values.Add("12");
-            values.Add("13");
-            values.Add("20");
-            values.Add("21");
-            values.Add("22");
-            values.Add("23");
-            values.Add("30");
-            values.Add("31");
-            values.Add("32");
-            values.Add("33");
-            values.Add("X00");
-            values.Add("X01");
-            values.Add("X02");
-            values.Add("X03");
-            values.Add("X10");
-            values.Add("X11");
-            values.Add("X12");
-            values.Add("X13");
-            values.Add("X20");
-            values.Add("X21");
-            values.Add("X22");
-            values.Add("X23");*/
-
-            values.Add("1");
             values.Add("2");
             values.Add("3");
             values.Add("B0");
@@ -80,19 +52,52 @@ namespace grandLARP
             values.Add("BC0");
             values.Add("BC1");
             values.Add("BC2");
-            values.Add("BC3");
+            values.Add("BC3");*/
+
+            values.Add("B");
+            values.Add("C");
+            values.Add("D");
+            values.Add("FA");
+            values.Add("FB");
+            values.Add("FC");
+            values.Add("FD");
+            values.Add("GA");
+            values.Add("GB");
+            values.Add("GC");
+            values.Add("GD");
+            values.Add("HA");
+            values.Add("HB");
+            values.Add("HC");
+            values.Add("HD");
+            values.Add("FEA");
+            values.Add("FEB");
+            values.Add("FEC");
+            values.Add("FED");
+            values.Add("FFA");
+            values.Add("FFB");
+            values.Add("FFC");
+            values.Add("FFD");
+            values.Add("FGA");
+            values.Add("FGB");
+            values.Add("FGC");
+            values.Add("FGD");
 
             var map = new Dictionary<char, string>();
             for(int i = 0; i < 26; i++)
                 map[(char)('a' + i)] = values[i];
             map[' '] = values[26];
 
-            string output = "";
-            foreach(char c in input)
+            string outputA = "";
+            string outputB = "";
+            foreach (char c in input)
             {
-                output = output + map[c];
+                outputA = outputA + map[c];
+                foreach(char c2 in map[c])
+                {
+                    outputB = outputB + c2 + "\r\n";
+                }
             }
-            textBox1.Text = output;
+            textBox1.Text = outputB;
         }
     }
 }
